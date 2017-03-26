@@ -1,0 +1,67 @@
+Configuring persistent-sqlite-2.6.0.1...
+Building persistent-sqlite-2.6.0.1...
+Preprocessing library persistent-sqlite-2.6.0.1...
+[1 of 2] Compiling Database.Sqlite  ( Database/Sqlite.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Sqlite.o )
+[2 of 2] Compiling Database.Persist.Sqlite ( Database/Persist/Sqlite.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Sqlite.o )
+
+Database/Persist/Sqlite.hs:43:1: warning: [-Wunused-imports]
+    The import of ‘Control.Applicative’ is redundant
+      except perhaps to import instances from ‘Control.Applicative’
+    To import instances alone, use: import Control.Applicative()
+
+Database/Persist/Sqlite.hs:267:20: warning: [-Wmissing-fields]
+    • Fields of ‘SqlBackend’ not initialised: connUpsertSql
+    • In the expression:
+        SqlBackend
+          {connPrepare = \ _ -> do { return (...) }, connStmtMap = smap,
+           connInsertSql = insertSql', connInsertManySql = Nothing,
+           connClose = undefined, connMigrateSql = migrate',
+           connBegin = helper "BEGIN", connCommit = helper "COMMIT",
+           connRollback = ignoreExceptions . helper "ROLLBACK",
+           connEscapeName = escape, connNoLimit = "LIMIT -1",
+           connRDBMS = "sqlite",
+           connLimitOffset = decorateSQLWithLimitOffset "LIMIT -1",
+           connLogFunc = undefined}
+      In an equation for ‘sqlbackend’:
+          sqlbackend
+            = SqlBackend
+                {connPrepare = \ _ -> do { ... }, connStmtMap = smap,
+                 connInsertSql = insertSql', connInsertManySql = Nothing,
+                 connClose = undefined, connMigrateSql = migrate',
+                 connBegin = helper "BEGIN", connCommit = helper "COMMIT",
+                 connRollback = ignoreExceptions . helper "ROLLBACK",
+                 connEscapeName = escape, connNoLimit = "LIMIT -1",
+                 connRDBMS = "sqlite",
+                 connLimitOffset = decorateSQLWithLimitOffset "LIMIT -1",
+                 connLogFunc = undefined}
+      In the expression:
+        do { smap <- newIORef $ Map.empty;
+             let sqlbackend = ...
+                 result = runReaderT . runWriterT . runWriterT $ mig;
+             resp <- result sqlbackend;
+             mapM_ TIO.putStrLn $ map snd $ snd resp }
+
+cbits/sqlite3.c:18709:17: error:
+     warning: 'OSAtomicCompareAndSwapPtrBarrier' is deprecated: first deprecated in macOS 10.12 - Use atomic_compare_exchange_strong() from <stdatomic.h> instead [-Wdeprecated-declarations]
+          success = OSAtomicCompareAndSwapPtrBarrier(NULL, newzone, 
+                    ^
+
+/usr/include/libkern/OSAtomicDeprecated.h:547:6: error:
+     note: 'OSAtomicCompareAndSwapPtrBarrier' has been explicitly marked deprecated here
+bool    OSAtomicCompareAndSwapPtrBarrier( void *__oldValue, void *__newValue, void * volatile *__theValue );
+        ^
+1 warning generated.
+
+cbits/sqlite3.c:18709:17: error:
+     warning: 'OSAtomicCompareAndSwapPtrBarrier' is deprecated: first deprecated in macOS 10.12 - Use atomic_compare_exchange_strong() from <stdatomic.h> instead [-Wdeprecated-declarations]
+          success = OSAtomicCompareAndSwapPtrBarrier(NULL, newzone, 
+                    ^
+
+/usr/include/libkern/OSAtomicDeprecated.h:547:6: error:
+     note: 'OSAtomicCompareAndSwapPtrBarrier' has been explicitly marked deprecated here
+bool    OSAtomicCompareAndSwapPtrBarrier( void *__oldValue, void *__newValue, void * volatile *__theValue );
+        ^
+1 warning generated.
+Installing library in
+/Users/v0d1ch/.stack/snapshots/x86_64-osx/lts-8.4/8.0.2/lib/x86_64-osx-ghc-8.0.2/persistent-sqlite-2.6.0.1-50zwolKMRIw7TMI67Bc4mc
+Registering persistent-sqlite-2.6.0.1...

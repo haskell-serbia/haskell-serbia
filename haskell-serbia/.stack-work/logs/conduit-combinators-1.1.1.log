@@ -1,0 +1,21 @@
+Configuring conduit-combinators-1.1.1...
+Building conduit-combinators-1.1.1...
+Preprocessing library conduit-combinators-1.1.1...
+[1 of 5] Compiling Data.Conduit.Combinators.Stream ( Data/Conduit/Combinators/Stream.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Data/Conduit/Combinators/Stream.o )
+[2 of 5] Compiling Data.Conduit.Combinators.Internal ( Data/Conduit/Combinators/Internal.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Data/Conduit/Combinators/Internal.o )
+[3 of 5] Compiling Data.Conduit.Combinators ( Data/Conduit/Combinators.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Data/Conduit/Combinators.o )
+
+Data/Conduit/Combinators.hs:238:1: warning: [-Wunused-imports]
+    The import of ‘System.IO’ is redundant
+      except perhaps to import instances from ‘System.IO’
+    To import instances alone, use: import System.IO()
+[4 of 5] Compiling Data.Conduit.Combinators.Unqualified ( Data/Conduit/Combinators/Unqualified.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Data/Conduit/Combinators/Unqualified.o )
+
+Data/Conduit/Combinators/Unqualified.hs:619:1: warning: [-Wmissing-signatures]
+    Top-level binding with no type signature:
+      asumC :: (GHC.Base.Alternative f, Monad m) =>
+               ConduitM (f a) o m (f a)
+[5 of 5] Compiling Conduit          ( Conduit.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Conduit.o )
+Installing library in
+/Users/v0d1ch/.stack/snapshots/x86_64-osx/lts-8.5/8.0.2/lib/x86_64-osx-ghc-8.0.2/conduit-combinators-1.1.1-6nQuyZYvklq1zGTlVM9AL3
+Registering conduit-combinators-1.1.1...

@@ -1,0 +1,14 @@
+Configuring mutable-containers-0.3.3...
+Building mutable-containers-0.3.3...
+Preprocessing library mutable-containers-0.3.3...
+[1 of 8] Compiling Data.Mutable.Class ( Data/Mutable/Class.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Data/Mutable/Class.o )
+[2 of 8] Compiling Data.Mutable.DLList ( Data/Mutable/DLList.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Data/Mutable/DLList.o )
+[3 of 8] Compiling Data.Mutable.Deque ( Data/Mutable/Deque.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Data/Mutable/Deque.o )
+[4 of 8] Compiling Data.Mutable.PRef ( Data/Mutable/PRef.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Data/Mutable/PRef.o )
+[5 of 8] Compiling Data.Mutable.SRef ( Data/Mutable/SRef.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Data/Mutable/SRef.o )
+[6 of 8] Compiling Data.Mutable.URef ( Data/Mutable/URef.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Data/Mutable/URef.o )
+[7 of 8] Compiling Data.Mutable.BRef ( Data/Mutable/BRef.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Data/Mutable/BRef.o )
+[8 of 8] Compiling Data.Mutable     ( Data/Mutable.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Data/Mutable.o )
+Installing library in
+/Users/v0d1ch/.stack/snapshots/x86_64-osx/lts-8.5/8.0.2/lib/x86_64-osx-ghc-8.0.2/mutable-containers-0.3.3-G3DAwzsZD2aC3Zi5GhUU8Q
+Registering mutable-containers-0.3.3...
