@@ -13,14 +13,14 @@
         <div .row>
             <div .col-lg-12>
                 <div .page-header>
-                    <p>
-                         
-                        <a href="https://www.facebook.com/haskellserbia">Facebook grupa 
 
-                    <p>
+                <hr>
 
-    <hr>
-
+                <div .col-md-12>
+                    <div .col-md-6 .pull-right>
+                         <a href="https://twitter.com/haskellserbia" class="twitter-follow-button" data-show-count="false">Follow @haskellserbia
+                         <script async src="//platform.twitter.com/widgets.js" charset="utf-8">
+                        <div class="fb-page" data-href="https://www.facebook.com/haskellserbia/" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true" data-width="425">
     <!-- Forms
         ================================================== 
     <div .bs-docs-section>
