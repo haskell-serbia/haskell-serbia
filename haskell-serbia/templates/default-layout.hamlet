@@ -8,30 +8,8 @@
     fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
-<!-- Static navbar -->
-<nav .navbar.navbar-default.navbar-static-top>
-    <div .container>
-        <div .navbar-header>
-            <button type="button" .navbar-toggle.collapsed data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-
-        <div #navbar .collapse.navbar-collapse>
-            <ul .nav.navbar-nav>
-                $forall MenuItem label route _ <- navbarLeftFilteredMenuItems
-                    <li :Just route == mcurrentRoute:.active>
-                        <a href="@{route}">#{label}
-
-            <ul .nav.navbar-nav.navbar-right>
-                $forall MenuItem label route _ <- navbarRightFilteredMenuItems
-                    <li :Just route == mcurrentRoute:.active>
-                        <a href="@{route}">#{label}
-
 <!-- Page Contents -->
 
-<div .container>
     $if not $ Just HomeR == mcurrentRoute
         <ul .breadcrumb>
             $forall bc <- parents
@@ -42,12 +20,44 @@
 
     $maybe msg <- mmsg
       <div .alert.alert-info #message>#{msg}
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+              <ul .nav.navbar-nav>
+                  $forall MenuItem label route _ <- navbarLeftFilteredMenuItems
+                      <li :Just route == mcurrentRoute:.active>
+                          <a href="@{route}">#{label}
 
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                  $forall MenuItem label route _ <- navbarRightFilteredMenuItems
+                      <li :Just route == mcurrentRoute:.active>
+                          <a href="@{route}">#{label}
 ^{widget}
 
 <!-- Footer -->
-<div class="clearfix">
-<footer .footer>
-    <div .container>
-        <p .text-muted>
-            #{appCopyright $ appSettings master}
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    <li>
+                        <a href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x">
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse">
+                    <li>
+                        <a href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x">
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse">
+                    <li>
+                        <a href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x">
+                                <i class="fa fa-github fa-stack-1x fa-inverse">
+                <p class="copyright text-muted">Copyright &copy; #{appCopyright $ appSettings master}
+                <p .copyright .small .text-muted>Created by <a href="http://bogicevicsasa.com">Sasa Bogicevic

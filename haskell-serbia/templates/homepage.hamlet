@@ -1,102 +1,35 @@
-<div .masthead>
+<!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header .intro-header style="background-image: url('static/img/home-bg.jpg')">
+        <div .container>
+            <div .row>
+                <div .col-lg-8 .col-lg-offset-2 .col-md-10 .col-md-offset-1>
+                    <div .site-heading>
+                      <h1 .header>
+                        Haskell Srbija 
+                           
+                        <hr .small>
+                        <span .subheading>Grupa posvecena učenju i razvoju Haskell programskog jezika
+
+    <!-- Main Content -->
     <div .container>
         <div .row>
-            <h1 .header>
-               Haskell Srbija 
-            <h2>
-                Grupa posvecena učenju i razvoju Haskell programskog jezika 
-
-<div .container>
-    <!-- Starting
-        ================================================== -->
-    <div .bs-docs-section>
-        <div .row>
-            <div .col-lg-12>
-                <div .page-header>
-
+            <div .col-md-12>
+                <div .post-preview>
+                     <div .col-md-6>
+                        <h2 .post-title> Man must explore, and this is exploration at its greatest
+                    <!-- <p .post-meta.>Posted by <a href="#">Start Bootstrap</a> on September 24, 2014 -->
+                     <div .col-md-6>
+                        <div .col-md-12>
+                            <a href="https://twitter.com/haskellserbia" .twitter-follow-button data-show-count="false">Follow @haskellserbia
+                            <script async src="//platform.twitter.com/widgets.js" charset="utf-8">
+                            <div class="fb-page col-md-12" data-href="https://www.facebook.com/haskellserbia/" data-tabs="timeline" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true" data-width="800">
                 <hr>
-
                 <div .col-md-12>
-                    <div .col-md-6 .pull-right>
-                         <a href="https://twitter.com/haskellserbia" class="twitter-follow-button" data-show-count="false">Follow @haskellserbia
-                         <script async src="//platform.twitter.com/widgets.js" charset="utf-8">
-                        <div class="fb-page" data-href="https://www.facebook.com/haskellserbia/" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true" data-width="425">
-    <!-- Forms
-        ================================================== 
-    <div .bs-docs-section>
-        <div .row>
-            <div .col-lg-12>
-                <div .page-header>
-                    <h1 #forms>Forms
-
-                    <p>
-                        This is an example of a form. Read the
-                        <a href="http://www.yesodweb.com/book/forms">Forms chapter</a> #
-                        on the yesod book to learn more about them.
-
-        <div .row>
-            <div .col-lg-6>
-                <div .bs-callout bs-callout-info well>
-                    <form .form-horizontal method=post action=@{HomeR}#forms enctype=#{formEnctype}>
-                        ^{formWidget}
-
-                        <button .btn.btn-primary type="submit">
-                            Upload it!
-
-
-            <div .col-lg-4.col-lg-offset-1>
-                <div .bs-callout.bs-callout-info.upload-response>
-
-                    $maybe (FileForm info con) <- submission
-                        Your file type is <em>#{fileContentType info}</em>. You say it has: <em>#{con}</em>
-
-                    $nothing
-                        File upload result will be here...
-
-
+                  <div .post-preview>
+                <!--  <ul .pager>
+                      <li .next>
+                          <a href="#">Older Posts &rarr;
+                 -->
     <hr>
 
-    <div .bs-docs-section>
-        <div .row>
-            <div .col-lg-12>
-                <div .page-header>
-                    <h1 #json>JSON
-
-                    <p>
-                        Yesod has JSON support baked-in.
-                        The form below makes an AJAX request with Javascript,
-                        then updates the page with your submission.
-                        (see <tt>Handler/Comment.hs</tt>, <tt>templates/homepage.julius</tt>,
-                        and <tt>Handler/Home.hs</tt> for the implementation).
-
-        <div .row>
-            <div .col-lg-6>
-                <div .bs-callout.bs-callout-info.well>
-                    <form .form-horizontal ##{commentFormId}>
-                        <div .field>
-                            <textarea rows="2" ##{commentTextareaId} placeholder="Your comment here..." required></textarea>
-
-                        <button .btn.btn-primary type=submit>
-                           Create comment
-
-           <div .col-lg-4.col-lg-offset-1>
-               <div .bs-callout.bs-callout-info>
-                   <small>
-                       Your comments will appear here. You can also open the
-                       console log to see the raw response from the server.
-                   <ul ##{commentListId}>
-
-    <hr>
-
-    <div .bs-docs-section>
-       <div .row>
-           <div .col-lg-12>
-               <div .page-header>
-                   <h1 #test>Testing
-
-                   <p>
-                       And last but not least, Testing. In <tt>test/Spec.hs</tt> you will find a #
-                       test suite that performs tests on this page.
-                   <p>
-                       You can run your tests by doing: <code>stack test</code>
--->
