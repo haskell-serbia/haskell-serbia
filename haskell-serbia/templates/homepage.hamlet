@@ -1,15 +1,3 @@
-<!-- Page Header -->
-    <!-- Set your background image for this header on the line below. -->
-    <header .intro-header style="background-image: url('static/img/home-bg.jpg')">
-        <div .container>
-            <div .row>
-                <div .col-lg-8 .col-lg-offset-2 .col-md-10 .col-md-offset-1>
-                    <div .site-heading>
-                      <h1 .header>
-                        Haskell Srbija 
-                           
-                        <hr .small>
-                        <span .subheading>Grupa posvecena učenju i razvoju Haskell programskog jezika
 
     <!-- Main Content -->
     <div .container>

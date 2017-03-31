@@ -85,6 +85,7 @@ instance Yesod App where
 
         muser <- maybeAuthPair
         mcurrentRoute <- getCurrentRoute
+        pageHeader <- pageHeaderWidget >>= widgetToPageContent
 
         -- Get the breadcrumbs, as defined in the YesodBreadcrumbs instance.
         (title, parents) <- breadcrumbs
@@ -128,6 +129,7 @@ instance Yesod App where
         pc <- widgetToPageContent $ do
             addStylesheet $ StaticR css_bootstrap_css
             $(widgetFile "default-layout")
+
         withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 
     -- The page to be redirected to when authentication is required.
@@ -248,3 +250,9 @@ unsafeHandler = Unsafe.fakeHandlerGetLogger appLogger
 -- https://github.com/yesodweb/yesod/wiki/Sending-email
 -- https://github.com/yesodweb/yesod/wiki/Serve-static-files-from-a-separate-domain
 -- https://github.com/yesodweb/yesod/wiki/i18n-messages-in-the-scaffolding
+
+-- CUSTOM WIDGETS
+
+pageHeaderWidget :: Handler Widget
+pageHeaderWidget = do
+  return $(widgetFile "header/header")

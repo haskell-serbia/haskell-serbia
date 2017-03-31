@@ -14,6 +14,7 @@ $newline never
 
     <meta name="viewport" content="width=device-width,initial-scale=1">
     ^{pageHead pc}
+    ^{pageHead pageHeader}
     <link rel=stylesheet type=text/css href=@{StaticR css_cleanblog_css}>
     <!-- Bootstrap Core CSS -->
     <link rel=stylesheet type=text/css href=@{StaticR css_bootstrap_css}>
@@ -50,6 +51,7 @@ $newline never
     <script>
       document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');
   <body>
+    ^{pageBody pageHeader}
     ^{pageBody pc}
 
     $maybe analytics <- appAnalytics $ appSettings master
