@@ -16,6 +16,8 @@ $newline never
     ^{pageHead pc}
     ^{pageHead pageHeader}
     <link rel=stylesheet type=text/css href=@{StaticR css_cleanblog_css}>
+    <link rel=stylesheet type=text/css href=@{StaticR css_royalslider_css}>
+
     <!-- Bootstrap Core CSS -->
     <link rel=stylesheet type=text/css href=@{StaticR css_bootstrap_css}>
 
@@ -29,6 +31,7 @@ $newline never
     \<![endif]-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.0.3/js.cookie.min.js">
+    <script type=text/javascript src=@{StaticR js_royalSlider_js}>
 
     <script>
       /* The `defaultCsrfMiddleware` Middleware added in Foundation.hs adds a CSRF token the request cookies. */
@@ -50,6 +53,35 @@ $newline never
 
     <script>
       document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');
+
+    <script>
+     \ jQuery(document).ready(function($) {
+     \   $('#full-width-slider').royalSlider({
+     \     arrowsNav: true,
+     \     loop: false,
+     \     keyboardNavEnabled: true,
+     \     controlsInside: true,
+     \     imageScaleMode: 'fill',
+     \     arrowsNavAutoHide: false,
+     \     autoScaleSlider: true, 
+     \     autoScaleSliderWidth: 960,     
+     \     autoScaleSliderHeight: 350,
+     \     controlNavigation: 'bullets',
+     \     thumbsFitInViewport: false,
+     \     navigateByClick: true,
+     \     startSlideId: 0,
+     \     autoPlay: true,
+     \     transitionType:'move',
+     \     globalCaption: false,
+     \     deeplinking: {
+     \       enabled: true,
+     \       change: false
+     \     },
+     \     imgWidth: 1400,
+     \     imgHeight: 680
+     \   });
+     \ });
+
   <body>
     ^{pageBody pageHeader}
     ^{pageBody pc}
