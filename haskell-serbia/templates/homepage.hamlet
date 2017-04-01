@@ -9,8 +9,6 @@
                     <!-- <p .post-meta.>Posted by <a href="#">Start Bootstrap</a> on September 24, 2014 -->
                      <div .col-md-6>
                         <div .col-md-12>
-                            <a href="https://twitter.com/haskellserbia" .twitter-follow-button data-show-count="false">Follow @haskellserbia
-                            <script async src="//platform.twitter.com/widgets.js" charset="utf-8">
                             <div class="fb-page col-md-12" data-href="https://www.facebook.com/haskellserbia/" data-tabs="timeline" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true" data-width="800">
                 <hr>
                 <div .col-md-12>

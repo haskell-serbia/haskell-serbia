@@ -3,12 +3,16 @@ module Handler.Home where
 import Import
 import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3)
 import Text.Julius (RawJS (..))
+import Widget.Header
 
 -- Define our data that will be used for creating the form.
 data FileForm = FileForm
     { fileInfo :: FileInfo
     , fileDescription :: Text
     }
+
+twitterUsername :: String
+twitterUsername = "haskellserbia"
 
 -- This is a handler function for the GET request method on the HomeR
 -- resource pattern. All of your resource patterns are defined in
@@ -26,6 +30,7 @@ getHomeR = do
         let (commentFormId, commentTextareaId, commentListId) = commentIds
         aDomId <- newIdent
         setTitle "Haskell Srbija"
+        twitterWidget twitterUsername 
         $(widgetFile "homepage")
 
 postHomeR :: Handler Html
