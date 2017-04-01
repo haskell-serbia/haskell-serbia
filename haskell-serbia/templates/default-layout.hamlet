@@ -11,22 +11,27 @@
     $maybe msg <- mmsg
       <div .alert.alert-info #message>#{msg}
 
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header page-scroll">
-              <ul .nav.navbar-nav>
-                  $forall MenuItem label route _ <- navbarLeftFilteredMenuItems
-                      <li :Just route == mcurrentRoute:.active>
-                          <a href="@{route}">#{label}
 
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                  $forall MenuItem label route _ <- navbarRightFilteredMenuItems
-                      <li :Just route == mcurrentRoute:.active>
-                          <a href="@{route}">#{label}
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+            <span class="icon-bar">
+            <span class="icon-bar">
+            <span class="icon-bar">
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            $forall MenuItem label route _ <- navbarLeftFilteredMenuItems
+                <li :Just route == mcurrentRoute:.active>
+                    <a href="@{route}">#{label}
+            $forall MenuItem label route _ <- navbarRightFilteredMenuItems
+                <li :Just route == mcurrentRoute:.active>
+                    <a href="@{route}">#{label}
+
+
 ^{widget}
 
-<!-- Footer -->
 <footer>
     <div class="container">
         <div class="row">

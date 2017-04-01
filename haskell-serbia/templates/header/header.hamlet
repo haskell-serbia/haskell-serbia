@@ -1,16 +1,16 @@
 <div id="full-width-slider" class="royalSlider heroSlider rsMinW">
   <div class="rsContent">
-    <img class="rsImg" src="static/img/full-width/1.jpg" alt="">
+    <img class="rsImg" src="@{HomeR}static/img/full-width/1.jpg" alt="">
     <div class="infoBlock infoBlockLeftBlack rsABlock" data-fade-effect="" data-move-offset="10" data-move-effect="bottom" data-speed="200">
       <h1>Haskell Srbija
       <p>Grupa posvećena ucenju i popularizaciji Haskell programskog jezika
   <div class="rsContent">
-    <img class="rsImg" src="static/img/full-width/2.jpg" alt="">
+    <img class="rsImg" src="@{HomeR}static/img/full-width/2.jpg" alt="">
      <div class="infoBlock  rsAbsoluteEl" style="color:#000;" data-fade-effect="" data-move-offset="10" data-move-effect="bottom" data-speed="200">
       <h4>"Pure mathematics is, in its way, the poetry of logical ideas."
       <p>Albert Einstein
  <div class="rsContent">
-    <img class="rsImg" src="static/img/full-width/3.jpg" alt="">
+    <img class="rsImg" src="@{HomeR}static/img/full-width/3.jpg" alt="">
     <div class="infoBlock rsABlock infoBlockLeftBlack" data-fade-effect="" data-move-offset="10" data-move-effect="bottom" data-speed="200">
       <h4>"Most good programmers do programming not because they expect to get paid or get adulation by the public, but because it is fun to program."
       <p>Linus Torvalds

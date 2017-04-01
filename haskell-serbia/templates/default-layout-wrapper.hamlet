@@ -15,22 +15,22 @@ $newline never
     <meta name="viewport" content="width=device-width,initial-scale=1">
     ^{pageHead pc}
     ^{pageHead pageHeader}
-    <link rel=stylesheet type=text/css href=@{StaticR css_cleanblog_css}>
     <link rel=stylesheet type=text/css href=@{StaticR css_royalslider_css}>
+    <link rel=stylesheet type=text/css href=@{StaticR css_cleanblog_css}>
 
     <!-- Bootstrap Core CSS -->
     <link rel=stylesheet type=text/css href=@{StaticR css_bootstrap_css}>
 
-    <!-- Custom Fonts -->
-    <link href="static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link rel=stylesheet type=text/css href=@{StaticR vendor_font_awesome_css_font_awesome_min_css}>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
 
     \<!--[if lt IE 9]>
     \<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     \<![endif]-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.0.3/js.cookie.min.js">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
     <script type=text/javascript src=@{StaticR js_royalSlider_js}>
 
     <script>
