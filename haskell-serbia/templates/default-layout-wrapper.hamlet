@@ -70,15 +70,20 @@ $newline never
      \     thumbsFitInViewport: false,
      \     navigateByClick: true,
      \     startSlideId: 0,
-     \     autoPlay: true,
      \     transitionType:'move',
+     \     transitionSpeed:1000,
+     \     slidesSpacing:0,
      \     globalCaption: false,
      \     deeplinking: {
      \       enabled: true,
      \       change: false
      \     },
      \     imgWidth: 1400,
-     \     imgHeight: 680
+     \     imgHeight: 680,
+     \     autoPlay: {
+     \          enabled: true,
+     \          pauseOnHover: true
+     \        }
      \   });
      \ });
 
