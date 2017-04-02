@@ -6,11 +6,11 @@
                 <div .post-preview>
                      <div .col-md-6>
                        <h2 .post-title>Statički tipovi
-                       <p>Svaki izraz u Haskell-u ima određeni tip koji je definisan u vreme kompajliranja. Svi tipovi komponovani zajedno prilikom apliciranja funkcija moraju da se sloze. Ako se to ne desi kompajler će ih odbaciti tako da tipovi postaju ne samo vrsta garancije već jezik kojim opisujemo sam program.
+                       <p>Svaki izraz u Haskell-u ima određeni tip koji je definisan u vreme kompajliranja. Svi tipovi komponovani zajedno prilikom apliciranja funkcija moraju da se sloze. Ako se to ne desi kompajler će ih odbaciti tako da tipovi postaju ne samo vrsta garancije da program radi, već i jezik kojim opisujemo sam program.
                        <h2 .post-title>Čisto funkcionalni jezik
-                       <p>Svaka funkcije u Haskell-u je u matematickom smislu "čista". Čak i propratni efekti IO operacija. Ne postoje instrukcije vec samo izrazi koji ne mogu da mutiraju lokalne ili globalne promenljive ili da pristupe stanju aplikacije.
+                       <p>Svaka funkcija u Haskell-u je u matematickom smislu "čista", čak i propratni efekti IO operacija. Ne postoje instrukcije već samo izrazi koji ne mogu da mutiraju lokalne ili globalne promenljive ili da pristupe stanju aplikacije.
                        <h2 .post-title>Paralelno i Konkurentno programiranje
-                       <p>Haskell ima široku primenu u konkurentnom i paralelnom programiranju zahvaljujuci njegovom upravljanju sporednim efektima. GHC kompajler sadrzi visoko optimizovan paralelni garbage kolektor i konkurentnu biblioteku sa velikim brojem korisnih abstrakcija.
+                       <p>Haskell ima široku primenu u konkurentnom i paralelnom programiranju zahvaljujući njegovom upravljanju sporednim efektima. GHC kompajler sadrzi visoko optimizovan paralelni garbage kolektor i konkurentnu biblioteku sa velikim brojem korisnih abstrakcija.
                  <div .post-preview>
                        <div .col-md-6>
                         <div .col-md-12>
