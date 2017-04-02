@@ -24,6 +24,7 @@ library
                      Handler.Home
                      Handler.Comment
                      Handler.Profile
+                     Handler.Blog
                      Widget.Header
 
     if flag(dev) || flag(library-only)

@@ -1,6 +1,6 @@
 User
     ident Text
-    password Text Maybe
+    password Text Maybe 
     UniqueUser ident
     deriving Typeable
 Email
@@ -12,5 +12,12 @@ Comment json -- Adding "json" causes ToJSON and FromJSON instances to be derived
     message Text
     userId UserId Maybe
     deriving Eq
+Entry
+   user UserId
+   entry EntryId
+   title Text
+   posted UTCTime
+   content Textarea 
+
 
  -- By default this file is used in Model.hs (which is imported by Foundation.hs)
