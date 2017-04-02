@@ -4,10 +4,11 @@
 /favicon.ico FaviconR GET
 /robots.txt RobotsR GET
 
-/ HomeR GET POST
-
-/comments CommentR POST
+/ HomeR GET
 
 /profile ProfileR GET
 
-blog/#EntryId BlogR GET POST
+!/tutorials/all TutorialListR GET
+!/tutorials/new TutorialsR GET POST
+!/tutorial/#TutorialId TutorialRR GET
+tutorial/edit/#TutorialId TutorialEditR GET POST

@@ -1,0 +1,13 @@
+<div .row col-md-6 .col-md-offset-2>
+            <form method=post action=@{UserLoginR} enctype=application/x-www-form-urlencoded>
+                <div .form-group .required>
+                   <label .sr-only>Name
+                   <input #login-name name=user_name type=text required=true value="Name">
+                <div .form-group .required>
+                   <label .sr-only>Email
+                   <input #login-email name=user_email type=text required=true value="Email">
+                <div .form-group .required>
+                   <button .btn .btn-default .btn-xs type=submit>Create account
+
+
+

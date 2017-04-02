@@ -1,0 +1,15 @@
+<div .container>
+    <div .row>
+        <div .col-md-12>
+
+          <h1>Tutorials
+          <p>So you are a beginner Haskeller and getting frustrated by not being able to google how to do simple things in Haskell. I know your pain and I will try to share here all things I find usefull that can shorten the path to get things done in Haskell or more specific Yesod web framework. Everybody is welcome to write a tutorial in Markdown format and we will include it on website.
+          
+          <br />
+          <br />
+
+              <ul>
+                  $forall Entity id post <- allPosts
+                    <h4>
+                        <li>
+                            <a href=@{TutorialRR id}>#{tutorialTitle post}
