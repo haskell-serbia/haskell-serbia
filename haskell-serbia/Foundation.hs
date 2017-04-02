@@ -14,14 +14,6 @@ import Yesod.Core.Types     (Logger)
 import qualified Yesod.Core.Unsafe as Unsafe
 import qualified Data.CaseInsensitive as CI
 import qualified Data.Text.Encoding as TE
-import           Yesod.Auth.BrowserId
-import           Yesod.Auth.GoogleEmail2
-
-clientId :: Text
-clientId =  "748329617960-jufrcpc95ruv6vrgicjb0r3lrq2d7h20.apps.googleusercontent.com"
-
-clientSecret :: Text
-clientSecret = "EhgGvBPZk08QqVcReV0ZxJWJ"
 
 -- | The foundation datatype for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
@@ -112,7 +104,7 @@ instance Yesod App where
                     }
                 , NavbarRight $ MenuItem
                     { menuItemLabel = "Login"
-                    , menuItemRoute = AuthR LoginR
+                    , menuItemRoute = UserLoginR
                     , menuItemAccessCallback = isNothing muser
                     }
                 , NavbarRight $ MenuItem
@@ -147,6 +139,8 @@ instance Yesod App where
     isAuthorized (AuthR _) _ = return Authorized
     isAuthorized CommentR _ = return Authorized
     isAuthorized HomeR _ = return Authorized
+    isAuthorized UserLoginR _ = return Authorized
+
     isAuthorized FaviconR _ = return Authorized
     isAuthorized RobotsR _ = return Authorized
     isAuthorized (StaticR _) _ = return Authorized
@@ -220,14 +214,10 @@ instance YesodAuth App where
                 , userPassword = Nothing
                 }
 
-
-    authPlugins app =
-        [ authBrowserId def
-        , authGoogleEmail clientId clientSecret
-        ]
+    -- authPlugins app = [authDummy | appAuthDummyLogin $ appSettings app]
     -- authPlugins app = [authOpenId Claimed []] ++ extraAuthPlugins
-    --     -- Enable authDummy login if enabled.
-    --     where extraAuthPlugins = [authDummy | appAuthDummyLogin $ appSettings app]
+        -- Enable authDummy login if enabled.
+        -- where extraAuthPlugins = [authDummy | appAuthDummyLogin $ appSettings app]
 
     authHttpManager = getHttpManager
 

@@ -25,6 +25,8 @@ library
                      Handler.Comment
                      Handler.Profile
                      Handler.Blog
+                     Handler.Register
+                     Handler.UserLogin
                      Widget.Header
 
     if flag(dev) || flag(library-only)
