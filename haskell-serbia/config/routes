@@ -9,3 +9,5 @@
 /comments CommentR POST
 
 /profile ProfileR GET
+
+blog/#EntryId BlogR GET POST

@@ -14,6 +14,14 @@ import Yesod.Core.Types     (Logger)
 import qualified Yesod.Core.Unsafe as Unsafe
 import qualified Data.CaseInsensitive as CI
 import qualified Data.Text.Encoding as TE
+import           Yesod.Auth.BrowserId
+import           Yesod.Auth.GoogleEmail2
+
+clientId :: Text
+clientId =  "748329617960-jufrcpc95ruv6vrgicjb0r3lrq2d7h20.apps.googleusercontent.com"
+
+clientSecret :: Text
+clientSecret = "EhgGvBPZk08QqVcReV0ZxJWJ"
 
 -- | The foundation datatype for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
@@ -102,11 +110,11 @@ instance Yesod App where
                     , menuItemRoute = ProfileR
                     , menuItemAccessCallback = isJust muser
                     }
-                -- , NavbarRight $ MenuItem
-                --     { menuItemLabel = "Login"
-                --     , menuItemRoute = AuthR LoginR
-                --     , menuItemAccessCallback = isNothing muser
-                --     }
+                , NavbarRight $ MenuItem
+                    { menuItemLabel = "Login"
+                    , menuItemRoute = AuthR LoginR
+                    , menuItemAccessCallback = isNothing muser
+                    }
                 , NavbarRight $ MenuItem
                     { menuItemLabel = "Logout"
                     , menuItemRoute = AuthR LogoutR
@@ -212,10 +220,14 @@ instance YesodAuth App where
                 , userPassword = Nothing
                 }
 
-    -- You can add other plugins like Google Email, email or OAuth here
-    authPlugins app = [authOpenId Claimed []] ++ extraAuthPlugins
-        -- Enable authDummy login if enabled.
-        where extraAuthPlugins = [authDummy | appAuthDummyLogin $ appSettings app]
+
+    authPlugins app =
+        [ authBrowserId def
+        , authGoogleEmail clientId clientSecret
+        ]
+    -- authPlugins app = [authOpenId Claimed []] ++ extraAuthPlugins
+    --     -- Enable authDummy login if enabled.
+    --     where extraAuthPlugins = [authDummy | appAuthDummyLogin $ appSettings app]
 
     authHttpManager = getHttpManager
 

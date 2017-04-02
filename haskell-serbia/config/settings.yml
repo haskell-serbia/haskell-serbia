@@ -27,6 +27,8 @@ ip-from-header: "_env:IP_FROM_HEADER:false"
 #   # See config/test-settings.yml for an override during tests
 #   database: "_env:SQLITE_DATABASE:haskell-serbia.sqlite3"
 #   poolsize: "_env:SQLITE_POOLSIZE:10"
+# client ID: 748329617960-jufrcpc95ruv6vrgicjb0r3lrq2d7h20.apps.googleusercontent.com
+# client secret EhgGvBPZk08QqVcReV0ZxJWJ
 database:
   user:     "_env:PGUSER:yesod"
   password: "_env:PGPASS: 8888_haskel_serbia"
