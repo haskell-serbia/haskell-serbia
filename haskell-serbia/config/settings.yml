@@ -23,10 +23,18 @@ ip-from-header: "_env:IP_FROM_HEADER:false"
 # NB: If you need a numeric value (e.g. 123) to parse as a String, wrap it in single quotes (e.g. "_env:PGPASS:'123'")
 # See https://github.com/yesodweb/yesod/wiki/Configuration#parsing-numeric-values-as-strings
 
+# database:
+#   # See config/test-settings.yml for an override during tests
+#   database: "_env:SQLITE_DATABASE:haskell-serbia.sqlite3"
+#   poolsize: "_env:SQLITE_POOLSIZE:10"
 database:
+  user:     "_env:PGUSER:yesod"
+  password: "_env:PGPASS: 8888_haskel_serbia"
+  host:     "_env:PGHOST:localhost"
+  port:     "_env:PGPORT:5432"
   # See config/test-settings.yml for an override during tests
-  database: "_env:SQLITE_DATABASE:haskell-serbia.sqlite3"
-  poolsize: "_env:SQLITE_POOLSIZE:10"
+  database: "_env:PGDATABASE:haskell_serbia"
+  poolsize: "_env:PGPOOLSIZE:10"
 
 copyright: Haskell Srbija 2017 
 #analytics: UA-YOURCODE
