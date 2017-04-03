@@ -15,3 +15,5 @@
 /register RegisterR GET POST
 
 /login UserLoginR GET POST
+
+/person PersonR POST
