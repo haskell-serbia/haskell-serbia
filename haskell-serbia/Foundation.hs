@@ -5,10 +5,7 @@ import Database.Persist.Sql (ConnectionPool, runSqlPool)
 import Text.Hamlet          (hamletFile)
 import Text.Jasmine         (minifym)
 
--- Used only when in "auth-dummy-login" setting is enabled.
-import Yesod.Auth.Dummy
 
-import Yesod.Auth.OpenId    (authOpenId, IdentifierType (Claimed))
 import Yesod.Default.Util   (addStaticContentExternal)
 import Yesod.Core.Types     (Logger)
 import Yesod.Form.Jquery
@@ -142,6 +139,7 @@ instance Yesod App where
     isAuthorized HomeR _ = return Authorized
     isAuthorized UserLoginR _ = return Authorized
 
+
     isAuthorized FaviconR _ = return Authorized
     isAuthorized RobotsR _ = return Authorized
     isAuthorized (StaticR _) _ = return Authorized
@@ -257,7 +255,7 @@ instance YesodJquery App
 -- https://github.com/yesodweb/yesod/wiki/i18n-messages-in-the-scaffolding
 
 -- CUSTOM WIDGETS
-
+-- header widget
 pageHeaderWidget :: Handler Widget
 pageHeaderWidget = do
   return $(widgetFile "header/header")

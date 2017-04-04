@@ -7,50 +7,43 @@ import Yesod.Form.Jquery
 -- The datatype we wish to receive from the form
 data UserLogin = UserLogin
     { personName          :: Text
-    , personBirthday      :: Day
-    , personFavoriteColor :: Maybe Text
     , personEmail         :: Text
-    , personWebsite       :: Maybe Text
     }
   deriving Show
 
 
+
 userLoginForm :: Html -> MForm Handler (FormResult UserLogin, Widget)
-userLoginForm = renderDivs $ UserLogin
-    <$> areq textField "Name" Nothing
-    <*> areq (jqueryDayField def
-        { jdsChangeYear = True -- give a year dropdown
-        , jdsYearRange = "1900:-5" -- 1900 till five years ago
-        }) "Birthday" Nothing
-    <*> aopt textField "Favorite color" Nothing
-    <*> areq emailField "Email address" Nothing
-    <*> aopt urlField "Website" Nothing
+userLoginForm = renderBootstrap3 BootstrapBasicForm $ UserLogin
+    <$> areq textField "Name" (Just "Your name")
+    <*> areq emailField "Email address" (Just "email")
 
 
 getUserLoginR :: Handler Html
 getUserLoginR = do
--- Generate the form to be displayed
     (widget, enctype) <- generateFormPost userLoginForm
     defaultLayout
-        [whamlet| <p>
-                The widget generated contains only the contents
-                of the form, not the form tag itself. So...
-            <form method=post action=@{UserLoginR} enctype=#{enctype}>
-                ^{widget}
-                <p>It also doesn't include the submit button.
-                <button>Submit
+        [whamlet| <div .row col-md-6 .col-md-offset-2>
+                    <form method=post action=@{UserLoginR} enctype=#{enctype}>
+                      ^{widget}
+                      <button .btn .btn-default .btn-xs>Create account
         |]
 
 postUserLoginR :: Handler Html
 postUserLoginR = do
   ((result, widget), enctype) <- runFormPost userLoginForm
   case result of
-        FormSuccess person -> defaultLayout [whamlet|<p>#{show person}|]
+        FormSuccess person -> defaultLayout [whamlet|<div .row col-md-6 .col-md-offset-2>
+                                                      <p>You submited the request for new account. <br />Your details
+                                                      <p> #{personName person}
+                                                      <p> #{personEmail person}
+                                                    |]
         _ -> defaultLayout
-            [whamlet| <p>Invalid input, let's try again.
+            [whamlet| <div .row col-md-6 col-md-offset-2>
+                    <p>Invalid input, you can try again.
                 <form method=post action=@{UserLoginR} enctype=#{enctype}>
                     ^{widget}
-                    <button>Submit
+                    <button>Create account
             |]
 
 

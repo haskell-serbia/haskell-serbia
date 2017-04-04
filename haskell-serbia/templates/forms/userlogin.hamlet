@@ -1,0 +1,9 @@
+<div .col-md-6>
+    <form method=post action=@{UserLoginR} enctype=#{enctype}>
+          <div .form-group>
+            <input name="name" type="text" />
+          <div .form-group>
+            <input name="name" type="text" />
+          <div .form-group>
+            <button .btn .btn-default .btn-xs>Create account
+

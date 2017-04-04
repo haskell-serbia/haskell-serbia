@@ -1,5 +1,4 @@
 
-    <!-- Main Content -->
     <div .container>
         <div .row>
             <div .col-md-12>
@@ -14,6 +13,7 @@
                  <div .post-preview>
                        <div .col-md-6>
                         <div .col-md-12>
+                            ^{twitterWidget twitterUsername}
                             <div id="fb-root"></div>
                             <script>
                                 (function(d, s, id) {

@@ -31,7 +31,7 @@ getHomeR = do
     do let (commentFormId, commentTextareaId, commentListId) = commentIds
        aDomId <- newIdent
        setTitle "Haskell Srbija"
-       twitterWidget twitterUsername
+       -- twitterWidget twitterUsername
        $(widgetFile "homepage")
 
 postHomeR :: Handler Html
