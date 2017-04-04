@@ -31,9 +31,9 @@ library
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT
-        ghc-options:   -Wall -fwarn-tabs -O0 -ddump-splices
+        ghc-options:   -Wall -fwarn-tabs -O0
     else
-        ghc-options:   -Wall -fwarn-tabs -O2 -ddump-splices
+        ghc-options:   -Wall -fwarn-tabs -O2 
 
     extensions: TemplateHaskell
                 QuasiQuotes
