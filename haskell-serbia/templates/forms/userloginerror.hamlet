@@ -1,0 +1,5 @@
+<div .row col-md-6 .col-md-offset-2>
+           <p>Please try again
+           <p>You submited the request for new account. <br />Your details
+           <p> #{personName user}
+           <p> #{personEmail user}
