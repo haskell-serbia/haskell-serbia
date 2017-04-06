@@ -1,9 +1,6 @@
 module Handler.UserLogin where
 
 import Import
-import Yesod.Form.Bootstrap3
-import Yesod.Form.Jquery
-import Data.Maybe
 
 -- The datatype we wish to receive from the form
 data UserLogin = UserLogin
@@ -15,11 +12,17 @@ getUserLoginR :: Handler Html
 getUserLoginR = do
   defaultLayout $ do $(widgetFile "forms/userlogin")
 
+userLoginForm :: Form UserLogin
+userLoginForm = renderDivs $ UserLogin
+    <$> areq textField "Name" Nothing
+    <*> areq emailField "Email" Nothing
+
 postUserLoginR :: Handler Html
 postUserLoginR = do
-  name <- lookupPostParam "user_name"
-  email <- lookupPostParam "user_email"
-  let user = UserLogin name email
-  if user
-    then defaultLayout $ do $(widgetFile "forms/userloginsuccess")
-    else defaultLayout $ do $(widgetFile "forms/userloginerror")
+  ((result, _), _) <- runFormPost $ userLoginForm
+  defaultLayout $ do
+  case result of
+    FormSuccess user  -> do
+        $(widgetFile "forms/userloginsuccess")
+    _  -> do
+        $(widgetFile "forms/userloginerror")
