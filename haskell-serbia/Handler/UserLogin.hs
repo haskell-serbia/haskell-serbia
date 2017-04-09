@@ -21,7 +21,7 @@ getUserLoginR = do
     (widget, enctype) <- generateFormPost userLoginForm
     defaultLayout
         [whamlet|
-            <div .col-md-6 .offset-md-1>
+            <div .col-md-6 .offset-md-2>
               <form method=post action=@{UserLoginR} enctype=#{enctype}>
                   ^{widget}
                   <button .btn .btn-default>Submit
@@ -31,11 +31,18 @@ postUserLoginR :: Handler Html
 postUserLoginR = do
     ((result, widget), enctype) <- runFormPost userLoginForm
     case result of
-        FormSuccess person -> defaultLayout [whamlet|<p>#{show person}|]
+        FormSuccess user -> defaultLayout
+                  [whamlet|
+                        <div .col-md-6 .offset-md-2>
+                          <p>#{userName user}
+                          <p>#{userEmail user}
+
+                  |]
         _ -> defaultLayout
               [whamlet|
-                  <p>Invalid input, let's try again.
-                  <form method=post action=@{UserLoginR} enctype=#{enctype}>
-                      ^{widget}
-                      <button .btn .btn-default>Submit
+                 <div .col-md-6 .offset-md-2>
+                    <p>Invalid input, let's try again.
+                    <form method=post action=@{UserLoginR} enctype=#{enctype}>
+                        ^{widget}
+                        <button .btn .btn-default>Submit
               |]
