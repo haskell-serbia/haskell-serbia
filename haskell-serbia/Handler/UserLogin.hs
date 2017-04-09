@@ -31,13 +31,23 @@ postUserLoginR :: Handler Html
 postUserLoginR = do
     ((result, widget), enctype) <- runFormPost userLoginForm
     case result of
-        FormSuccess user -> defaultLayout
-                  [whamlet|
-                        <div .col-md-6 .offset-md-2>
-                          <p>#{userName user}
-                          <p>#{userEmail user}
+        FormSuccess user -> defaultLayout $ do
+          dbuser <- selectFirst [Email =. userEmail user] []
+          case dbuser of
+            Nothing ->
+                    [whamlet|
+                          <div .col-md-6 .offset-md-2>
+                            <p>#{userName user}
+                            <p>#{userEmail user}
 
-                  |]
+                    |]
+            _ ->
+                    [whamlet|
+                          <div .col-md-6 .offset-md-2>
+                            <p>User with the same email is already registered!
+
+                    |]
+
         _ -> defaultLayout
               [whamlet|
                  <div .col-md-6 .offset-md-2>
