@@ -97,6 +97,7 @@ library
                  , time
                  , case-insensitive
                  , wai
+                 , esqueleto
 
 executable         haskell-serbia
     if flag(library-only)
