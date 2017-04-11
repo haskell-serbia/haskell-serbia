@@ -3,8 +3,6 @@ module Handler.UserLogin where
 import Import
 import Yesod.Form.Bootstrap3
 import qualified Database.Esqueleto as E
-import Database.Esqueleto ((^.), select, from, where_, val)
-import Data.Maybe
 
 -- The datatype we wish to receive from the form
 data UserLogin = UserLogin
@@ -29,15 +27,23 @@ getUserLoginR = do
                   <button .btn .btn-default>Submit
         |]
 
-checkEmail :: Text -> HandlerT App IO [Entity Email]
+checkEmail
+  :: (BaseBackend (YesodPersistBackend site) ~ SqlBackend
+     ,PersistUniqueRead (YesodPersistBackend site)
+     ,PersistQueryRead (YesodPersistBackend site)
+     ,IsPersistBackend (YesodPersistBackend site)
+     ,YesodPersist site)
+  => Text -> HandlerT site IO (Maybe (E.Value Text))
 checkEmail email = do
-  runDB $
+  me <-
+    runDB $
     E.select $
     E.from $
     \e -> do
       E.where_ (e E.^. EmailEmail E.==. E.val email)
       E.limit 1
-      return e
+      return $ e E.^. EmailEmail
+  return $ headMay me
 
 postUserLoginR :: Handler Html
 postUserLoginR = do
@@ -46,19 +52,20 @@ postUserLoginR = do
     FormSuccess user -> do
       emailExists <- checkEmail $ userEmail user
       case emailExists of
-        null ->
+        Nothing ->
           defaultLayout
             [whamlet|
-                              <div .col-md-6 .offset-md-2>
-                                <p>#{userName user}
-                                <p>#{userEmail user}
+                          <div .col-md-6 .offset-md-2>
+                            <p>#{userName user}
+                            <p>#{userEmail user}
                         |]
-        _ ->
+        Just v -> do
+          let e = E.unValue v
           defaultLayout
             [whamlet|
-                              <div .col-md-6 .offset-md-2>
-                                <p>That email is already registered
-                        |]
+                      <div .col-md-6 .offset-md-2>
+                        <p>The email #{e} is already registered
+                    |]
     _ ->
       defaultLayout
         [whamlet|
