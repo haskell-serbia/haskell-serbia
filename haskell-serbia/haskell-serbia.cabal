@@ -98,6 +98,8 @@ library
                  , case-insensitive
                  , wai
                  , esqueleto
+                 , markdown
+                 , yesod-text-markdown           >= 0.1.8
 
 executable         haskell-serbia
     if flag(library-only)

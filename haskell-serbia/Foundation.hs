@@ -210,6 +210,8 @@ instance YesodAuth App where
             Nothing -> Authenticated <$> insert User
                 { userIdent = credsIdent creds
                 , userPassword = Nothing
+                , userUsername = Nothing
+
                 }
 
     -- authPlugins app = [authDummy | appAuthDummyLogin $ appSettings app]
