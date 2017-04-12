@@ -45,6 +45,15 @@ checkEmail email = do
       return $ e E.^. EmailEmail
   return $ headMay me
 
+renderHtmlMessage :: Text -> Handler Html
+renderHtmlMessage a = do
+  let m = toHtml a
+  defaultLayout
+        [whamlet|
+                <div .col-md-6 .offset-md-2>
+                  <p>#{m}
+                |]
+
 postUserLoginR :: Handler Html
 postUserLoginR = do
   ((result, widget), enctype) <- runFormPost userLoginForm
@@ -55,10 +64,10 @@ postUserLoginR = do
         Nothing ->
           defaultLayout
             [whamlet|
-                          <div .col-md-6 .offset-md-2>
-                            <p>#{userName user}
-                            <p>#{userEmail user}
-                        |]
+                      <div .col-md-6 .offset-md-2>
+                        <p>#{userName user}
+                        <p>#{userEmail user}
+                    |]
         Just v -> do
           let e = E.unValue v
           defaultLayout
