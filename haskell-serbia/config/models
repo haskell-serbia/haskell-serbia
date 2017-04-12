@@ -1,7 +1,7 @@
 User
     ident Text
-    username Text Maybe 
     password Text Maybe 
+    emailAddress Text
     UniqueUser ident
     deriving Typeable
 Email

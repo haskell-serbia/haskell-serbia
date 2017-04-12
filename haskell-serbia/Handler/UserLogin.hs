@@ -5,16 +5,16 @@ import Yesod.Form.Bootstrap3
 import qualified Database.Esqueleto as E
 
 -- The datatype we wish to receive from the form
-data UserLogin = UserLogin
-  { userName :: Text
-  , userEmail :: Text
-  } deriving (Show)
+-- data UserLogin = UserLogin
+--   { userName :: Text
+--   , userEmail :: Text
+--   } deriving (Show)
 
-userLoginForm :: Html -> MForm Handler (FormResult UserLogin, Widget)
 userLoginForm =
   renderDivs $
-  UserLogin <$> areq textField (bfs ("User name" :: Text)) Nothing <*>
-  areq emailField (bfs ("Email address" :: Text)) Nothing
+  User <$> areq textField (bfs ("User name" :: Text)) Nothing
+       <*> aopt passwordField (bfs ("Password" :: Text)) Nothing
+       <*> areq emailField (bfs ("Email address" :: Text)) Nothing
 
 getUserLoginR :: Handler Html
 getUserLoginR = do
@@ -60,7 +60,7 @@ postUserLoginR = do
   ((result, widget), enctype) <- runFormPost userLoginForm
   case result of
     FormSuccess user -> do
-      emailExists <- checkEmail $ userEmail user
+      emailExists <- checkEmail $ userEmailAddress user
       case emailExists of
         Nothing -> do
           let m = "You just registered!"
