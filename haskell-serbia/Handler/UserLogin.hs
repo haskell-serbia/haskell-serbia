@@ -61,20 +61,14 @@ postUserLoginR = do
     FormSuccess user -> do
       emailExists <- checkEmail $ userEmail user
       case emailExists of
-        Nothing ->
-          defaultLayout
-            [whamlet|
-                      <div .col-md-6 .offset-md-2>
-                        <p>#{userName user}
-                        <p>#{userEmail user}
-                    |]
+        Nothing -> do
+          let m = "You just registered!"
+          renderHtmlMessage m
         Just v -> do
           let e = E.unValue v
-          defaultLayout
-            [whamlet|
-                      <div .col-md-6 .offset-md-2>
-                        <p>The email #{e} is already registered
-                    |]
+          let m = "The email :" ++ e ++ " is already in our database!"
+          renderHtmlMessage m
+
     _ ->
       defaultLayout
         [whamlet|
