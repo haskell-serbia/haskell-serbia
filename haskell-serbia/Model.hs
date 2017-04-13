@@ -9,5 +9,12 @@ import Database.Persist.Quasi
 -- You can find more information on persistent and how to declare entities
 -- at:
 -- http://www.yesodweb.com/book/persistent/
+import Yesod.Auth.HashDB (HashDBUser(..))
+
+
 share [mkPersist sqlSettings, mkMigrate "migrateAll"]
     $(persistFileWith lowerCaseSettings "config/models")
+
+instance HashDBUser User where
+    userPasswordHash = userPassword
+    setPasswordHash h u = u { userPassword = Just h }

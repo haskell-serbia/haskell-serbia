@@ -3,12 +3,7 @@ module Handler.UserLogin where
 import Import
 import Yesod.Form.Bootstrap3
 import qualified Database.Esqueleto as E
-
--- The datatype we wish to receive from the form
--- data UserLogin = UserLogin
---   { userName :: Text
---   , userEmail :: Text
---   } deriving (Show)
+import Yesod.Auth.HashDB (HashDBUser(..))
 
 userLoginForm :: Html -> MForm Handler (FormResult User, Widget)
 userLoginForm =
@@ -55,6 +50,9 @@ renderHtmlMessage a = do
                   <p>#{m}
                 |]
 
+createUserWithPasswordHash u = do
+  pass <- userPassword u
+  setPasswordHash pass u
 
 postUserLoginR :: Handler Html
 postUserLoginR = do
@@ -65,11 +63,13 @@ postUserLoginR = do
       case emailExists of
         Nothing -> do
           let m = "You just registered!"
-          uid <- runDB $ insert $  User {
+          let ordinaryUser = User {
                                        userIdent = userIdent u
                                      , userEmailAddress = userEmailAddress u
-                                     , userPassword = userPassword u
+                                     , userPassword = userPassword  u
                                    }
+          let hashedUser = createUserWithPasswordHash ordinaryUser
+          _ <- runDB $ insert hashedUser
           renderHtmlMessage m
         Just v -> do
           let e = E.unValue v

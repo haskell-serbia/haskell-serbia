@@ -12,6 +12,7 @@ import Yesod.Form.Jquery
 import qualified Yesod.Core.Unsafe as Unsafe
 import qualified Data.CaseInsensitive as CI
 import qualified Data.Text.Encoding as TE
+import Yesod.Auth.HashDB (authHashDB)
 
 -- | The foundation datatype for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
@@ -203,16 +204,17 @@ instance YesodAuth App where
     -- Override the above two destinations when a Referer: header is present
     redirectToReferer _ = True
 
-    authenticate creds = runDB $ do
-        x <- getBy $ UniqueUser $ credsIdent creds
-        case x of
-            Just (Entity uid _) -> return $ Authenticated uid
-            Nothing -> Authenticated <$> insert User
-                { userIdent = credsIdent creds
-                , userPassword = Nothing
-                , userEmailAddress = "dummy@test.com"
-                }
+    -- authenticate creds = runDB $ do
+    --     x <- getBy $ UniqueUser $ credsIdent creds
+    --     case x of
+    --         Just (Entity uid _) -> return $ Authenticated uid
+    --         Nothing -> Authenticated <$> insert User
+    --             { userIdent = credsIdent creds
+    --             , userPassword = Nothing
+    --             , userEmailAddress = "dummy@test.com"
+    --             }
 
+    authPlugins _ = [authHashDB (Just . UniqueUser)]
     -- authPlugins app = [authDummy | appAuthDummyLogin $ appSettings app]
     -- authPlugins app = [authOpenId Claimed []] ++ extraAuthPlugins
         -- Enable authDummy login if enabled.

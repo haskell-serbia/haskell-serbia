@@ -2,7 +2,7 @@ User
     ident Text
     password Text Maybe 
     emailAddress Text
-    UniqueUser ident
+    UniqueUser emailAddress 
     deriving Typeable
 Email
     email Text
