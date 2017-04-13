@@ -60,11 +60,16 @@ postUserLoginR :: Handler Html
 postUserLoginR = do
   ((result, widget), enctype) <- runFormPost userLoginForm
   case result of
-    FormSuccess user -> do
-      emailExists <- checkEmail $ userEmailAddress user
+    FormSuccess u -> do
+      emailExists <- checkEmail $ userEmailAddress u
       case emailExists of
         Nothing -> do
           let m = "You just registered!"
+          uid <- runDB $ insert $  User {
+                                       userIdent = userIdent u
+                                     , userEmailAddress = userEmailAddress u
+                                     , userPassword = userPassword u
+                                   }
           renderHtmlMessage m
         Just v -> do
           let e = E.unValue v
