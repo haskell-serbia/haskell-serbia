@@ -10,9 +10,10 @@ import qualified Database.Esqueleto as E
 --   , userEmail :: Text
 --   } deriving (Show)
 
+userLoginForm :: Html -> MForm Handler (FormResult User, Widget)
 userLoginForm =
-  renderDivs $
-  User <$> areq textField (bfs ("User name" :: Text)) Nothing
+  renderDivs $ User
+       <$> areq textField (bfs ("User name" :: Text)) Nothing
        <*> aopt passwordField (bfs ("Password" :: Text)) Nothing
        <*> areq emailField (bfs ("Email address" :: Text)) Nothing
 
