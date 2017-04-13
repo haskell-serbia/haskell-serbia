@@ -41,9 +41,9 @@ checkEmail email = do
     E.select $
     E.from $
     \e -> do
-      E.where_ (e E.^. EmailEmail E.==. E.val email)
+      E.where_ (e E.^. UserEmailAddress E.==. E.val email)
       E.limit 1
-      return $ e E.^. EmailEmail
+      return $ e E.^. UserEmailAddress
   return $ headMay me
 
 renderHtmlMessage :: Text -> Handler Html
@@ -73,7 +73,7 @@ postUserLoginR = do
           renderHtmlMessage m
         Just v -> do
           let e = E.unValue v
-          let m = "The email :" ++ e ++ " is already in our database!"
+          let m = "The email " ++ e ++ " is already in our database!"
           renderHtmlMessage m
 
     _ ->
