@@ -102,6 +102,7 @@ library
                  , markdown
                  , yesod-text-markdown           >= 0.1.8
                  , pwstore-fast                  >= 2.4.4
+                 , bcrypt                        >= 0.0
 
 executable         haskell-serbia
     if flag(library-only)

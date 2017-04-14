@@ -1,9 +1,16 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Handler.UserLogin where
 
 import Import
 import Yesod.Form.Bootstrap3
 import qualified Database.Esqueleto as E
-import Yesod.Auth.HashDB (HashDBUser(..))
+import Data.Maybe
+import qualified Data.Text as T
+import Data.ByteString.Char8
+import Crypto.BCrypt
+
+p :: String -> ByteString
+p = Data.ByteString.Char8.pack
 
 userLoginForm :: Html -> MForm Handler (FormResult User, Widget)
 userLoginForm =
@@ -50,9 +57,13 @@ renderHtmlMessage a = do
                   <p>#{m}
                 |]
 
-createUserWithPasswordHash u = do
-  pass <- userPassword u
-  setPasswordHash pass u
+hashUserPassword :: Key User -> t -> Text -> HandlerT App IO Html
+hashUserPassword uid u m  = do
+   pass <- hashPasswordUsingPolicy slowerBcryptHashingPolicy $ p T.unpack $ fromJust $ userPassword u
+   _ <- runDB $ update uid [UserPassword =. Just pass]
+   renderHtmlMessage m
+
+
 
 postUserLoginR :: Handler Html
 postUserLoginR = do
@@ -63,14 +74,13 @@ postUserLoginR = do
       case emailExists of
         Nothing -> do
           let m = "You just registered!"
-          let ordinaryUser = User {
-                                       userIdent = userIdent u
-                                     , userEmailAddress = userEmailAddress u
-                                     , userPassword = userPassword  u
-                                   }
-          let hashedUser = createUserWithPasswordHash ordinaryUser
-          _ <- runDB $ insert hashedUser
-          renderHtmlMessage m
+          uid <-  runDB $ insert $ User {
+                                        userIdent        = userIdent u
+                                      , userEmailAddress = userEmailAddress u
+                                      , userPassword     = userPassword u
+                                    }
+          hashUserPassword uid u m
+
         Just v -> do
           let e = E.unValue v
           let m = "The email " ++ e ++ " is already in our database!"
