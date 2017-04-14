@@ -59,8 +59,8 @@ renderHtmlMessage a = do
 
 hashUserPassword :: Key User -> t -> Text -> HandlerT App IO Html
 hashUserPassword uid u m  = do
-   pass <- hashPasswordUsingPolicy slowerBcryptHashingPolicy $ p T.unpack $ fromJust $ userPassword u
-   _ <- runDB $ update uid [UserPassword =. Just pass]
+   pass <- hashPasswordUsingPolicy slowerBcryptHashingPolicy $ p $ T.unpack $ fromJust $ userPassword u
+   _ <- runDB $ update uid [UserPassword =. decodeUtf8 pass]
    renderHtmlMessage m
 
 
