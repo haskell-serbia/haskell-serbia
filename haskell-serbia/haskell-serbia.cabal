@@ -102,6 +102,8 @@ library
                  , yesod-text-markdown           >= 0.1.8
                  , pwstore-fast                  >= 2.4.4
                  , bcrypt                        >= 0.0
+                 , mime-mail                     >= 0.4.13
+                 , blaze-html                    >= 0.8.1.3
 
 executable         haskell-serbia
     if flag(library-only)
