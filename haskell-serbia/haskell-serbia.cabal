@@ -24,7 +24,6 @@ library
                      Handler.Home
                      Handler.Profile
                      Handler.Register
-                     Handler.UserLogin
                      Widget.Header
 
 
