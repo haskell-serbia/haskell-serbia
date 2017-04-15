@@ -6,6 +6,12 @@ database:
   # something like:
   #
   #   database: "_env:SQLITE_DATABASE:haskell-serbia_test.sqlite3"
-  database: haskell-serbia_test.sqlite3
+  # database: haskell-serbia_test.sqlite3
+  user:     "_env:PGUSER:yesod"
+  password: "_env:PGPASS: 8888_haskel_serbia"
+  host:     "_env:PGHOST:localhost"
+  port:     "_env:PGPORT:5432"
+  database: "_env:PGDATABASE:haskell_serbia_test"
+  poolsize: "_env:PGPOOLSIZE:10"
 
 auth-dummy-login: true

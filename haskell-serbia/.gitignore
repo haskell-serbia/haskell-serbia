@@ -1,4 +1,7 @@
 .stack-work/install/x86_64-osx/*
+.stack-work/logs/*
+.stack-work/intero/*
+
 dist*
 static/tmp/
 static/combined/

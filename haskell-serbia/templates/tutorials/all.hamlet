@@ -1,0 +1,10 @@
+<div .container>
+    <div .row>
+        <div .col-md-12>
+
+          <h1>Tutorijali
+              <ul>
+                  $forall Entity id post <- allPosts
+                    <h4>
+                        <li>
+                            <a href=@{TutorialRR id}>#{tutorialTitle post}
