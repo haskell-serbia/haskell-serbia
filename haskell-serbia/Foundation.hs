@@ -265,10 +265,19 @@ pageHeaderWidget = do
 
   
 loginFormWidget action = do
-   toWidgetBody([hamlet|<div style=margin-top:20px>
-                          <form method="post" action="@{action}">
-                              <input name="username">
-                              <input type="password" name="password">
-                              <input type="email" name="email">
-                              <input type="submit" value="Login">
-                       |])
+   toWidgetBody([hamlet|
+<div .container>
+  <h2>Login
+  <form .form-horizontal method="post" action="@{action}">
+    <div class="form-group">
+      <label .control-label .col-sm-2 >Email:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="username" placeholder="Enter username">
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="pwd">Password:
+      <div class="col-sm-10">
+        <input type="password" class="form-control" id="pwd" placeholder="Enter password">
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-default">Submit
+ |])
