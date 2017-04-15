@@ -12,7 +12,7 @@ import Yesod.Form.Jquery
 import qualified Yesod.Core.Unsafe as Unsafe
 import qualified Data.CaseInsensitive as CI
 import qualified Data.Text.Encoding as TE
-import Yesod.Auth.HashDB (authHashDB)
+import Yesod.Auth.HashDB 
 
 -- | The foundation datatype for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
@@ -103,7 +103,7 @@ instance Yesod App where
                     }
                 , NavbarRight $ MenuItem
                     { menuItemLabel = "Login"
-                    , menuItemRoute = UserLoginR
+                    , menuItemRoute = AuthR LoginR
                     , menuItemAccessCallback = isNothing muser
                     }
                 , NavbarRight $ MenuItem
@@ -138,7 +138,6 @@ instance Yesod App where
     isAuthorized (AuthR _) _ = return Authorized
     isAuthorized CommentR _ = return Authorized
     isAuthorized HomeR _ = return Authorized
-    isAuthorized UserLoginR _ = return Authorized
     isAuthorized (BlogR _) _   = return Authorized
     isAuthorized FaviconR _ = return Authorized
     isAuthorized RobotsR _ = return Authorized
@@ -214,7 +213,9 @@ instance YesodAuth App where
     --             , userEmailAddress = "dummy@test.com"
     --             }
 
-    authPlugins _ = [authHashDB (Just . UniqueUser)]
+    authPlugins _ = [ authHashDBWithForm loginFormWidget (Just . UniqueUser)]
+
+    -- authPlugins _ = [authHashDB (Just . UniqueUser)]
     -- authPlugins app = [authDummy | appAuthDummyLogin $ appSettings app]
     -- authPlugins app = [authOpenId Claimed []] ++ extraAuthPlugins
         -- Enable authDummy login if enabled.
@@ -261,3 +262,13 @@ instance YesodJquery App
 pageHeaderWidget :: Handler Widget
 pageHeaderWidget = do
   return $(widgetFile "header/header")
+
+  
+loginFormWidget action = do
+   toWidgetBody([hamlet|<div style=margin-top:20px>
+                          <form method="post" action="@{action}">
+                              <input name="username">
+                              <input type="password" name="password">
+                              <input type="email" name="email">
+                              <input type="submit" value="Login">
+                       |])
