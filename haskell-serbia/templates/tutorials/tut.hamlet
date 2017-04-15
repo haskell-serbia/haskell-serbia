@@ -1,0 +1,5 @@
+<div .container>
+    <div .row>
+        <div .col-md-12>
+          <h2>#{tutorialTitle tut}
+          <div> #{tutorialContent tut}

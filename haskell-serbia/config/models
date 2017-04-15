@@ -7,31 +7,10 @@ User
     verifyKey Text
     resetPasswordKey Text
     deriving Show
-
-
--- User
---     ident Text
---     password Text Maybe 
---     emailAddress Text
---     verkey Text Maybe -- Used for resetting passwords
---     verified Bool
---     UniqueUser emailAddress 
---     deriving Typeable
-Email
-    email Text
-    userId UserId Maybe
-    verkey Text Maybe
-    UniqueEmail email
-Comment json -- Adding "json" causes ToJSON and FromJSON instances to be derived.
-    message Text
-    userId UserId Maybe
-    deriving Eq
-Entry
-   user UserId
-   entry EntryId
+Tutorial
    title Text
-   posted UTCTime
-   content Textarea 
+   content Markdown 
+   deriving Show
 
 
  -- By default this file is used in Model.hs (which is imported by Foundation.hs)

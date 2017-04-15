@@ -20,11 +20,6 @@ import qualified Data.CaseInsensitive as CI
 import qualified Data.Text.Encoding as TE
 import Yesod.Auth
 import Yesod.Auth.Account
-import Network.Mail.Mime
-import Text.Blaze.Html.Renderer.Utf8 (renderHtml)
-import Text.Hamlet              (shamlet)
-import Text.Shakespeare.Text    (stext)
-import Yesod.Auth.Email
 
 instance PersistUserCredentials User where
     userUsernameF = UserUsername
@@ -116,21 +111,27 @@ instance Yesod App where
                     , menuItemRoute = HomeR
                     , menuItemAccessCallback = True
                     }
-                , NavbarLeft $ MenuItem
-                    { menuItemLabel = "Profile"
-                    , menuItemRoute = ProfileR
-                    , menuItemAccessCallback = isJust muser
-                    }
                 , NavbarRight $ MenuItem
-                    { menuItemLabel = "Login"
-                    , menuItemRoute = AuthR LoginR
+                    { menuItemLabel = "Tutorijali"
+                    , menuItemRoute =  TutorialListR
                     , menuItemAccessCallback = isNothing muser
                     }
-                , NavbarRight $ MenuItem
-                    { menuItemLabel = "Logout"
-                    , menuItemRoute = AuthR LogoutR
-                    , menuItemAccessCallback = isJust muser
-                    }
+
+                -- , NavbarLeft $ MenuItem
+                --     { menuItemLabel = "Profile"
+                --     , menuItemRoute = ProfileR
+                --     , menuItemAccessCallback = isJust muser
+                --     }
+                -- , NavbarRight $ MenuItem
+                --     { menuItemLabel = "Login"
+                --     , menuItemRoute = AuthR LoginR
+                --     , menuItemAccessCallback = isNothing muser
+                --     }
+                -- , NavbarRight $ MenuItem
+                --     { menuItemLabel = "Logout"
+                --     , menuItemRoute = AuthR LogoutR
+                --     , menuItemAccessCallback = isJust muser
+                --     }
                 ]
 
         let navbarLeftMenuItems = [x | NavbarLeft x <- menuItems]
@@ -157,6 +158,9 @@ instance Yesod App where
     -- Routes not requiring authentication.
     isAuthorized (AuthR _) _ = return Authorized
     isAuthorized HomeR _ = return Authorized
+    isAuthorized TutorialListR  _ = return Authorized
+    isAuthorized TutorialsR  _ = return Authorized
+    isAuthorized (TutorialRR _)  _ = return Authorized
     isAuthorized FaviconR _ = return Authorized
     isAuthorized RobotsR _ = return Authorized
     isAuthorized (StaticR _) _ = return Authorized
@@ -233,14 +237,9 @@ isAuthenticated = do
 
 instance YesodAuthPersist App
 
--- This instance is required to use forms. You can modify renderMessage to
--- achieve customized and internationalized form validation messages.
 instance RenderMessage App FormMessage where
     renderMessage _ _ = defaultFormMessage
 
--- Useful when writing code that is re-usable outside of the Handler context.
--- An example is background jobs that send email.
--- This can also be useful for writing code that works across multiple Yesod applications.
 instance HasHttpManager App where
     getHttpManager = appHttpManager
 
@@ -346,78 +345,7 @@ a {
 }
 |]
 
-
 instance AccountSendEmail App
-
--- Here's all of the email-specific code
-instance YesodAuthEmail App where
-    type AuthEmailId App = UserId
-
-    afterPasswordRoute _ = HomeR
-
-    sendVerifyEmail email _ verurl = do
-        -- Print out to the console the verification email, for easier
-        -- debugging.
-        liftIO $ putStrLn $ "Copy/ Paste this URL in your browser:" ++ (Data.Text.pack (Data.Text.unpack verurl))
-        -- Send email.
-        liftIO $ renderSendMail (emptyMail $ Address Nothing "noreply")
-            { mailTo = [Address Nothing email]
-            , mailHeaders =
-                [ ("Subject", "Verify your email address")
-                ]
-            , mailParts = [[textPart, htmlPart]]
-            }
-      where
-        textPart = Part
-            { partType = "text/plain; charset=utf-8"
-            , partEncoding = None
-            , partFilename = Nothing
-            , partContent = Data.Text.Lazy.Encoding.encodeUtf8
-                [stext|
-                    Please confirm your email address by clicking on the link below.
-
-                    #{verurl}
-
-                    Thank you
-                |]
-            , partHeaders = []
-            }
-        htmlPart = Part
-            { partType = "text/html; charset=utf-8"
-            , partEncoding = None
-            , partFilename = Nothing
-            , partContent = renderHtml
-                [shamlet|
-                    <p>Please confirm your email address by clicking on the link below.
-                    <p>
-                        <a href=#{verurl}>#{verurl}
-                    <p>Thank you
-                |]
-            , partHeaders = []
-            }
-    -- getVerifyKey = runDB . fmap (join . fmap userVerifyKey) . get
-    -- setVerifyKey uid key = runDB $ update uid [UserVerifyKey =. key]
-    verifyAccount uid = runDB $ do
-        mu <- get uid
-        case mu of
-            Nothing -> return Nothing
-            Just u -> do
-                update uid [UserVerified =. True]
-                return $ Just uid
-    -- getPassword = runDB . fmap (join . fmap userPassword) . get
-    -- setPassword uid pass = runDB $ update uid [UserPassword =. encodeUtf8 pass]
-    -- getEmailCreds email = runDB $ do
-    --     mu <- getBy $ UserEmailAddress email
-    --     case mu of
-    --         Nothing -> return Nothing
-    --         Just (Entity uid u) -> return $ Just EmailCreds
-    --             { emailCredsId = uid
-    --             , emailCredsAuthId = Just uid
-    --             , emailCredsStatus = userPassword u
-    --             , emailCredsVerkey = userVerifykey u
-    --             , emailCredsEmail = email
-    --             }
-    getEmail = runDB . fmap (fmap userEmailAddress) . get
 
 instance YesodAuthAccount (AccountPersistDB App User) App where
     runAccountDB = runAccountPersistDB

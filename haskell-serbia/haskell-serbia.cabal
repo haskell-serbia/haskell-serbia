@@ -23,7 +23,9 @@ library
                      Handler.Common
                      Handler.Home
                      Handler.Profile
-                     Handler.Register
+                     Handler.Tutorials
+                     Handler.TutorialList
+                     Handler.TutorialR
                      Widget.Header
 
 

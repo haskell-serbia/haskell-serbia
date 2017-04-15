@@ -8,5 +8,6 @@
 
 /profile ProfileR GET
 
-/register RegisterR GET POST
-
+!/tutorials/all TutorialListR GET
+!/tutorials/new TutorialsR GET POST
+!/tutorial/#TutorialId TutorialRR GET
