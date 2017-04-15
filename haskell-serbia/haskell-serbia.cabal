@@ -22,9 +22,7 @@ library
                      Settings.StaticFiles
                      Handler.Common
                      Handler.Home
-                     Handler.Comment
                      Handler.Profile
-                     Handler.Blog
                      Handler.Register
                      Handler.UserLogin
                      Widget.Header
@@ -64,6 +62,7 @@ library
                  , yesod-core                    >= 1.4.30     && < 1.5
                  , yesod-auth                    >= 1.4.0      && < 1.5
                  , yesod-auth-hashdb             >= 1.6.0
+                 , yesod-auth-account            >= 1.4.3
                  , yesod-static                  >= 1.4.0.3    && < 1.6
                  , yesod-form                    >= 1.4.0      && < 1.5
                  , classy-prelude                >= 0.10.2

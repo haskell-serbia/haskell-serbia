@@ -5,19 +5,29 @@ import Database.Persist.Sql (ConnectionPool, runSqlPool)
 import Text.Hamlet          (hamletFile)
 import Text.Jasmine         (minifym)
 
-
+import Data.Text (Text)
+import Data.ByteString (ByteString)
 import Yesod.Default.Util   (addStaticContentExternal)
 import Yesod.Core.Types     (Logger)
 import Yesod.Form.Jquery
 import qualified Yesod.Core.Unsafe as Unsafe
 import qualified Data.CaseInsensitive as CI
 import qualified Data.Text.Encoding as TE
-import Yesod.Auth.HashDB 
+import Yesod.Auth
+import Yesod.Auth.Account
 
--- | The foundation datatype for your application. This can be a good place to
--- keep settings and values requiring initialization before your application
--- starts running, such as database connections. Every handler will have
--- access to the data present here.
+instance PersistUserCredentials User where
+    userUsernameF = UserUsername
+    userPasswordHashF = UserPassword
+    userEmailF = UserEmailAddress
+    userEmailVerifiedF = UserVerified
+    userEmailVerifyKeyF = UserVerifyKey
+    userResetPwdKeyF = UserResetPasswordKey
+    uniqueUsername = UniqueUsername
+
+    userCreate name email key pwd = User name pwd email False key ""
+
+
 data App = App
     { appSettings    :: AppSettings
     , appStatic      :: Static -- ^ Settings for static file serving.
@@ -136,9 +146,7 @@ instance Yesod App where
 
     -- Routes not requiring authentication.
     isAuthorized (AuthR _) _ = return Authorized
-    isAuthorized CommentR _ = return Authorized
     isAuthorized HomeR _ = return Authorized
-    isAuthorized (BlogR _) _   = return Authorized
     isAuthorized FaviconR _ = return Authorized
     isAuthorized RobotsR _ = return Authorized
     isAuthorized (StaticR _) _ = return Authorized
@@ -190,38 +198,20 @@ instance YesodPersist App where
     runDB action = do
         master <- getYesod
         runSqlPool action $ appConnPool master
+
+
 instance YesodPersistRunner App where
     getDBRunner = defaultGetDBRunner appConnPool
 
 instance YesodAuth App where
     type AuthId App = UserId
 
-    -- Where to send a user after successful login
     loginDest _ = HomeR
-    -- Where to send a user after logout
     logoutDest _ = HomeR
-    -- Override the above two destinations when a Referer: header is present
     redirectToReferer _ = True
 
-    -- authenticate creds = runDB $ do
-    --     x <- getBy $ UniqueUser $ credsIdent creds
-    --     case x of
-    --         Just (Entity uid _) -> return $ Authenticated uid
-    --         Nothing -> Authenticated <$> insert User
-    --             { userIdent = credsIdent creds
-    --             , userPassword = Nothing
-    --             , userEmailAddress = "dummy@test.com"
-    --             }
-
-    authPlugins _ = [ authHashDBWithForm loginFormWidget (Just . UniqueUser)]
-
-    -- authPlugins _ = [authHashDB (Just . UniqueUser)]
-    -- authPlugins app = [authDummy | appAuthDummyLogin $ appSettings app]
-    -- authPlugins app = [authOpenId Claimed []] ++ extraAuthPlugins
-        -- Enable authDummy login if enabled.
-        -- where extraAuthPlugins = [authDummy | appAuthDummyLogin $ appSettings app]
-
-    authHttpManager = getHttpManager
+    authPlugins _ = [accountPluginCustom] --  authHashDBWithForm loginFormWidget (Just . UniqueUsername),
+    authHttpManager _ = error "no manager needed" --getHttpManager
 
 -- | Access function to determine if a user is logged in.
 isAuthenticated :: Handler AuthResult
@@ -249,13 +239,6 @@ unsafeHandler = Unsafe.fakeHandlerGetLogger appLogger
 
 instance YesodJquery App
 
--- Note: Some functionality previously present in the scaffolding has been
--- moved to documentation in the Wiki. Following are some hopefully helpful
--- links:
---
--- https://github.com/yesodweb/yesod/wiki/Sending-email
--- https://github.com/yesodweb/yesod/wiki/Serve-static-files-from-a-separate-domain
--- https://github.com/yesodweb/yesod/wiki/i18n-messages-in-the-scaffolding
 
 -- CUSTOM WIDGETS
 -- header widget
@@ -263,7 +246,6 @@ pageHeaderWidget :: Handler Widget
 pageHeaderWidget = do
   return $(widgetFile "header/header")
 
-  
 loginFormWidget action = do
    toWidgetBody([hamlet|
 <div .container>
@@ -281,3 +263,98 @@ loginFormWidget action = do
       <div class="col-sm-offset-2 col-sm-10">
         <button type="submit" class="btn btn-default">Submit
  |])
+
+accountPluginCustom :: YesodAuthAccount db master => AuthPlugin master
+accountPluginCustom = AuthPlugin "account" (apDispatch accountPlugin) myLoginWidget
+
+myLoginWidget :: YesodAuthAccount db master => (Route Auth -> Route master) -> WidgetT master IO ()
+myLoginWidget tm = do
+    toWidget loginStyle
+    [whamlet|
+<div .loginDiv>
+    <form method=post enctype="application/x-www-form-urlencoded" action=@{tm loginFormPostTargetR}>
+        <h1>
+          Login
+        <input type="text" #username placeholder="Username" required="required" name="f1">
+        <input type="password" #password placeholder="Password" required="required" name="f2">
+        <button type="submit" .btn .btn-primary .btn-block .btn-large>
+          Let me in.
+        <p>
+          <a href="@{tm newAccountR}">Register a new account
+          <a href="@{tm resetPasswordR}">Forgot password?
+|]
+
+loginStyle = [lucius|
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+.btn { display: inline-block; *display: inline; *zoom: 1; padding: 4px 10px 4px; margin-bottom: 0; font-size: 13px; line-height: 18px; color: #333333; text-align: center;text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75); vertical-align: middle; background-color: #f5f5f5; background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6); background-image: -ms-linear-gradient(top, #ffffff, #e6e6e6); background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6)); background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6); background-image: -o-linear-gradient(top, #ffffff, #e6e6e6); background-image: linear-gradient(top, #ffffff, #e6e6e6); background-repeat: repeat-x; filter: progid:dximagetransform.microsoft.gradient(startColorstr=#ffffff, endColorstr=#e6e6e6, GradientType=0); border-color: #e6e6e6 #e6e6e6 #e6e6e6; border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); border: 1px solid #e6e6e6; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); cursor: pointer; *margin-left: .3em; }
+.btn:hover, .btn:active, .btn.active, .btn.disabled, .btn[disabled] { background-color: #e6e6e6; }
+.btn-large { padding: 9px 14px; font-size: 15px; line-height: normal; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; }
+.btn:hover { color: #333333; text-decoration: none; background-color: #e6e6e6; background-position: 0 -15px; -webkit-transition: background-position 0.1s linear; -moz-transition: background-position 0.1s linear; -ms-transition: background-position 0.1s linear; -o-transition: background-position 0.1s linear; transition: background-position 0.1s linear; }
+.btn-primary, .btn-primary:hover { text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25); color: #ffffff; }
+.btn-primary.active { color: rgba(255, 255, 255, 0.75); }
+.btn-primary { background-color: #4a77d4; background-image: -moz-linear-gradient(top, #6eb6de, #4a77d4); background-image: -ms-linear-gradient(top, #6eb6de, #4a77d4); background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6eb6de), to(#4a77d4)); background-image: -webkit-linear-gradient(top, #6eb6de, #4a77d4); background-image: -o-linear-gradient(top, #6eb6de, #4a77d4); background-image: linear-gradient(top, #6eb6de, #4a77d4); background-repeat: repeat-x; filter: progid:dximagetransform.microsoft.gradient(startColorstr=#6eb6de, endColorstr=#4a77d4, GradientType=0);  border: 1px solid #3762bc; text-shadow: 1px 1px 1px rgba(0,0,0,0.4); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.5); }
+.btn-primary:hover, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled] { filter: none; background-color: #4a77d4; }
+.btn-block { width: 60%; display:block; text-align:center; margin-left:auto; margin-right:auto;}
+* { -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; -o-box-sizing:border-box; box-sizing:border-box; }
+.loginDiv {
+	height: 100%;
+	font-family: 'Open Sans', sans-serif;
+	background: #092756;
+	background: -moz-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%),-moz-linear-gradient(top,  rgba(57,173,219,.25) 0%, rgba(42,60,87,.4) 100%), -moz-linear-gradient(-45deg,  #670d10 0%, #092756 100%);
+	background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -webkit-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -webkit-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+	background: -o-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -o-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -o-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+	background: -ms-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -ms-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -ms-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+	background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), linear-gradient(to bottom,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), linear-gradient(135deg,  #670d10 0%,#092756 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3E1D6D', endColorstr='#092756',GradientType=1 );
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right:0;
+	margin: 0;
+}
+h1 { color: #fff; text-shadow: 0 0 10px rgba(0,0,0,0.3); letter-spacing:1px; text-align:center; }
+form {
+	display: block;
+	position: relative;
+	top: 20%;
+    width: 30%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+input { 
+	width: 60%; 
+	margin-bottom: 10px; 
+	background: rgba(0,0,0,0.3);
+	border: none;
+	outline: none;
+	padding: 10px;
+	font-size: 13px;
+	color: #fff;
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+	border: 1px solid rgba(0,0,0,0.3);
+	border-radius: 4px;
+	box-shadow: inset 0 -5px 45px rgba(100,100,100,0.2), 0 1px 1px rgba(255,255,255,0.2);
+	-webkit-transition: box-shadow .5s ease;
+	-moz-transition: box-shadow .5s ease;
+	-o-transition: box-shadow .5s ease;
+	-ms-transition: box-shadow .5s ease;
+	transition: box-shadow .5s ease;
+}
+input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgba(255,255,255,0.2); }
+.message {
+	position: fixed;
+	z-index: 1000;
+	color: #fff;
+}
+a {
+	color: #fb660a;
+}
+|]
+
+
+instance AccountSendEmail App
+
+instance YesodAuthAccount (AccountPersistDB App User) App where
+    runAccountDB = runAccountPersistDB

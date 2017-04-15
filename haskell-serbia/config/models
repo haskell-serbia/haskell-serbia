@@ -1,9 +1,22 @@
 User
-    ident Text
-    password Text Maybe 
+    username Text
+    UniqueUsername username
+    password ByteString
     emailAddress Text
-    UniqueUser emailAddress 
-    deriving Typeable
+    verified Bool
+    verifyKey Text
+    resetPasswordKey Text
+    deriving Show
+
+
+-- User
+--     ident Text
+--     password Text Maybe 
+--     emailAddress Text
+--     verkey Text Maybe -- Used for resetting passwords
+--     verified Bool
+--     UniqueUser emailAddress 
+--     deriving Typeable
 Email
     email Text
     userId UserId Maybe

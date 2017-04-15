@@ -6,11 +6,7 @@
 
 / HomeR GET
 
-/comments CommentR POST
-
 /profile ProfileR GET
-
-/blog/#EntryId BlogR GET POST
 
 /register RegisterR GET POST
 
