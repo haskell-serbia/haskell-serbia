@@ -140,9 +140,9 @@ instance Yesod App where
     isAuthorized (AuthR _) _ = return Authorized
     isAuthorized HomeR _ = return Authorized
     isAuthorized TutorialListR  _ = return Authorized
-    isAuthorized TutorialsR  _ = return Authorized
+    isAuthorized TutorialsR  _ = isAuthenticated -- return Authorized
     isAuthorized (TutorialRR _)  _ = return Authorized
-    isAuthorized (TutorialEditR _)  _ = return Authorized
+    isAuthorized (TutorialEditR _)  _ = isAuthenticated -- return Authorized
     isAuthorized FaviconR _ = return Authorized
     isAuthorized RobotsR _ = return Authorized
     isAuthorized (StaticR _) _ = return Authorized
