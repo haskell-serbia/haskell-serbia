@@ -3,6 +3,10 @@
         <div .col-md-12>
 
           <h1>Tutorials
+          <p>So you are a beginner Haskeller and getting frustrated by not being able to google how to do simple things in Haskell. I know your pain and I will try to share here all things I find usefull that can shorten the path to get things done in Haskell or more specific Yesod web framework.
+          <br />
+          <br />
+
               <ul>
                   $forall Entity id post <- allPosts
                     <h4>
