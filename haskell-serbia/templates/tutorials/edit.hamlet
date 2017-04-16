@@ -1,0 +1,7 @@
+<div .container>
+    <div .row>
+        <div .col-md-12>
+          <h2> EDIT: #{tutorialTitle tutorial} 
+          <form method=post enctype=#{enctype} action=@{TutorialsR}>
+                ^{widget}
+                <button .btn .btn-success>Edit!

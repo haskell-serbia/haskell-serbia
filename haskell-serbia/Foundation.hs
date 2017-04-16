@@ -112,7 +112,7 @@ instance Yesod App where
                     , menuItemAccessCallback = True
                     }
                 , NavbarRight $ MenuItem
-                    { menuItemLabel = "Tutorijali"
+                    { menuItemLabel = "Tutorials"
                     , menuItemRoute =  TutorialListR
                     , menuItemAccessCallback = isNothing muser
                     }
@@ -161,6 +161,7 @@ instance Yesod App where
     isAuthorized TutorialListR  _ = return Authorized
     isAuthorized TutorialsR  _ = return Authorized
     isAuthorized (TutorialRR _)  _ = return Authorized
+    isAuthorized (TutorialEditR _)  _ = return Authorized
     isAuthorized FaviconR _ = return Authorized
     isAuthorized RobotsR _ = return Authorized
     isAuthorized (StaticR _) _ = return Authorized
