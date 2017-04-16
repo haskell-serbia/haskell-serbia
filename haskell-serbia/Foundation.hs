@@ -5,13 +5,6 @@ import Database.Persist.Sql (ConnectionPool, runSqlPool)
 import Text.Hamlet          (hamletFile)
 import Text.Jasmine         (minifym)
 
-import Control.Monad            (join)
-import Control.Monad.Logger (runNoLoggingT)
-import Data.Maybe               (isJust)
-import Data.Text (Text, pack, unpack)
-import qualified Data.Text.Lazy.Encoding
-import Data.Typeable (Typeable)
-import Data.ByteString (ByteString)
 import Yesod.Default.Util   (addStaticContentExternal)
 import Yesod.Core.Types     (Logger)
 import Yesod.Form.Jquery
@@ -20,18 +13,6 @@ import qualified Data.CaseInsensitive as CI
 import qualified Data.Text.Encoding as TE
 import Yesod.Auth
 import Yesod.Auth.Account
-
-instance PersistUserCredentials User where
-    userUsernameF = UserUsername
-    userPasswordHashF = UserPassword
-    userEmailF = UserEmailAddress
-    userEmailVerifiedF = UserVerified
-    userEmailVerifyKeyF = UserVerifyKey
-    userResetPwdKeyF = UserResetPasswordKey
-    uniqueUsername = UniqueUsername
-
-    userCreate name email key pwd = User name pwd email False key ""
-
 
 data App = App
     { appSettings    :: AppSettings
@@ -111,7 +92,7 @@ instance Yesod App where
                     , menuItemRoute = HomeR
                     , menuItemAccessCallback = True
                     }
-                , NavbarRight $ MenuItem
+                , NavbarLeft $ MenuItem
                     { menuItemLabel = "Tutorials"
                     , menuItemRoute =  TutorialListR
                     , menuItemAccessCallback = isNothing muser
@@ -203,6 +184,9 @@ instance Yesod App where
 -- Define breadcrumbs.
 instance YesodBreadcrumbs App where
   breadcrumb HomeR = return ("Home", Nothing)
+  breadcrumb TutorialListR = return ("All Tutorials", Just HomeR)
+  breadcrumb (TutorialRR _) = return ("Tutorial", Just TutorialListR)
+
   breadcrumb (AuthR _) = return ("Login", Just HomeR)
   breadcrumb ProfileR = return ("Profile", Just HomeR)
   breadcrumb  _ = return ("home", Nothing)
