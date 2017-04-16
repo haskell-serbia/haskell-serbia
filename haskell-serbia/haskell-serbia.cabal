@@ -26,6 +26,7 @@ library
                      Handler.Tutorials
                      Handler.TutorialList
                      Handler.TutorialR
+                     Handler.TutorialEdit
                      Widget.Header
 
 

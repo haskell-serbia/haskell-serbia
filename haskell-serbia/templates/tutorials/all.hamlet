@@ -2,7 +2,7 @@
     <div .row>
         <div .col-md-12>
 
-          <h1>Tutorijali
+          <h1>Tutorials
               <ul>
                   $forall Entity id post <- allPosts
                     <h4>
