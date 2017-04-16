@@ -92,27 +92,27 @@ instance Yesod App where
                     , menuItemRoute = HomeR
                     , menuItemAccessCallback = True
                     }
-                , NavbarRight $ MenuItem
+                , NavbarLeft $ MenuItem
                     { menuItemLabel = "Tutorials"
                     , menuItemRoute =  TutorialListR
                     , menuItemAccessCallback = isNothing muser
                     }
 
-                , NavbarLeft $ MenuItem
-                    { menuItemLabel = "Profile"
-                    , menuItemRoute = ProfileR
-                    , menuItemAccessCallback = isJust muser
-                    }
-                , NavbarRight $ MenuItem
-                    { menuItemLabel = "Login"
-                    , menuItemRoute = AuthR LoginR
-                    , menuItemAccessCallback = isNothing muser
-                    }
-                , NavbarRight $ MenuItem
-                    { menuItemLabel = "Logout"
-                    , menuItemRoute = AuthR LogoutR
-                    , menuItemAccessCallback = isJust muser
-                    }
+                -- , NavbarLeft $ MenuItem
+                --     { menuItemLabel = "Profile"
+                --     , menuItemRoute = ProfileR
+                --     , menuItemAccessCallback = isJust muser
+                --     }
+                -- , NavbarRight $ MenuItem
+                --     { menuItemLabel = "Login"
+                --     , menuItemRoute = AuthR LoginR
+                --     , menuItemAccessCallback = isNothing muser
+                --     }
+                -- , NavbarRight $ MenuItem
+                --     { menuItemLabel = "Logout"
+                --     , menuItemRoute = AuthR LogoutR
+                --     , menuItemAccessCallback = isJust muser
+                --     }
                 ]
 
         let navbarLeftMenuItems = [x | NavbarLeft x <- menuItems]
@@ -184,6 +184,9 @@ instance Yesod App where
 -- Define breadcrumbs.
 instance YesodBreadcrumbs App where
   breadcrumb HomeR = return ("Home", Nothing)
+  breadcrumb TutorialListR = return ("All Tutorials", Just HomeR)
+  breadcrumb (TutorialRR _) = return ("Tutorial", Just TutorialListR)
+
   breadcrumb (AuthR _) = return ("Login", Just HomeR)
   breadcrumb ProfileR = return ("Profile", Just HomeR)
   breadcrumb  _ = return ("home", Nothing)

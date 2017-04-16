@@ -9,7 +9,7 @@ tutorialForm
   => Tutorial -> AForm m Tutorial
 tutorialForm tutorial =
   Tutorial <$>
-  areq textField (bfs ("Title" :: Text)) (Just $ tutorialTitle tutorial) <*>
+  areq textField (bfs ("Title" :: Text )) (Just $ tutorialTitle tutorial) <*>
   areq markdownField (bfs ("Content" :: Text)) (Just $ tutorialContent tutorial)
 
 getTutorialEditR :: TutorialId -> Handler Html
