@@ -7,8 +7,8 @@ import Yesod.Text.Markdown
 
 tutorialForm :: AForm Handler Tutorial
 tutorialForm =
-  Tutorial <$> areq textField (bfs ("Title" :: Text)) Nothing <*>
-  areq markdownField (bfs ("Content" :: Text)) Nothing
+  Tutorial <$> areq textField (bfs ("Title" :: Text)) Nothing
+           <*> areq markdownField (bfs ("Content" :: Text)) Nothing
 
 getTutorialsR :: Handler Html
 getTutorialsR = do

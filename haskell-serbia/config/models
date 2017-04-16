@@ -10,6 +10,7 @@ User
 Tutorial
    title Text
    content Markdown 
+   -- created UTCTime default=now()
    deriving Show
 
 
