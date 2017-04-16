@@ -11,6 +11,8 @@ import Yesod.Form.Jquery
 import qualified Yesod.Core.Unsafe as Unsafe
 import qualified Data.CaseInsensitive as CI
 import qualified Data.Text.Encoding as TE
+import Yesod.Auth
+import Yesod.Auth.Account
 
 data App = App
     { appSettings    :: AppSettings
@@ -203,6 +205,7 @@ instance YesodAuth App where
     loginDest _ = HomeR
     logoutDest _ = HomeR
     redirectToReferer _ = True
+
     authPlugins _ = [accountPluginCustom] 
     authHttpManager _ = error "no manager needed" --getHttpManager
 
