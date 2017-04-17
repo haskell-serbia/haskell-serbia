@@ -92,11 +92,11 @@ instance Yesod App where
                     , menuItemRoute = HomeR
                     , menuItemAccessCallback = True
                     }
-                , NavbarLeft $ MenuItem
-                    { menuItemLabel = "Tutorials"
-                    , menuItemRoute =  TutorialListR
-                    , menuItemAccessCallback = isNothing muser
-                    }
+                -- , NavbarLeft $ MenuItem
+                --     { menuItemLabel = "Tutorials"
+                --     , menuItemRoute =  TutorialListR
+                --     , menuItemAccessCallback = isNothing muser
+                --     }
 
                 -- , NavbarLeft $ MenuItem
                 --     { menuItemLabel = "Profile"
