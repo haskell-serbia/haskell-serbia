@@ -1,11 +1,11 @@
 User
-    username Text
-    UniqueUsername username
-    password ByteString
     emailAddress Text
-    verified Bool
-    verifyKey Text
-    resetPasswordKey Text
+    password Text Maybe 
+    verifyKey Text Maybe
+    verified  Bool 
+    resetPasswordKey Text Maybe 
+    username Text 
+    UniqueEmailAddress emailAddress
     deriving Show
 Tutorial
    title Text

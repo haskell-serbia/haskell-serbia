@@ -62,9 +62,8 @@ library
 
                  , yesod                         >= 1.4.3      && < 1.5
                  , yesod-core                    >= 1.4.30     && < 1.5
-                 , yesod-auth                    >= 1.4.0      && < 1.5
+                 , yesod-auth                    >= 1.4.17     && < 1.5
                  , yesod-auth-hashdb             >= 1.6.0
-                 , yesod-auth-account            >= 1.4.3
                  , yesod-static                  >= 1.4.0.3    && < 1.6
                  , yesod-form                    >= 1.4.0      && < 1.5
                  , classy-prelude                >= 0.10.2
@@ -103,8 +102,6 @@ library
                  , esqueleto
                  , markdown
                  , yesod-text-markdown           >= 0.1.8
-                 , pwstore-fast                  >= 2.4.4
-                 , bcrypt                        >= 0.0
                  , mime-mail                     >= 0.4.13
                  , blaze-html                    >= 0.8.1.3
 
