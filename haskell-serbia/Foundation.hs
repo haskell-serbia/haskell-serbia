@@ -11,8 +11,16 @@ import Yesod.Form.Jquery
 import qualified Yesod.Core.Unsafe as Unsafe
 import qualified Data.CaseInsensitive as CI
 import qualified Data.Text.Encoding as TE
-import Yesod.Auth
-import Yesod.Auth.Account
+import           Control.Applicative      ((<$>), (<*>))
+import           Control.Monad            (join)
+import           Data.Maybe               (isJust)
+import qualified Data.Text.Lazy.Encoding
+import           Text.Blaze.Html.Renderer.Utf8 (renderHtml)
+import           Network.Mail.Mime
+import           Text.Hamlet              (shamlet)
+import           Text.Shakespeare.Text    (stext)
+import Yesod.Auth.Email
+import qualified Yesod.Auth.Message       as Msg
 
 data App = App
     { appSettings    :: AppSettings
@@ -98,21 +106,21 @@ instance Yesod App where
                 --     , menuItemAccessCallback = isNothing muser
                 --     }
 
-                -- , NavbarLeft $ MenuItem
-                --     { menuItemLabel = "Profile"
-                --     , menuItemRoute = ProfileR
-                --     , menuItemAccessCallback = isJust muser
-                --     }
-                -- , NavbarRight $ MenuItem
-                --     { menuItemLabel = "Login"
-                --     , menuItemRoute = AuthR LoginR
-                --     , menuItemAccessCallback = isNothing muser
-                --     }
-                -- , NavbarRight $ MenuItem
-                --     { menuItemLabel = "Logout"
-                --     , menuItemRoute = AuthR LogoutR
-                --     , menuItemAccessCallback = isJust muser
-                --     }
+                , NavbarLeft $ MenuItem
+                    { menuItemLabel = "Profile"
+                    , menuItemRoute = ProfileR
+                    , menuItemAccessCallback = isJust muser
+                    }
+                , NavbarRight $ MenuItem
+                    { menuItemLabel = "Login"
+                    , menuItemRoute = AuthR LoginR
+                    , menuItemAccessCallback = isNothing muser
+                    }
+                , NavbarRight $ MenuItem
+                    { menuItemLabel = "Logout"
+                    , menuItemRoute = AuthR LogoutR
+                    , menuItemAccessCallback = isJust muser
+                    }
                 ]
 
         let navbarLeftMenuItems = [x | NavbarLeft x <- menuItems]
@@ -209,9 +217,19 @@ instance YesodAuth App where
     logoutDest _ = HomeR
     redirectToReferer _ = True
 
-    authPlugins _ = [accountPluginCustom] 
-    authHttpManager _ = error "no manager needed" --getHttpManager
+    authPlugins _ = [authEmail]
 
+
+
+    -- Need to find the UserId for the given email address.
+    getAuthId creds = runDB $ do
+        x <- insertBy $ User (credsIdent creds) Nothing Nothing False
+        return $ Just $
+            case x of
+                Left (Entity userid _) -> userid -- newly added user
+                Right userid -> userid -- existing user
+
+    authHttpManager = error "Email doesn't need an HTTP manager"
 -- | Access function to determine if a user is logged in.
 isAuthenticated :: Handler AuthResult
 isAuthenticated = do
@@ -241,96 +259,179 @@ pageHeaderWidget = do
   return $(widgetFile "header/header")
 
 
-accountPluginCustom :: YesodAuthAccount db master => AuthPlugin master
-accountPluginCustom = AuthPlugin "account" (apDispatch accountPlugin) myLoginWidget
+data UserForm = UserForm { _userFormEmail :: Text }
+data UserLoginForm = UserLoginForm { _loginEmail :: Text, _loginPassword :: Text }
+myRegisterHandler :: HandlerT Auth (HandlerT App IO) Html
+myRegisterHandler = do
+    (widget, enctype) <- lift $ generateFormPost registrationForm
+    toParentRoute <- getRouteToParent
+    lift $ defaultLayout $ do
+        setTitleI Msg.RegisterLong
+        [whamlet|
+              <div  class="col-md-6 col-offset-2">
+                <p>_{Msg.EnterEmail}
+                <form method="post" action="@{toParentRoute registerR}" enctype=#{enctype}>
+                        ^{widget}
+                        <button .btn .btn-default>_{Msg.Register}
+        |]
+    where
+        registrationForm extra = do
+            let emailSettings = FieldSettings {
+                fsLabel = SomeMessage Msg.Email,
+                fsTooltip = Nothing,
+                fsId = Just "email",
+                fsName = Just "email",
+                fsAttrs = [("autofocus", "true"),("class","form-control")]
+            }
 
-myLoginWidget :: YesodAuthAccount db master => (Route Auth -> Route master) -> WidgetT master IO ()
-myLoginWidget tm = do
-    toWidget loginStyle
-    [whamlet|
-<div .loginDiv>
-    <form method=post enctype="application/x-www-form-urlencoded" action=@{tm loginFormPostTargetR}>
-        <h1>
-          Login
-        <input type="text" #username placeholder="Username" required="required" name="f1">
-        <input type="password" #password placeholder="Password" required="required" name="f2">
-        <button type="submit" .btn .btn-primary .btn-block .btn-large>
-          Let me in.
-        <p>
-          <a href="@{tm newAccountR}">Register a new account
-          <a href="@{tm resetPasswordR}">Forgot password?
-|]
+            (emailRes, emailView) <- mreq emailField emailSettings Nothing
 
-loginStyle = [lucius|
-@import url(http://fonts.googleapis.com/css?family=Open+Sans);
-.btn { display: inline-block; *display: inline; *zoom: 1; padding: 4px 10px 4px; margin-bottom: 0; font-size: 13px; line-height: 18px; color: #333333; text-align: center;text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75); vertical-align: middle; background-color: #f5f5f5; background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6); background-image: -ms-linear-gradient(top, #ffffff, #e6e6e6); background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6)); background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6); background-image: -o-linear-gradient(top, #ffffff, #e6e6e6); background-image: linear-gradient(top, #ffffff, #e6e6e6); background-repeat: repeat-x; filter: progid:dximagetransform.microsoft.gradient(startColorstr=#ffffff, endColorstr=#e6e6e6, GradientType=0); border-color: #e6e6e6 #e6e6e6 #e6e6e6; border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); border: 1px solid #e6e6e6; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); cursor: pointer; *margin-left: .3em; }
-.btn:hover, .btn:active, .btn.active, .btn.disabled, .btn[disabled] { background-color: #e6e6e6; }
-.btn-large { padding: 9px 14px; font-size: 15px; line-height: normal; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; }
-.btn:hover { color: #333333; text-decoration: none; background-color: #e6e6e6; background-position: 0 -15px; -webkit-transition: background-position 0.1s linear; -moz-transition: background-position 0.1s linear; -ms-transition: background-position 0.1s linear; -o-transition: background-position 0.1s linear; transition: background-position 0.1s linear; }
-.btn-primary, .btn-primary:hover { text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25); color: #ffffff; }
-.btn-primary.active { color: rgba(255, 255, 255, 0.75); }
-.btn-primary { background-color: #4a77d4; background-image: -moz-linear-gradient(top, #6eb6de, #4a77d4); background-image: -ms-linear-gradient(top, #6eb6de, #4a77d4); background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6eb6de), to(#4a77d4)); background-image: -webkit-linear-gradient(top, #6eb6de, #4a77d4); background-image: -o-linear-gradient(top, #6eb6de, #4a77d4); background-image: linear-gradient(top, #6eb6de, #4a77d4); background-repeat: repeat-x; filter: progid:dximagetransform.microsoft.gradient(startColorstr=#6eb6de, endColorstr=#4a77d4, GradientType=0);  border: 1px solid #3762bc; text-shadow: 1px 1px 1px rgba(0,0,0,0.4); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.5); }
-.btn-primary:hover, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled] { filter: none; background-color: #4a77d4; }
-.btn-block { width: 60%; display:block; text-align:center; margin-left:auto; margin-right:auto;}
-* { -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; -o-box-sizing:border-box; box-sizing:border-box; }
-.loginDiv {
-	height: 100%;
-	font-family: 'Open Sans', sans-serif;
-	background: #092756;
-	background: -moz-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%),-moz-linear-gradient(top,  rgba(57,173,219,.25) 0%, rgba(42,60,87,.4) 100%), -moz-linear-gradient(-45deg,  #670d10 0%, #092756 100%);
-	background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -webkit-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -webkit-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
-	background: -o-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -o-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -o-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
-	background: -ms-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -ms-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -ms-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
-	background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), linear-gradient(to bottom,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), linear-gradient(135deg,  #670d10 0%,#092756 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3E1D6D', endColorstr='#092756',GradientType=1 );
-	position: fixed;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right:0;
-	margin: 0;
-}
-h1 { color: #fff; text-shadow: 0 0 10px rgba(0,0,0,0.3); letter-spacing:1px; text-align:center; }
-form {
-	display: block;
-	position: relative;
-	top: 20%;
-    width: 30%;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-}
-input { 
-	width: 60%; 
-	margin-bottom: 10px; 
-	background: rgba(0,0,0,0.3);
-	border: none;
-	outline: none;
-	padding: 10px;
-	font-size: 13px;
-	color: #fff;
-	text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
-	border: 1px solid rgba(0,0,0,0.3);
-	border-radius: 4px;
-	box-shadow: inset 0 -5px 45px rgba(100,100,100,0.2), 0 1px 1px rgba(255,255,255,0.2);
-	-webkit-transition: box-shadow .5s ease;
-	-moz-transition: box-shadow .5s ease;
-	-o-transition: box-shadow .5s ease;
-	-ms-transition: box-shadow .5s ease;
-	transition: box-shadow .5s ease;
-}
-input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgba(255,255,255,0.2); }
-.message {
-	position: fixed;
-	z-index: 1000;
-	color: #fff;
-}
-a {
-	color: #fb660a;
-}
-|]
+            let userRes = UserForm <$> emailRes
+            let widget = do
+                [whamlet|
+                    #{extra}
+                    ^{fvLabel emailView}
+                    ^{fvInput emailView}
+                |]
 
-instance AccountSendEmail App
+            return (userRes, widget) 
 
-instance YesodAuthAccount (AccountPersistDB App User) App where
-    runAccountDB = runAccountPersistDB
+
+myEmailLoginHandler :: (Route Auth -> Route App) -> WidgetT App IO ()
+myEmailLoginHandler toParent = do
+        (widget, enctype) <- liftWidgetT $ generateFormPost loginForm
+
+        [whamlet|
+            <div  class="col-md-6 col-offset-2">
+
+                <form method="post" action="@{toParent loginR}", enctype=#{enctype}>
+                    <div id="emailLoginForm">
+                        ^{widget}
+                        <div>
+                            <button type=submit .btn .btn-success>
+                                _{Msg.LoginViaEmail}
+                            &nbsp;
+                            <a href="@{toParent registerR}" .btn .btn-default>
+                                _{Msg.RegisterLong}
+        |]
+  where
+    loginForm extra = do
+
+        emailMsg <- renderMessage' Msg.Email
+        (emailRes, emailView) <- mreq emailField (emailSettings emailMsg) Nothing
+
+        passwordMsg <- renderMessage' Msg.Password
+        (passwordRes, passwordView) <- mreq passwordField (passwordSettings passwordMsg) Nothing
+
+        let userRes = UserLoginForm Control.Applicative.<$> emailRes
+                                    Control.Applicative.<*> passwordRes
+        let widget = do
+            [whamlet|
+                #{extra}
+                <div>
+                    ^{fvInput emailView}
+                <div>
+                    ^{fvInput passwordView}
+            |]
+
+        return (userRes, widget)
+    emailSettings emailMsg =
+        FieldSettings {
+            fsLabel = SomeMessage Msg.Email,
+            fsTooltip = Nothing,
+            fsId = Just "email",
+            fsName = Just "email",
+            fsAttrs = [("autofocus", ""), ("placeholder", emailMsg), ("class","form-control")]
+        }
+
+    passwordSettings passwordMsg =
+         FieldSettings {
+            fsLabel = SomeMessage Msg.Password,
+            fsTooltip = Nothing,
+            fsId = Just "password",
+            fsName = Just "password",
+            fsAttrs = [("placeholder", passwordMsg), ("class","form-control")]
+        }
+
+    renderMessage' msg = do
+        langs <- languages
+        master <- getYesod
+        return $ renderAuthMessage master langs msg
+
+
+instance YesodAuthEmail App where
+    type AuthEmailId App = UserId
+
+    registerHandler = myRegisterHandler
+
+    emailLoginHandler = myEmailLoginHandler
+
+    afterPasswordRoute _ = HomeR
+
+    addUnverified email verkey =
+        runDB $ insert $ User email Nothing (Just verkey) False
+
+    sendVerifyEmail email _ verurl = do
+
+        -- Send email.
+        liftIO $ renderSendMail (emptyMail $ Address Nothing "noreply")
+            { mailTo = [Address Nothing email]
+            , mailHeaders =
+                [ ("Subject", "Verify your email address")
+                ]
+            , mailParts = [[textPart, htmlPart]]
+            }
+      where
+        textPart = Part
+            { partType = "text/plain; charset=utf-8"
+            , partEncoding = None
+            , partFilename = Nothing
+            , partContent = Data.Text.Lazy.Encoding.encodeUtf8
+                [stext|
+                    Please confirm your email address by clicking on the link below.
+
+                    #{verurl}
+
+                    Thank you
+                |]
+            , partHeaders = []
+            }
+        htmlPart = Part
+            { partType = "text/html; charset=utf-8"
+            , partEncoding = None
+            , partFilename = Nothing
+            , partContent = renderHtml
+                [shamlet|
+                    <p>Please confirm your email address by clicking on the link below.
+                    <p>
+                        <a href=#{verurl}>#{verurl}
+                    <p>Thank you
+                |]
+            , partHeaders = []
+            }
+        getVerifyKey = runDB . fmap (join . fmap userVerkey) . get
+        setVerifyKey uid key = runDB $ update uid [UserVerkey =. Just key]
+        verifyAccount uid = runDB $ do
+            mu <- get uid
+            case mu of
+                Nothing -> return Nothing
+                Just u -> do
+                    update uid [UserVerified =. True]
+                    return $ Just uid
+        getPassword = runDB . fmap (join . fmap userPassword) . get
+        setPassword uid pass = runDB $ update uid [UserPassword =. Just pass]
+        getEmailCreds email = runDB $ do
+            mu <- getBy $ UniqueUser email
+            case mu of
+                Nothing -> return Nothing
+                Just (Entity uid u) -> return $ Just EmailCreds
+                    { emailCredsId = uid
+                    , emailCredsAuthId = Just uid
+                    , emailCredsStatus = isJust $ userPassword u
+                    , emailCredsVerkey = userVerkey u
+                    , emailCredsEmail = email
+                    }
+        getEmail = runDB . fmap (fmap userEmail) . get
+
+
+
