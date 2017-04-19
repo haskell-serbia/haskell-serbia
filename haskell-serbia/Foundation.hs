@@ -101,11 +101,11 @@ instance Yesod App where
                     , menuItemRoute = HomeR
                     , menuItemAccessCallback = True
                     }
-                -- , NavbarLeft $ MenuItem
-                --     { menuItemLabel = "Tutorials"
-                --     , menuItemRoute =  TutorialListR
-                --     , menuItemAccessCallback = isNothing muser
-                --     }
+                , NavbarLeft $ MenuItem
+                    { menuItemLabel = "Tutorials"
+                    , menuItemRoute =  TutorialListR
+                    , menuItemAccessCallback = isNothing muser
+                    }
 
                 , NavbarLeft $ MenuItem
                     { menuItemLabel = "Profile"
@@ -269,11 +269,12 @@ myRegisterHandler = do
     lift $ defaultLayout $ do
         setTitleI Msg.RegisterLong
         [whamlet|
-              <div  class="col-md-6 col-offset-2">
+              <div .col-md-4 .col-md-offset-4>
                 <p>_{Msg.EnterEmail}
                 <form method="post" action="@{toParentRoute registerR}" enctype=#{enctype}>
                         ^{widget}
-                        <button .btn .btn-default>_{Msg.Register}
+                        <div .voffset4>
+                          <button .btn .btn-success .btn-sm .pull-right>_{Msg.Register}
         |]
     where
         registrationForm extra = do
@@ -303,16 +304,16 @@ myEmailLoginHandler toParent = do
         (widget, enctype) <- liftWidgetT $ generateFormPost loginForm
 
         [whamlet|
-            <div  class="col-md-6 col-offset-2">
+              <div .col-md-4 .col-md-offset-4>
                 <form method="post" action="@{toParent loginR}", enctype=#{enctype}>
                     <div id="emailLoginForm">
                         ^{widget}
-                        <div>
-                            <button type=submit .btn .btn-success>
-                                _{Msg.LoginViaEmail}
+                        <div .voffset4>
+
+                            <button type=submit .btn .btn-success .btn-sm>Login
                             &nbsp;
-                            <a href="@{toParent registerR}" .btn .btn-default>
-                                _{Msg.RegisterLong}
+                            <a href="@{toParent registerR}" .btn .btn-default .btn-sm .pull-right>
+                                _{Msg.Register}
         |]
   where
     loginForm extra = do
@@ -418,7 +419,7 @@ instance YesodAuthEmail App where
         mu <- get uid
         case mu of
             Nothing -> return Nothing
-            Just u -> do
+            Just _ -> do
                 update uid [UserVerified =. True]
                 return $ Just uid
 
