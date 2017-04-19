@@ -219,17 +219,12 @@ instance YesodAuth App where
     redirectToReferer _ = True
 
     authPlugins _ = [authEmail]
+
+
+
     -- Need to find the UserId for the given email address.
     getAuthId creds = runDB $ do
-
-        x <- insertBy $ User {
-                                userEmailAddress     = userEmailAddress creds
-                              , userPassword         = Nothing
-                              , userVerifyKey        = userVerifyKey creds
-                              , userVerified         = False
-                              , userResetPasswordKey = Nothing
-                              , userUsername         = ""
-                             }
+        x <- insertBy $ User (credsIdent creds) Nothing Nothing False
         return $ Just $
             case x of
                 Left (Entity userid _) -> userid -- newly added user
@@ -308,7 +303,7 @@ instance YesodAuthEmail App where
     afterPasswordRoute _ = HomeR
 
     addUnverified email verkey =
-        runDB $ insert $ User email Nothing (Just verkey) False Nothing "" 
+        runDB $ insert $ User email Nothing (Just verkey) False
 
     sendVerifyEmail email _ verurl = do
 
@@ -348,27 +343,29 @@ instance YesodAuthEmail App where
                 |]
             , partHeaders = []
             }
-    getVerifyKey = runDB . fmap (join . fmap userVerifyKey) . get
-    setVerifyKey uid key = runDB $ update uid [UserVerifyKey =. Just key]
-    verifyAccount uid = runDB $ do
-        mu <- get uid
-        case mu of
-            Nothing -> return Nothing
-            Just u -> do
-                update uid [UserVerified =. True]
-                return $ Just uid
-    getPassword = runDB . fmap (join . fmap userPassword) . get
-    setPassword uid pass = runDB $ update uid [UserPassword =. Just pass]
-    getEmailCreds email = runDB $ do
-        mu <- getBy $ UniqueEmailAddress email
-        case mu of
-            Nothing -> return Nothing
-            Just (Entity uid u) -> return $ Just EmailCreds
-                { emailCredsId = uid
-                , emailCredsAuthId = Just uid
-                , emailCredsStatus = isJust $ userPassword u
-                , emailCredsVerkey = userVerifyKey u
-                , emailCredsEmail = email
-                }
-    getEmail = runDB . fmap (fmap userEmailAddress) . get
+        getVerifyKey = runDB . fmap (join . fmap userVerkey) . get
+        setVerifyKey uid key = runDB $ update uid [UserVerkey =. Just key]
+        verifyAccount uid = runDB $ do
+            mu <- get uid
+            case mu of
+                Nothing -> return Nothing
+                Just u -> do
+                    update uid [UserVerified =. True]
+                    return $ Just uid
+        getPassword = runDB . fmap (join . fmap userPassword) . get
+        setPassword uid pass = runDB $ update uid [UserPassword =. Just pass]
+        getEmailCreds email = runDB $ do
+            mu <- getBy $ UniqueUser email
+            case mu of
+                Nothing -> return Nothing
+                Just (Entity uid u) -> return $ Just EmailCreds
+                    { emailCredsId = uid
+                    , emailCredsAuthId = Just uid
+                    , emailCredsStatus = isJust $ userPassword u
+                    , emailCredsVerkey = userVerkey u
+                    , emailCredsEmail = email
+                    }
+        getEmail = runDB . fmap (fmap userEmail) . get
+
+
 

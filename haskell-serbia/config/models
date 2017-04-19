@@ -1,12 +1,10 @@
 User
-    emailAddress Text
-    password Text Maybe 
-    verifyKey Text Maybe
-    verified  Bool 
-    resetPasswordKey Text Maybe 
-    username Text 
-    UniqueEmailAddress emailAddress
-    deriving Show
+    email Text
+    password Text Maybe -- Password may not be set yet
+    verkey Text Maybe -- Used for resetting passwords
+    verified Bool
+    UniqueUser email
+    deriving Typeable
 Tutorial
    title Text
    content Markdown 
