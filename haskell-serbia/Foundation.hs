@@ -11,7 +11,7 @@ import Yesod.Form.Jquery
 import qualified Yesod.Core.Unsafe as Unsafe
 import qualified Data.CaseInsensitive as CI
 import qualified Data.Text.Encoding as TE
-
+import           Control.Applicative      ((<$>), (<*>))
 import           Control.Monad            (join)
 import           Data.Maybe               (isJust)
 import qualified Data.Text.Lazy.Encoding
@@ -19,7 +19,6 @@ import           Text.Blaze.Html.Renderer.Utf8 (renderHtml)
 import           Network.Mail.Mime
 import           Text.Hamlet              (shamlet)
 import           Text.Shakespeare.Text    (stext)
-import Yesod.Auth
 import Yesod.Auth.Email
 import qualified Yesod.Auth.Message       as Msg
 
@@ -261,19 +260,19 @@ pageHeaderWidget = do
 
 
 data UserForm = UserForm { _userFormEmail :: Text }
-
-registerHandler :: HandlerT Auth (HandlerT App IO) Html
-registerHandler = do
+data UserLoginForm = UserLoginForm { _loginEmail :: Text, _loginPassword :: Text }
+myRegisterHandler :: HandlerT Auth (HandlerT App IO) Html
+myRegisterHandler = do
     (widget, enctype) <- lift $ generateFormPost registrationForm
     toParentRoute <- getRouteToParent
-    lift $ authLayout $ do
+    lift $ defaultLayout $ do
         setTitleI Msg.RegisterLong
         [whamlet|
-            <p>_{Msg.EnterEmail}
-            <form method="post" action="@{toParentRoute registerR}" enctype=#{enctype}>
-                <div id="registerForm" class="col-md-12 col-offset-2">
-                    ^{widget}
-                <button .btn>_{Msg.Register}
+              <div  class="col-md-6 col-offset-2">
+                <p>_{Msg.EnterEmail}
+                <form method="post" action="@{toParentRoute registerR}" enctype=#{enctype}>
+                        ^{widget}
+                        <button .btn .btn-default>_{Msg.Register}
         |]
     where
         registrationForm extra = do
@@ -282,7 +281,7 @@ registerHandler = do
                 fsTooltip = Nothing,
                 fsId = Just "email",
                 fsName = Just "email",
-                fsAttrs = [("autofocus", "")]
+                fsAttrs = [("autofocus", "true"),("class","form-control")]
             }
 
             (emailRes, emailView) <- mreq emailField emailSettings Nothing
@@ -297,8 +296,75 @@ registerHandler = do
 
             return (userRes, widget) 
 
+
+myEmailLoginHandler :: (Route Auth -> Route App) -> WidgetT App IO ()
+myEmailLoginHandler toParent = do
+        (widget, enctype) <- liftWidgetT $ generateFormPost loginForm
+
+        [whamlet|
+            <div  class="col-md-6 col-offset-2">
+
+                <form method="post" action="@{toParent loginR}", enctype=#{enctype}>
+                    <div id="emailLoginForm">
+                        ^{widget}
+                        <div>
+                            <button type=submit .btn .btn-success>
+                                _{Msg.LoginViaEmail}
+                            &nbsp;
+                            <a href="@{toParent registerR}" .btn .btn-default>
+                                _{Msg.RegisterLong}
+        |]
+  where
+    loginForm extra = do
+
+        emailMsg <- renderMessage' Msg.Email
+        (emailRes, emailView) <- mreq emailField (emailSettings emailMsg) Nothing
+
+        passwordMsg <- renderMessage' Msg.Password
+        (passwordRes, passwordView) <- mreq passwordField (passwordSettings passwordMsg) Nothing
+
+        let userRes = UserLoginForm Control.Applicative.<$> emailRes
+                                    Control.Applicative.<*> passwordRes
+        let widget = do
+            [whamlet|
+                #{extra}
+                <div>
+                    ^{fvInput emailView}
+                <div>
+                    ^{fvInput passwordView}
+            |]
+
+        return (userRes, widget)
+    emailSettings emailMsg =
+        FieldSettings {
+            fsLabel = SomeMessage Msg.Email,
+            fsTooltip = Nothing,
+            fsId = Just "email",
+            fsName = Just "email",
+            fsAttrs = [("autofocus", ""), ("placeholder", emailMsg), ("class","form-control")]
+        }
+
+    passwordSettings passwordMsg =
+         FieldSettings {
+            fsLabel = SomeMessage Msg.Password,
+            fsTooltip = Nothing,
+            fsId = Just "password",
+            fsName = Just "password",
+            fsAttrs = [("placeholder", passwordMsg), ("class","form-control")]
+        }
+
+    renderMessage' msg = do
+        langs <- languages
+        master <- getYesod
+        return $ renderAuthMessage master langs msg
+
+
 instance YesodAuthEmail App where
     type AuthEmailId App = UserId
+
+    registerHandler = myRegisterHandler
+
+    emailLoginHandler = myEmailLoginHandler
 
     afterPasswordRoute _ = HomeR
 
