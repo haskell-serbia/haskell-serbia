@@ -178,3 +178,5 @@ test-suite test
                  , classy-prelude
                  , classy-prelude-yesod
                  , aeson
+                 , cryptonite
+                 , hspec >= 2.0.0
