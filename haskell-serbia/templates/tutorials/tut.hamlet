@@ -1,6 +1,7 @@
 <div .container>
     <div .row>
         <div .col-md-12>
-          <a href=@{TutorialEditR  tutorialId} .btn .btn-default .pull-right>Edit
+          $maybe _ <- muid
+            <a href=@{TutorialEditR  tutorialId} .btn .btn-default .pull-right>Edit
           <h2>#{tutorialTitle tut}
           <div> #{tutorialContent tut}
