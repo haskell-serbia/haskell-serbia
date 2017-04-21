@@ -41,6 +41,7 @@ data MenuTypes
     = NavbarLeft MenuItem
     | NavbarRight MenuItem
 
+
 -- This is where we define all of the routes in our application. For a full
 -- explanation of the syntax, please see:
 -- http://www.yesodweb.com/book/routing-and-handlers
@@ -146,17 +147,23 @@ instance Yesod App where
     authRoute _ = Just $ AuthR LoginR
 
     -- Routes not requiring authentication.
-    isAuthorized (AuthR _) _ = return Authorized
-    isAuthorized HomeR _ = return Authorized
-    isAuthorized TutorialListR  _ = return Authorized
-    isAuthorized TutorialsR  _ = isAuthenticated -- return Authorized
-    isAuthorized (TutorialRR _)  _ = return Authorized
-    isAuthorized (TutorialEditR _)  _ = isAuthenticated -- return Authorized
-    isAuthorized FaviconR _ = return Authorized
-    isAuthorized RobotsR _ = return Authorized
-    isAuthorized (StaticR _) _ = return Authorized
+    -- isAuthorized (AuthR _) _ = return Authorized
+    -- isAuthorized HomeR _ = return Authorized
+    -- isAuthorized TutorialListR  _ = return Authorized
+    -- isAuthorized (TutorialRR _)  _ = return Authorized
+    -- isAuthorized FaviconR _ = return Authorized
+    -- isAuthorized RobotsR _ = return Authorized
+    -- isAuthorized (StaticR _) _ = return Authorized
 
-    isAuthorized ProfileR _ = isAuthenticated
+    -- isAuthorized ProfileR _ = isAuthenticated
+    -- isAuthorized (TutorialEditR _)  _ = isAuthenticated
+    -- isAuthorized TutorialsR  _ = isAuthenticated -- return Authorized
+
+    isAuthorized route isWrite = do
+      mauth <- maybeAuth
+      let user =  fmap entityVal mauth
+      user `isAuthorizedTo` permissionsRequiredFor route isWrite
+
 
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows
@@ -441,5 +448,36 @@ instance YesodAuthEmail App where
 
     getEmail = runDB . fmap (fmap userEmail) . get
 
+-- PERMISSIONS
+
+data Permission = PostTutorial | EditTutorial | ViewTutorial
+
+permissionsRequiredFor :: Route App  -> Bool -> [Permission]
+permissionsRequiredFor (TutorialEditR _) True  = [PostTutorial]
+permissionsRequiredFor (TutorialEditR _) False = [EditTutorial]
+permissionsRequiredFor (TutorialRR _) False    = [ViewTutorial]
+
+permissionsRequiredFor              _    _     = []
+
+
+hasPermissionTo :: User -> Permission -> Handler AuthResult
+user `hasPermissionTo` PostTutorial
+  | userEmail user == "brutallesale@gmail.com" = return Authorized
+  | otherwise    = isAuthenticated
+user `hasPermissionTo` EditTutorial
+  | userEmail user == "brutallesale@gmail.com" = return Authorized
+  | otherwise    = isAuthenticated
+
+_  `hasPermissionTo` ViewTutorial = return Authorized
+
+
+isAuthorizedTo :: Maybe User -> [Permission] -> HandlerT App IO AuthResult
+_       `isAuthorizedTo` []     = return Authorized
+Nothing `isAuthorizedTo` (_:_)  = isAuthenticated
+Just u  `isAuthorizedTo` (p:ps) = do
+  r <- u `hasPermissionTo` p
+  case r of
+    Authorized -> Just u `isAuthorizedTo` ps
+    _          -> return r -- unauthorized
 
 
