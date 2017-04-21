@@ -41,47 +41,35 @@ data MenuTypes
     = NavbarLeft MenuItem
     | NavbarRight MenuItem
 
+mkYesodData "App" [parseRoutes|
+/static StaticR Static appStatic
+/auth   AuthR   Auth   getAuth
 
--- This is where we define all of the routes in our application. For a full
--- explanation of the syntax, please see:
--- http://www.yesodweb.com/book/routing-and-handlers
---
--- Note that this is really half the story; in Application.hs, mkYesodDispatch
--- generates the rest of the code. Please see the following documentation
--- for an explanation for this split:
--- http://www.yesodweb.com/book/scaffolding-and-the-site-template#scaffolding-and-the-site-template_foundation_and_application_modules
---
--- This function also generates the following type synonyms:
--- type Handler = HandlerT App IO
--- type Widget = WidgetT App IO ()
-mkYesodData "App" $(parseRoutesFile "config/routes")
+/favicon.ico FaviconR GET
+/robots.txt RobotsR GET
 
--- | A convenient synonym for creating forms.
+/ HomeR GET
+
+/profile ProfileR GET
+
+!/tutorials/all TutorialListR GET
+!/tutorials/new TutorialsR GET POST
+!/tutorial/#TutorialId TutorialRR GET
+tutorial/edit/#TutorialId TutorialEditR GET POST
+|]
+
 type Form x = Html -> MForm (HandlerT App IO) (FormResult x, Widget)
 
--- Please see the documentation for the Yesod typeclass. There are a number
--- of settings which can be configured by overriding methods here.
 instance Yesod App where
-    -- Controls the base of generated URLs. For more information on modifying,
-    -- see: https://github.com/yesodweb/yesod/wiki/Overriding-approot
     approot = ApprootRequest $ \app req ->
         case appRoot $ appSettings app of
             Nothing -> getApprootText guessApproot app req
             Just root -> root
 
-    -- Store session data on the client in encrypted cookies,
-    -- default session idle timeout is 120 minutes
     makeSessionBackend _ = Just <$> defaultClientSessionBackend
         120    -- timeout in minutes
         "config/client_session_key.aes"
 
-    -- Yesod Middleware allows you to run code before and after each handler function.
-    -- The defaultYesodMiddleware adds the response header "Vary: Accept, Accept-Language" and performs authorization checks.
-    -- Some users may also want to add the defaultCsrfMiddleware, which:
-    --   a) Sets a cookie with a CSRF token in it.
-    --   b) Validates that incoming write requests include that token in either a header or POST parameter.
-    -- To add it, chain it together with the defaultMiddleware: yesodMiddleware = defaultYesodMiddleware . defaultCsrfMiddleware
-    -- For details, see the CSRF documentation in the Yesod.Core.Handler module of the yesod-core package.
     yesodMiddleware = defaultYesodMiddleware
 
     defaultLayout widget = do
@@ -136,12 +124,6 @@ instance Yesod App where
         let navbarLeftFilteredMenuItems = [x | x <- navbarLeftMenuItems, menuItemAccessCallback x]
         let navbarRightFilteredMenuItems = [x | x <- navbarRightMenuItems, menuItemAccessCallback x]
 
-        -- We break up the default layout into two components:
-        -- default-layout is the contents of the body tag, and
-        -- default-layout-wrapper is the entire page. Since the final
-        -- value passed to hamletToRepHtml cannot be a widget, this allows
-        -- you to use normal widget features in default-layout.
-
         pc <- widgetToPageContent $ do
             addStylesheet $ StaticR css_bootstrap_css
             $(widgetFile "default-layout")
@@ -152,6 +134,7 @@ instance Yesod App where
     authRoute _ = Just $ AuthR LoginR
 
     -- Routes not requiring authentication.
+
     -- isAuthorized (AuthR _) _ = return Authorized
     -- isAuthorized HomeR _ = return Authorized
     -- isAuthorized TutorialListR  _ = return Authorized
@@ -164,16 +147,7 @@ instance Yesod App where
     -- isAuthorized (TutorialEditR _)  _ = isAuthenticated
     -- isAuthorized TutorialsR  _ = isAuthenticated -- return Authorized
 
-    isAuthorized route isWrite = do
-      mauth <- maybeAuth
-      let user =  fmap entityVal mauth
-      user `isAuthorizedTo` permissionsRequiredFor route isWrite
 
-
-    -- This function creates static content files in the static folder
-    -- and names them based on a hash of their content. This allows
-    -- expiration dates to be set far in the future without worry of
-    -- users receiving stale content.
     addStaticContent ext mime content = do
         master <- getYesod
         let staticDir = appStaticDir $ appSettings master
@@ -189,8 +163,6 @@ instance Yesod App where
         -- Generate a unique filename based on the content itself
         genFileName lbs = "autogen-" ++ base64md5 lbs
 
-    -- What messages should be logged. The following includes all messages when
-    -- in development, and warnings and errors in production.
     shouldLog app _source level =
         appShouldLogAll (appSettings app)
             || level == LevelWarn
@@ -198,9 +170,46 @@ instance Yesod App where
 
     makeLogger = return . appLogger
 
-    -- Provide proper Bootstrap styling for default displays, like
-    -- error pages
     defaultMessageWidget title body = $(widgetFile "default-message-widget")
+
+    -- check if user can have access to page
+    isAuthorized route isWrite = do
+      mauth <- maybeAuth
+      let user =   fmap entityVal mauth
+      user `isAuthorizedTo` permissionsRequiredFor route isWrite
+
+
+-- PERMISSIONS
+data Permission = PostTutorial | EditTutorial
+
+permissionsRequiredFor :: Route App  -> Bool -> [Permission]
+permissionsRequiredFor (TutorialEditR _) True  = [EditTutorial]
+permissionsRequiredFor (TutorialEditR _) False = [EditTutorial]
+permissionsRequiredFor TutorialsR  True        = [PostTutorial]
+permissionsRequiredFor TutorialsR  False       = [PostTutorial]
+
+permissionsRequiredFor             _  _        = []
+
+
+isAuthorizedTo :: Maybe User -> [Permission] -> HandlerT App IO AuthResult
+_       `isAuthorizedTo` []     = return Authorized
+Nothing `isAuthorizedTo` (_:_)  = isAuthenticated
+Just u  `isAuthorizedTo` (p:ps) = do
+  r <- u `hasPermissionTo` p
+  case r of
+    Authorized -> Just u `isAuthorizedTo` ps
+    _          -> return r
+
+hasPermissionTo :: User -> Permission -> Handler AuthResult
+user `hasPermissionTo` PostTutorial
+  | userEmail user == "brutallesale@gmail.com" = return Authorized
+  | otherwise    = isAuthenticated
+
+user `hasPermissionTo` EditTutorial
+  | userEmail user == "brutallesale@gmail.com" = return Authorized
+  | otherwise    = isAuthenticated
+
+
 
 -- Define breadcrumbs.
 instance YesodBreadcrumbs App where
@@ -236,13 +245,15 @@ instance YesodAuth App where
 
     -- Need to find the UserId for the given email address.
     getAuthId creds = runDB $ do
-        x <- insertBy $ User (credsIdent creds) Nothing Nothing False
+        x <- insertBy $ User (credsIdent creds) Nothing Nothing False Nothing Nothing
         return $ Just $
             case x of
                 Left (Entity userid _) -> userid -- newly added user
                 Right userid -> userid -- existing user
 
     authHttpManager = error "Email doesn't need an HTTP manager"
+
+
 -- | Access function to determine if a user is logged in.
 isAuthenticated :: Handler AuthResult
 isAuthenticated = do
@@ -274,6 +285,7 @@ pageHeaderWidget = do
 
 data UserForm = UserForm { _userFormEmail :: Text }
 data UserLoginForm = UserLoginForm { _loginEmail :: Text, _loginPassword :: Text }
+
 myRegisterHandler :: HandlerT Auth (HandlerT App IO) Html
 myRegisterHandler = do
     (widget, enctype) <- lift $ generateFormPost registrationForm
@@ -382,7 +394,7 @@ instance YesodAuthEmail App where
     afterPasswordRoute _ = HomeR
 
     addUnverified email verkey =
-        runDB $ insert $ User email Nothing (Just verkey) False
+        runDB $ insert $ User email Nothing (Just verkey) False Nothing Nothing
 
     sendVerifyEmail email _ verurl = do
         liftIO $ putStrLn $ "Copy/ Paste this URL in your browser:" DM.<> verurl
@@ -453,37 +465,8 @@ instance YesodAuthEmail App where
 
     getEmail = runDB . fmap (fmap userEmail) . get
 
--- PERMISSIONS
-
-data Permission = PostTutorial | EditTutorial
-
-permissionsRequiredFor :: Route App  -> Bool -> [Permission]
-permissionsRequiredFor (TutorialEditR _) True  = [EditTutorial]
-permissionsRequiredFor (TutorialEditR _) False = [EditTutorial]
-permissionsRequiredFor TutorialsR  True        = [PostTutorial]
-permissionsRequiredFor TutorialsR  False       = [PostTutorial]
-
-permissionsRequiredFor             _  _        = []
-
-
-hasPermissionTo :: User -> Permission -> Handler AuthResult
-user `hasPermissionTo` PostTutorial
-  | userEmail user == "brutallesale@gmail.com" = return Authorized
-  | otherwise    = isAuthenticated
-
-user `hasPermissionTo` EditTutorial
-  | userEmail user == "brutallesale@gmail.com" = return Authorized
-  | otherwise    = isAuthenticated
 
 
 
-isAuthorizedTo :: Maybe User -> [Permission] -> HandlerT App IO AuthResult
-_       `isAuthorizedTo` []     = return Authorized
-Nothing `isAuthorizedTo` (_:_)  = isAuthenticated
-Just u  `isAuthorizedTo` (p:ps) = do
-  r <- u `hasPermissionTo` p
-  case r of
-    Authorized -> Just u `isAuthorizedTo` ps
-    _          -> return r
 
 
