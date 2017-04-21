@@ -107,7 +107,6 @@ instance Yesod App where
                     , menuItemRoute =  TutorialListR
                     , menuItemAccessCallback = isNothing muser
                     }
-
                 , NavbarLeft $ MenuItem
                     { menuItemLabel = "Profile"
                     , menuItemRoute = ProfileR
@@ -123,6 +122,12 @@ instance Yesod App where
                     , menuItemRoute = AuthR LogoutR
                     , menuItemAccessCallback = isJust muser
                     }
+                 , NavbarRight $ MenuItem
+                    { menuItemLabel = "Create Tutorial"
+                    , menuItemRoute =  TutorialsR
+                    , menuItemAccessCallback = isNothing muser
+                    }
+
                 ]
 
         let navbarLeftMenuItems = [x | NavbarLeft x <- menuItems]
@@ -450,25 +455,26 @@ instance YesodAuthEmail App where
 
 -- PERMISSIONS
 
-data Permission = PostTutorial | EditTutorial | ViewTutorial
+data Permission = PostTutorial | EditTutorial
 
 permissionsRequiredFor :: Route App  -> Bool -> [Permission]
-permissionsRequiredFor (TutorialEditR _) True  = [PostTutorial]
+permissionsRequiredFor (TutorialEditR _) True  = [EditTutorial]
 permissionsRequiredFor (TutorialEditR _) False = [EditTutorial]
-permissionsRequiredFor (TutorialRR _) False    = [ViewTutorial]
+permissionsRequiredFor TutorialsR  True        = [PostTutorial]
+permissionsRequiredFor TutorialsR  False       = [PostTutorial]
 
-permissionsRequiredFor              _    _     = []
+permissionsRequiredFor             _  _        = []
 
 
 hasPermissionTo :: User -> Permission -> Handler AuthResult
 user `hasPermissionTo` PostTutorial
   | userEmail user == "brutallesale@gmail.com" = return Authorized
   | otherwise    = isAuthenticated
+
 user `hasPermissionTo` EditTutorial
   | userEmail user == "brutallesale@gmail.com" = return Authorized
   | otherwise    = isAuthenticated
 
-_  `hasPermissionTo` ViewTutorial = return Authorized
 
 
 isAuthorizedTo :: Maybe User -> [Permission] -> HandlerT App IO AuthResult
@@ -478,6 +484,6 @@ Just u  `isAuthorizedTo` (p:ps) = do
   r <- u `hasPermissionTo` p
   case r of
     Authorized -> Just u `isAuthorizedTo` ps
-    _          -> return r -- unauthorized
+    _          -> return r
 
 
