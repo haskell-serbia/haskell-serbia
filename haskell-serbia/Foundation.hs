@@ -186,10 +186,14 @@ writePermission = True
 readPermission = False
 
 permissionsRequiredFor :: Route App  -> Bool -> [Permission]
-permissionsRequiredFor (TutorialEditR _) writePermission = [EditTutorial]
-permissionsRequiredFor (TutorialEditR _) readPermission  = [EditTutorial]
-permissionsRequiredFor TutorialsR  writePermission       = [PostTutorial]
-permissionsRequiredFor TutorialsR  readPermission        = [PostTutorial]
+-- permissionsRequiredFor (TutorialEditR _) writePermission = [EditTutorial]
+-- permissionsRequiredFor (TutorialEditR _) readPermission  = [EditTutorial]
+-- permissionsRequiredFor TutorialsR  writePermission       = [PostTutorial]
+-- permissionsRequiredFor TutorialsR  readPermission        = [PostTutorial]
+permissionsRequiredFor (TutorialEditR _) writePermission = []
+permissionsRequiredFor (TutorialEditR _) readPermission  = []
+permissionsRequiredFor TutorialsR  writePermission       = []
+permissionsRequiredFor TutorialsR  readPermission        = []
 
 permissionsRequiredFor             _  _                  = []
 

@@ -16,6 +16,7 @@ postTutorialsR = do
     runFormPost $ FH.tutorialForm now
   case res of
     FormSuccess tutorial -> do
+      (_, user) <- requireAuthPair
       tid <- runDB $ insert tutorial
       redirect $ TutorialRR tid
     _ -> defaultLayout $ do $(widgetFile "tutorials/new")

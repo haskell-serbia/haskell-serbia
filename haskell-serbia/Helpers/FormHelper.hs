@@ -5,21 +5,48 @@ import           Import
 import           Yesod.Form.Bootstrap3
 import           Yesod.Text.Markdown
 
+titleSettings :: FieldSettings master
+titleSettings = FieldSettings {
+    fsLabel = "Title",
+    fsTooltip = Just "Title",
+    fsId = Nothing,
+    fsName = Just "title",
+    fsAttrs = [("autofocus", "true"),("class","form-control")]
+}
+
+contentSettings :: FieldSettings master
+contentSettings = FieldSettings {
+    fsLabel = "Content",
+    fsTooltip = Just "Content",
+    fsId = Nothing,
+    fsName = Just "content",
+    fsAttrs = [("class","form-control")]
+}
+
+authorSettings :: FieldSettings master
+authorSettings = FieldSettings {
+    fsLabel = "Author email",
+    fsTooltip = Just "author email",
+    fsId = Nothing,
+    fsName = Just "author",
+    fsAttrs = [("class","form-control")]
+}
+
 
 tutorialForm :: UTCTime -> Form Tutorial
 tutorialForm  now = renderDivs $ Tutorial
-  <$> areq textField "Title" Nothing
-  <*> areq markdownField "Content" Nothing
-  <*> (entityKey <$> areq authorField "Author email" Nothing)
+  <$> areq textField titleSettings Nothing
+  <*> areq markdownField contentSettings Nothing
+  <*> (entityKey <$> areq authorField authorSettings Nothing)
   <*> pure now
   where
     authorField = checkMMap UH.findAuthor (userEmail . entityVal) textField
 
 tutorialFormEdit :: Tutorial -> UTCTime -> Form Tutorial
 tutorialFormEdit tutorial now = renderDivs $ Tutorial
-  <$> areq textField "Title"  (Just $ tutorialTitle tutorial)
-  <*> areq markdownField "Content"  (Just $ tutorialContent tutorial)
-  <*> (entityKey <$> areq authorField "Author email" Nothing)
+  <$> areq textField titleSettings  (Just $ tutorialTitle tutorial)
+  <*> areq markdownField contentSettings  (Just $ tutorialContent tutorial)
+  <*> (entityKey <$> areq authorField authorSettings Nothing)
   <*> pure now
   where
     authorField = checkMMap UH.findAuthor (userEmail . entityVal) textField

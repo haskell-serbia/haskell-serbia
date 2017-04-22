@@ -7,3 +7,5 @@ findAuthor email = do
   case mperson of
     Just person -> return $ Right person
     Nothing     -> return $ Left ("Author not found." :: Text)
+
+
