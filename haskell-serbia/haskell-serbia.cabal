@@ -29,6 +29,7 @@ library
                      Handler.TutorialEdit
                      Widget.Header
                      Helpers.UserHelper
+                     Helpers.FormHelper
 
 
     if flag(dev) || flag(library-only)
