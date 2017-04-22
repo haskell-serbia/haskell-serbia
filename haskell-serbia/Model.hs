@@ -3,7 +3,6 @@
 module Model where
 
 import ClassyPrelude.Yesod
-import Database.Persist.Quasi
 import Text.Markdown (Markdown)
 import Yesod.Text.Markdown ()
 
@@ -20,7 +19,8 @@ User
 Tutorial
    title Text
    content Markdown
-   -- created UTCTime default=now()
+   createdBy UserId
+   createdAt UTCTime default=now()
    deriving Show
 Role
    name Text

@@ -2,9 +2,6 @@
 
     <h1>
       Access granted!
+      <p> Nothing to see here yet, page is under construction
 
-    <p>
-      This page is protected and access is allowed only for authenticated users.
 
-    <p>
-      Your data is protected with us <strong><span class="username">#{userEmail user}</span></strong>!

@@ -182,13 +182,16 @@ instance Yesod App where
 -- PERMISSIONS
 data Permission = PostTutorial | EditTutorial
 
-permissionsRequiredFor :: Route App  -> Bool -> [Permission]
-permissionsRequiredFor (TutorialEditR _) True  = [EditTutorial]
-permissionsRequiredFor (TutorialEditR _) False = [EditTutorial]
-permissionsRequiredFor TutorialsR  True        = [PostTutorial]
-permissionsRequiredFor TutorialsR  False       = [PostTutorial]
+writePermission = True
+readPermission = False
 
-permissionsRequiredFor             _  _        = []
+permissionsRequiredFor :: Route App  -> Bool -> [Permission]
+permissionsRequiredFor (TutorialEditR _) writePermission = [EditTutorial]
+permissionsRequiredFor (TutorialEditR _) readPermission  = [EditTutorial]
+permissionsRequiredFor TutorialsR  writePermission       = [PostTutorial]
+permissionsRequiredFor TutorialsR  readPermission        = [PostTutorial]
+
+permissionsRequiredFor             _  _                  = []
 
 
 isAuthorizedTo :: Maybe User -> [Permission] -> HandlerT App IO AuthResult

@@ -28,6 +28,7 @@ library
                      Handler.TutorialR
                      Handler.TutorialEdit
                      Widget.Header
+                     Helpers.UserHelper
 
 
     if flag(dev) || flag(library-only)

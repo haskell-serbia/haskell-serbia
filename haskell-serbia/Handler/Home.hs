@@ -1,7 +1,7 @@
 module Handler.Home where
 
-import Import
-import Widget.Header
+import           Import
+import           Widget.Header
 
 
 twitterUsername :: String
