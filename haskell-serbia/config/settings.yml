@@ -8,7 +8,8 @@ ip-from-header: "_env:IP_FROM_HEADER:false"
 
 # Default behavior: determine the application root from the request headers.
 # Uncomment to set an explicit approot
-#approot:        "_env:APPROOT:https://haskell-serbia.com:3000"
+#approot:        "_env:APPROOT:http://localhost:3000"
+#approot:        "_env:APPROOT:static"
 
 # Optional values with the following production defaults.
 # In development, they default to the inverse.
@@ -22,7 +23,7 @@ ip-from-header: "_env:IP_FROM_HEADER:false"
 
 # NB: If you need a numeric value (e.g. 123) to parse as a String, wrap it in single quotes (e.g. "_env:PGPASS:'123'")
 # See https://github.com/yesodweb/yesod/wiki/Configuration#parsing-numeric-values-as-strings
-
+ssl: "true"
 database:
   user:     "_env:PGUSER:yesod"
   password: "_env:PGPASS: 8888_haskel_serbia"
