@@ -94,7 +94,7 @@ instance Yesod App where
                 , NavbarLeft $ MenuItem
                     { menuItemLabel = "Tutorials"
                     , menuItemRoute =  TutorialListR
-                    , menuItemAccessCallback = isNothing muser
+                    , menuItemAccessCallback = True
                     }
                 , NavbarLeft $ MenuItem
                     { menuItemLabel = "Profile"
@@ -114,7 +114,7 @@ instance Yesod App where
                  , NavbarRight $ MenuItem
                     { menuItemLabel = "Create Tutorial"
                     , menuItemRoute =  TutorialsR
-                    , menuItemAccessCallback = isNothing muser
+                    , menuItemAccessCallback = True 
                     }
 
                 ]
