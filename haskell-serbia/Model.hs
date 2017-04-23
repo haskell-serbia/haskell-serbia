@@ -15,6 +15,7 @@ User
     UniqueUser email
     name Text Maybe
     lastname Text Maybe
+    role RoleId Maybe
     deriving Typeable
 Tutorial
    title Text
@@ -24,6 +25,5 @@ Tutorial
    deriving Show
 Role
    name Text
-   user UserId
-
+   deriving Show
 |]

@@ -37,16 +37,15 @@ tutorialForm :: UTCTime -> Form Tutorial
 tutorialForm  now = renderDivs $ Tutorial
   <$> areq textField titleSettings Nothing
   <*> areq markdownField contentSettings Nothing
-  <*> (entityKey <$> areq authorField authorSettings Nothing)
+  <*>  lift requireAuthId
   <*> pure now
-  where
-    authorField = checkMMap UH.findAuthor (userEmail . entityVal) textField
 
 tutorialFormEdit :: Tutorial -> UTCTime -> Form Tutorial
 tutorialFormEdit tutorial now = renderDivs $ Tutorial
   <$> areq textField titleSettings  (Just $ tutorialTitle tutorial)
   <*> areq markdownField contentSettings  (Just $ tutorialContent tutorial)
-  <*> (entityKey <$> areq authorField authorSettings Nothing)
+  <*>  lift requireAuthId
   <*> pure now
-  where
-    authorField = checkMMap UH.findAuthor (userEmail . entityVal) textField
+  -- <*> (entityKey <$> areq authorField authorSettings Nothing)
+  -- where
+  --   authorField = checkMMap UH.findAuthor (userEmail . entityVal) textField

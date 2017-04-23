@@ -58,6 +58,7 @@ mkYesodData "App" [parseRoutes|
 tutorial/edit/#TutorialId TutorialEditR GET POST
 |]
 
+mkMessage "App" "translations" "en"
 type Form x = Html -> MForm (HandlerT App IO) (FormResult x, Widget)
 
 instance Yesod App where
@@ -135,17 +136,30 @@ instance Yesod App where
 
     -- Routes not requiring authentication.
 
-    -- isAuthorized (AuthR _) _ = return Authorized
-    -- isAuthorized HomeR _ = return Authorized
-    -- isAuthorized TutorialListR  _ = return Authorized
-    -- isAuthorized (TutorialRR _)  _ = return Authorized
-    -- isAuthorized FaviconR _ = return Authorized
-    -- isAuthorized RobotsR _ = return Authorized
-    -- isAuthorized (StaticR _) _ = return Authorized
+    isAuthorized (AuthR _) _ = return Authorized
+    isAuthorized HomeR _ = return Authorized
+    isAuthorized TutorialListR  _ = return Authorized
+    isAuthorized (TutorialRR _)  _ = return Authorized
+    isAuthorized FaviconR _ = return Authorized
+    isAuthorized RobotsR _ = return Authorized
+    isAuthorized (StaticR _) _ = return Authorized
 
-    -- isAuthorized ProfileR _ = isAuthenticated
-    -- isAuthorized (TutorialEditR _)  _ = isAuthenticated
-    -- isAuthorized TutorialsR  _ = isAuthenticated -- return Authorized
+    isAuthorized ProfileR _ = isAuthenticated
+    isAuthorized TutorialsR  _ = return Authorized
+
+    isAuthorized (TutorialEditR _) True = do
+        mauth <- maybeAuth
+        case mauth of
+            Nothing -> return AuthenticationRequired
+            Just (Entity _ user)
+                | isAdmin user -> return Authorized
+                | otherwise    -> unauthorizedI MsgNotAnAdmin
+
+    -- check if user can have access to page
+    -- isAuthorized route isWrite = do
+    --   mauth <- maybeAuth
+    --   let user =   fmap entityVal mauth
+    --   user `isAuthorizedTo` permissionsRequiredFor route isWrite
 
 
     addStaticContent ext mime content = do
@@ -172,49 +186,47 @@ instance Yesod App where
 
     defaultMessageWidget title body = $(widgetFile "default-message-widget")
 
-    -- check if user can have access to page
-    isAuthorized route isWrite = do
-      mauth <- maybeAuth
-      let user =   fmap entityVal mauth
-      user `isAuthorizedTo` permissionsRequiredFor route isWrite
 
 
 -- PERMISSIONS
-data Permission = PostTutorial | EditTutorial
-
-writePermission = True
-readPermission = False
-
-permissionsRequiredFor :: Route App  -> Bool -> [Permission]
--- permissionsRequiredFor (TutorialEditR _) writePermission = [EditTutorial]
--- permissionsRequiredFor (TutorialEditR _) readPermission  = [EditTutorial]
--- permissionsRequiredFor TutorialsR  writePermission       = [PostTutorial]
--- permissionsRequiredFor TutorialsR  readPermission        = [PostTutorial]
-permissionsRequiredFor (TutorialEditR _) writePermission = []
-permissionsRequiredFor (TutorialEditR _) readPermission  = []
-permissionsRequiredFor TutorialsR  writePermission       = []
-permissionsRequiredFor TutorialsR  readPermission        = []
-
-permissionsRequiredFor             _  _                  = []
+isAdmin :: User -> Bool
+isAdmin user = userEmail user == "brutallesale@gmail.com"
 
 
-isAuthorizedTo :: Maybe User -> [Permission] -> HandlerT App IO AuthResult
-_       `isAuthorizedTo` []     = return Authorized
-Nothing `isAuthorizedTo` (_:_)  = isAuthenticated
-Just u  `isAuthorizedTo` (p:ps) = do
-  r <- u `hasPermissionTo` p
-  case r of
-    Authorized -> Just u `isAuthorizedTo` ps
-    _          -> return r
+-- data Permission = PostTutorial | EditTutorial
 
-hasPermissionTo :: User -> Permission -> Handler AuthResult
-user `hasPermissionTo` PostTutorial
-  | userEmail user == "brutallesale@gmail.com" = return Authorized
-  | otherwise    = isAuthenticated
+-- writePermission :: Bool
+-- writePermission = True
 
-user `hasPermissionTo` EditTutorial
-  | userEmail user == "brutallesale@gmail.com" = return Authorized
-  | otherwise    = isAuthenticated
+-- readPermission :: Bool
+-- readPermission = False
+
+-- permissionsRequiredFor :: Route App  -> Bool -> [Permission]
+-- permissionsRequiredFor (TutorialEditR _) writePermission = []
+-- permissionsRequiredFor (TutorialEditR _) readPermission  = []
+-- permissionsRequiredFor TutorialsR  writePermission       = []
+-- permissionsRequiredFor TutorialsR  readPermission        = []
+
+-- permissionsRequiredFor             _  _                  = []
+
+
+-- isAuthorizedTo :: Maybe User -> [Permission] -> HandlerT App IO AuthResult
+-- _       `isAuthorizedTo` []     = return Authorized
+-- Nothing `isAuthorizedTo` (_:_)  = isAuthenticated
+-- Just u  `isAuthorizedTo` (p:ps) = do
+--   r <- u `hasPermissionTo` p
+--   case r of
+--     Authorized -> Just u `isAuthorizedTo` ps
+--     _          -> return r
+
+-- hasPermissionTo :: User -> Permission -> Handler AuthResult
+-- user `hasPermissionTo` PostTutorial
+--   | userEmail user == "brutallesale@gmail.com" = return Authorized
+--   | otherwise    = isAuthenticated
+
+-- user `hasPermissionTo` EditTutorial
+--   | userEmail user == "brutallesale@gmail.com" = return Authorized
+--   | otherwise    = isAuthenticated
 
 
 
@@ -252,7 +264,7 @@ instance YesodAuth App where
 
     -- Need to find the UserId for the given email address.
     getAuthId creds = runDB $ do
-        x <- insertBy $ User (credsIdent creds) Nothing Nothing False Nothing Nothing
+        x <- insertBy $ User (credsIdent creds) Nothing Nothing False Nothing Nothing Nothing
         return $ Just $
             case x of
                 Left (Entity userid _) -> userid -- newly added user
@@ -401,7 +413,7 @@ instance YesodAuthEmail App where
     afterPasswordRoute _ = HomeR
 
     addUnverified email verkey =
-        runDB $ insert $ User email Nothing (Just verkey) False Nothing Nothing
+        runDB $ insert $ User email Nothing (Just verkey) False Nothing Nothing Nothing
 
     sendVerifyEmail email _ verurl = do
         liftIO $ putStrLn $ "Copy/ Paste this URL in your browser:" DM.<> verurl
