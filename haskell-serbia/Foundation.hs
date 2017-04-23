@@ -131,6 +131,7 @@ instance Yesod App where
 
         withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 
+
     -- The page to be redirected to when authentication is required.
     authRoute _ = Just $ AuthR LoginR
 
@@ -145,7 +146,8 @@ instance Yesod App where
     isAuthorized (StaticR _) _ = return Authorized
 
     isAuthorized ProfileR _ = isAuthenticated
-    isAuthorized TutorialsR  _ = return Authorized
+    isAuthorized TutorialsR  False = return Authorized
+    isAuthorized (TutorialEditR _) False = return Authorized
 
     isAuthorized (TutorialEditR _) True = do
         mauth <- maybeAuth
@@ -155,12 +157,20 @@ instance Yesod App where
                 | isAdmin user -> return Authorized
                 | otherwise    -> unauthorizedI MsgNotAnAdmin
 
+    isAuthorized TutorialsR  True = do
+        mauth <- maybeAuth
+        case mauth of
+            Nothing -> return AuthenticationRequired
+            Just (Entity _ user)
+                | isAdmin user -> return Authorized
+                | otherwise    -> unauthorizedI MsgNotAnAdmin
+
+
     -- check if user can have access to page
     -- isAuthorized route isWrite = do
     --   mauth <- maybeAuth
     --   let user =   fmap entityVal mauth
     --   user `isAuthorizedTo` permissionsRequiredFor route isWrite
-
 
     addStaticContent ext mime content = do
         master <- getYesod
@@ -176,6 +186,8 @@ instance Yesod App where
       where
         -- Generate a unique filename based on the content itself
         genFileName lbs = "autogen-" ++ base64md5 lbs
+
+
 
     shouldLog app _source level =
         appShouldLogAll (appSettings app)
