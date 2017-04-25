@@ -23,7 +23,7 @@ ip-from-header: "_env:IP_FROM_HEADER:false"
 
 # NB: If you need a numeric value (e.g. 123) to parse as a String, wrap it in single quotes (e.g. "_env:PGPASS:'123'")
 # See https://github.com/yesodweb/yesod/wiki/Configuration#parsing-numeric-values-as-strings
-ssl: "true"
+ssl: true
 database:
   user:     "_env:PGUSER:yesod"
   password: "_env:PGPASS: 8888_haskel_serbia"

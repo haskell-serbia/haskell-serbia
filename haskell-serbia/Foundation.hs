@@ -435,10 +435,10 @@ instance YesodAuthEmail App where
             , mailHeaders =
                 [ ("Subject", "Verify your email address")
                 ]
-            , mailParts = [[textPart, htmlPart]]
+            , mailParts = [[textP, htmlP]]
             }
       where
-        textPart = Part
+        textP = Part
             { partType = "text/plain; charset=utf-8"
             , partEncoding = None
             , partFilename = Nothing
@@ -452,7 +452,7 @@ instance YesodAuthEmail App where
                 |]
             , partHeaders = []
             }
-        htmlPart = Part
+        htmlP = Part
             { partType = "text/html; charset=utf-8"
             , partEncoding = None
             , partFilename = Nothing
