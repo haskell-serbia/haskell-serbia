@@ -22,6 +22,7 @@ import           Text.Hamlet              (shamlet)
 import           Text.Shakespeare.Text    (stext)
 import Yesod.Auth.Email
 import qualified Yesod.Auth.Message       as Msg
+import Models.Role
 
 data App = App
     { appSettings    :: AppSettings
@@ -155,6 +156,7 @@ instance Yesod App where
             Nothing -> return AuthenticationRequired
             Just (Entity _ user)
                 | isAdmin user -> return Authorized
+                | isAuthor user -> return Authorized
                 | otherwise    -> unauthorizedI MsgNotAnAdmin
 
     isAuthorized TutorialsR  True = do
@@ -163,6 +165,7 @@ instance Yesod App where
             Nothing -> return AuthenticationRequired
             Just (Entity _ user)
                 | isAdmin user -> return Authorized
+                | isAuthor user -> return Authorized
                 | otherwise    -> unauthorizedI MsgNotAnAdmin
 
 
@@ -203,6 +206,10 @@ instance Yesod App where
 -- PERMISSIONS
 isAdmin :: User -> Bool
 isAdmin user = userEmail user == "brutallesale@gmail.com"
+
+isAuthor :: User -> Bool
+isAuthor user = userRole user == Admin
+
 
 
 -- data Permission = PostTutorial | EditTutorial
@@ -276,7 +283,7 @@ instance YesodAuth App where
 
     -- Need to find the UserId for the given email address.
     getAuthId creds = runDB $ do
-        x <- insertBy $ User (credsIdent creds) Nothing Nothing False Nothing Nothing Nothing
+        x <- insertBy $ User (credsIdent creds) Nothing Nothing False Nothing Nothing Haskeller
         return $ Just $
             case x of
                 Left (Entity userid _) -> userid -- newly added user
@@ -425,7 +432,7 @@ instance YesodAuthEmail App where
     afterPasswordRoute _ = HomeR
 
     addUnverified email verkey =
-        runDB $ insert $ User email Nothing (Just verkey) False Nothing Nothing Nothing
+        runDB $ insert $ User email Nothing (Just verkey) False Nothing Nothing Haskeller
 
     sendVerifyEmail email _ verurl = do
         liftIO $ putStrLn $ "Copy/ Paste this URL in your browser:" DM.<> verurl

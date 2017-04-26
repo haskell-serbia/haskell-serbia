@@ -30,6 +30,7 @@ library
                      Widget.Header
                      Helpers.UserHelper
                      Helpers.FormHelper
+                     Models.Role
 
 
     if flag(dev) || flag(library-only)
