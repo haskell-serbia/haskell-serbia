@@ -17,6 +17,7 @@ library
                      Foundation
                      Import
                      Import.NoFoundation
+                     Models.Role
                      Model
                      Settings
                      Settings.StaticFiles

@@ -413,3 +413,28 @@ body {
 .voffset7 { margin-top: 80px; }
 .voffset8 { margin-top: 100px; }
 .voffset9 { margin-top: 150px; }
+
+
+select.btn {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    width:40px!important;
+}
+
+select.btn-mini {
+    height:15px!important; 
+    line-height: 14px;
+    padding-right: 16px;
+    background-color: #0085A1;
+
+}
+select.btn-mini:hover{
+    color: black;
+    background-color: #0085A1;
+    border: 1px solid #0085A1;
+}
+select.btn-mini + .caret {
+    margin-left: -20px;
+    margin-top: 9px;
+}

@@ -26,3 +26,13 @@ PleaseCorrectComment: Your submitted comment had some errors, please correct and
 
 HomepageTitle: Yesod Blog Demo
 BlogArchiveTitle: Blog Archive
+
+SwitchLanguage: Switch language to:
+Switch: Switch
+
+MenuHomeTitle: Home
+MenuTutorialsTitle: Tutorials 
+MenuProfileTitle: Profile 
+MenuLoginTitle: Login 
+MenuLogoutTitle: Logout
+MenuCreateTutorialTitle: Create Tutorial 

@@ -5,6 +5,9 @@ module Model where
 import ClassyPrelude.Yesod
 import Text.Markdown (Markdown)
 import Yesod.Text.Markdown ()
+import Models.Role
+
+
 
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
 User
@@ -15,7 +18,7 @@ User
     UniqueUser email
     name Text Maybe
     lastname Text Maybe
-    role RoleId Maybe
+    role Role
     deriving Typeable
 Tutorial
    title Text
@@ -23,8 +26,6 @@ Tutorial
    createdBy UserId
    createdAt UTCTime default=now()
    deriving Show
-Role
-   name Text
-   deriving Show
+
 |]
 

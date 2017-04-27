@@ -21,18 +21,22 @@ import           Network.Mail.Mime
 import           Text.Hamlet              (shamlet)
 import           Text.Shakespeare.Text    (stext)
 import Yesod.Auth.Email
-import qualified Yesod.Auth.Message       as Msg
+import qualified Yesod.Auth.Message       as Msgs
+import Models.Role
+
 
 data App = App
-    { appSettings    :: AppSettings
-    , appStatic      :: Static -- ^ Settings for static file serving.
-    , appConnPool    :: ConnectionPool -- ^ Database connection pool.
-    , appHttpManager :: Manager
-    , appLogger      :: Logger
-    }
+  { appSettings :: AppSettings
+  , appStatic :: Static -- ^ Settings for static file serving.
+  , appConnPool :: ConnectionPool -- ^ Database connection pool.
+  , appHttpManager :: Manager
+  , appLogger :: Logger
+  }
+
+mkMessage "App" "messages" "en"
 
 data MenuItem = MenuItem
-    { menuItemLabel :: Text
+    { menuItemLabel :: AppMessage
     , menuItemRoute :: Route App
     , menuItemAccessCallback :: Bool
     }
@@ -50,6 +54,7 @@ mkYesodData "App" [parseRoutes|
 
 / HomeR GET
 
+/lang LangR POST
 /profile ProfileR GET
 
 !/tutorials/all TutorialListR GET
@@ -58,7 +63,6 @@ mkYesodData "App" [parseRoutes|
 tutorial/edit/#TutorialId TutorialEditR GET POST
 |]
 
-mkMessage "App" "translations" "en"
 type Form x = Html -> MForm (HandlerT App IO) (FormResult x, Widget)
 
 instance Yesod App where
@@ -87,34 +91,34 @@ instance Yesod App where
         -- Define the menu items of the header.
         let menuItems =
                 [ NavbarLeft $ MenuItem
-                    { menuItemLabel = "Home"
+                    { menuItemLabel = MsgMenuHomeTitle
                     , menuItemRoute = HomeR
                     , menuItemAccessCallback = True
                     }
                 , NavbarLeft $ MenuItem
-                    { menuItemLabel = "Tutorials"
+                    { menuItemLabel =  MsgMenuTutorialsTitle
                     , menuItemRoute =  TutorialListR
                     , menuItemAccessCallback = True
                     }
                 , NavbarLeft $ MenuItem
-                    { menuItemLabel = "Profile"
+                    { menuItemLabel = MsgMenuProfileTitle
                     , menuItemRoute = ProfileR
                     , menuItemAccessCallback = isJust muser
                     }
                 , NavbarRight $ MenuItem
-                    { menuItemLabel = "Login"
+                    { menuItemLabel = MsgMenuLoginTitle
                     , menuItemRoute = AuthR LoginR
                     , menuItemAccessCallback = isNothing muser
                     }
                 , NavbarRight $ MenuItem
-                    { menuItemLabel = "Logout"
+                    { menuItemLabel = MsgMenuLogoutTitle
                     , menuItemRoute = AuthR LogoutR
                     , menuItemAccessCallback = isJust muser
                     }
                  , NavbarRight $ MenuItem
-                    { menuItemLabel = "Create Tutorial"
+                    { menuItemLabel = MsgMenuCreateTutorialTitle
                     , menuItemRoute =  TutorialsR
-                    , menuItemAccessCallback = True 
+                    , menuItemAccessCallback = True
                     }
 
                 ]
@@ -139,6 +143,8 @@ instance Yesod App where
 
     isAuthorized (AuthR _) _ = return Authorized
     isAuthorized HomeR _ = return Authorized
+    isAuthorized LangR _ = return Authorized
+
     isAuthorized TutorialListR  _ = return Authorized
     isAuthorized (TutorialRR _)  _ = return Authorized
     isAuthorized FaviconR _ = return Authorized
@@ -155,6 +161,7 @@ instance Yesod App where
             Nothing -> return AuthenticationRequired
             Just (Entity _ user)
                 | isAdmin user -> return Authorized
+                | isAuthor user -> return Authorized
                 | otherwise    -> unauthorizedI MsgNotAnAdmin
 
     isAuthorized TutorialsR  True = do
@@ -163,6 +170,7 @@ instance Yesod App where
             Nothing -> return AuthenticationRequired
             Just (Entity _ user)
                 | isAdmin user -> return Authorized
+                | isAuthor user -> return Authorized
                 | otherwise    -> unauthorizedI MsgNotAnAdmin
 
 
@@ -203,6 +211,10 @@ instance Yesod App where
 -- PERMISSIONS
 isAdmin :: User -> Bool
 isAdmin user = userEmail user == "brutallesale@gmail.com"
+
+isAuthor :: User -> Bool
+isAuthor user = userRole user == Author
+
 
 
 -- data Permission = PostTutorial | EditTutorial
@@ -276,7 +288,7 @@ instance YesodAuth App where
 
     -- Need to find the UserId for the given email address.
     getAuthId creds = runDB $ do
-        x <- insertBy $ User (credsIdent creds) Nothing Nothing False Nothing Nothing Nothing
+        x <- insertBy $ User (credsIdent creds) Nothing Nothing False Nothing Nothing Haskeller
         return $ Just $
             case x of
                 Left (Entity userid _) -> userid -- newly added user
@@ -322,19 +334,19 @@ myRegisterHandler = do
     (widget, enctype) <- lift $ generateFormPost registrationForm
     toParentRoute <- getRouteToParent
     lift $ defaultLayout $ do
-        setTitleI Msg.RegisterLong
+        setTitleI Msgs.RegisterLong
         [whamlet|
               <div .col-md-4 .col-md-offset-4>
-                <p>_{Msg.EnterEmail}
+                <p>_{Msgs.EnterEmail}
                 <form method="post" action="@{toParentRoute registerR}" enctype=#{enctype}>
                         ^{widget}
                         <div .voffset4>
-                          <button .btn .btn-success .btn-sm .pull-right>_{Msg.Register}
+                          <button .btn .btn-success .btn-sm .pull-right>_{Msgs.Register}
         |]
     where
         registrationForm extra = do
             let emailSettings = FieldSettings {
-                fsLabel = SomeMessage Msg.Email,
+                fsLabel = SomeMessage Msgs.Email,
                 fsTooltip = Nothing,
                 fsId = Just "email",
                 fsName = Just "email",
@@ -368,15 +380,15 @@ myEmailLoginHandler toParent = do
                             <button type=submit .btn .btn-success .btn-sm>Login
                             &nbsp;
                             <a href="@{toParent registerR}" .btn .btn-default .btn-sm .pull-right>
-                                _{Msg.Register}
+                                _{Msgs.Register}
         |]
   where
     loginForm extra = do
 
-        emailMsg <- renderMessage' Msg.Email
+        emailMsg <- renderMessage' Msgs.Email
         (emailRes, emailView) <- mreq emailField (emailSettings emailMsg) Nothing
 
-        passwordMsg <- renderMessage' Msg.Password
+        passwordMsg <- renderMessage' Msgs.Password
         (passwordRes, passwordView) <- mreq passwordField (passwordSettings passwordMsg) Nothing
 
         let userRes = UserLoginForm Control.Applicative.<$> emailRes
@@ -393,7 +405,7 @@ myEmailLoginHandler toParent = do
         return (userRes, widget)
     emailSettings emailMsg =
         FieldSettings {
-            fsLabel = SomeMessage Msg.Email,
+            fsLabel = SomeMessage Msgs.Email,
             fsTooltip = Nothing,
             fsId = Just "email",
             fsName = Just "email",
@@ -402,7 +414,7 @@ myEmailLoginHandler toParent = do
 
     passwordSettings passwordMsg =
          FieldSettings {
-            fsLabel = SomeMessage Msg.Password,
+            fsLabel = SomeMessage Msgs.Password,
             fsTooltip = Nothing,
             fsId = Just "password",
             fsName = Just "password",
@@ -425,7 +437,7 @@ instance YesodAuthEmail App where
     afterPasswordRoute _ = HomeR
 
     addUnverified email verkey =
-        runDB $ insert $ User email Nothing (Just verkey) False Nothing Nothing Nothing
+        runDB $ insert $ User email Nothing (Just verkey) False Nothing Nothing Haskeller
 
     sendVerifyEmail email _ verurl = do
         liftIO $ putStrLn $ "Copy/ Paste this URL in your browser:" DM.<> verurl

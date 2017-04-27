@@ -4,7 +4,7 @@ import           Import
 
 getProfileR :: Handler Html
 getProfileR = do
-    (_, user) <- requireAuthPair
+    (_, muser) <- requireAuthPair
     defaultLayout $ do
-        setTitle . toHtml $ userEmail user <> "'s User page"
+        setTitle . toHtml $ userEmail muser <> "'s User page"
         $(widgetFile "profile")

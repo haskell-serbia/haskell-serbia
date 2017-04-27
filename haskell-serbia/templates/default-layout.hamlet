@@ -12,22 +12,30 @@
       <div .alert.alert-info #message>#{msg}
 
 
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+    <nav .navbar .navbar-default .navbar-custom .navbar-fixed-top">
+      <div .container-fluid>
+        <div .navbar-header">
+          <button type="button" .navbar-toggle .collapsed data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
             <span class="icon-bar">
             <span class="icon-bar">
             <span class="icon-bar">
 
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
+        <div .collapse .navbar-collapse id="bs-example-navbar-collapse-1">
+          <ul .nav .navbar-nav">
             $forall MenuItem label route _ <- navbarLeftFilteredMenuItems
                 <li :Just route == mcurrentRoute:.active>
-                    <a href="@{route}">#{label}
+                    <a href="@{route}">_{label}
             $forall MenuItem label route _ <- navbarRightFilteredMenuItems
                 <li :Just route == mcurrentRoute:.active>
-                    <a href="@{route}">#{label}
+                    <a href="@{route}">_{label}
+
+          <form class="navbar-search pull-right" action=@{LangR} method=post>
+              <div> 
+                  <select name=lang .btn-xs btn-primary btn-mini>
+                      <option value=en>English
+                      <option value=sr>Serbian
+                      <span .carret>
+                  <input type=submit class="btn-xs btn-primary btn-mini" value=_{MsgSwitch}>
 
 
 ^{widget}
