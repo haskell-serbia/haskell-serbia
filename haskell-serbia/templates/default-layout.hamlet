@@ -28,13 +28,15 @@
             $forall MenuItem label route _ <- navbarRightFilteredMenuItems
                 <li :Just route == mcurrentRoute:.active>
                     <a href="@{route}">_{label}
-          <ul .nav .navbar-nav .dropdown>
-            <form action=@{LangR} method=post>
-                        _{MsgSwitchLanguage}
-                        <select name=lang>
-                            <option value=en>English
-                            <option value=sr>Serbian
-                        <input type=submit value=_{MsgSwitch}>
+
+          <form class="navbar-search pull-right" action=@{LangR} method=post>
+              <div> 
+                  <select name=lang .btn-xs btn-primary btn-mini>
+                      <option value=en>English
+                      <option value=sr>Serbian
+                      <span .carret>
+                  <input type=submit class="btn-xs btn-primary btn-mini" value=_{MsgSwitch}>
+
 
 ^{widget}
 
