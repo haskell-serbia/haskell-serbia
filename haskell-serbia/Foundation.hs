@@ -152,7 +152,7 @@ instance Yesod App where
     isAuthorized (StaticR _) _ = return Authorized
 
     isAuthorized ProfileR _ = isAuthenticated
-    isAuthorized TutorialsR  False = return Authorized
+    -- isAuthorized TutorialsR  False = return Authorized
     isAuthorized (TutorialEditR _) False = return Authorized
 
     isAuthorized (TutorialEditR _) True = do
@@ -164,7 +164,7 @@ instance Yesod App where
                 | isAuthor user -> return Authorized
                 | otherwise    -> unauthorizedI MsgNotAnAdmin
 
-    isAuthorized TutorialsR  True = do
+    isAuthorized TutorialsR  _ = do
         mauth <- maybeAuth
         case mauth of
             Nothing -> return AuthenticationRequired
@@ -172,6 +172,7 @@ instance Yesod App where
                 | isAdmin user -> return Authorized
                 | isAuthor user -> return Authorized
                 | otherwise    -> unauthorizedI MsgNotAnAdmin
+
 
 
     -- check if user can have access to page
@@ -210,7 +211,7 @@ instance Yesod App where
 
 -- PERMISSIONS
 isAdmin :: User -> Bool
-isAdmin user = userEmail user == "brutallesale@gmail.com"
+isAdmin user = userRole user == Admin
 
 isAuthor :: User -> Bool
 isAuthor user = userRole user == Author

@@ -9,6 +9,7 @@
             #{lastname}
 
         <a href="#{userEmail muser}" .btn .btn-link>#{userEmail muser} 
+        <p>User role is: #{show $ userRole muser}
         <p>(page is under construction)
 
 
