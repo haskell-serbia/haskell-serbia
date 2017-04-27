@@ -14,5 +14,9 @@ getHomeR = do
       setTitle "Haskell Srbija"
       $(widgetFile "homepage")
 
-
+postLangR :: Handler ()
+postLangR = do
+    lang <- runInputPost $ ireq textField "lang"
+    setLanguage lang
+    redirect HomeR
 

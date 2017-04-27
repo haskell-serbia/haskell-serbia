@@ -18,7 +18,7 @@ User
     UniqueUser email
     name Text Maybe
     lastname Text Maybe
-    role Role default=Haskeller
+    role Role
     deriving Typeable
 Tutorial
    title Text
@@ -26,5 +26,6 @@ Tutorial
    createdBy UserId
    createdAt UTCTime default=now()
    deriving Show
+
 |]
 

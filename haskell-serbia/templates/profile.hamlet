@@ -1,7 +1,14 @@
 <div .ui.container>
+     <div .form-group>
+        <button .btn .btn-sm .pull-right>EDIT
+        <p>Access granted!
+        <h5 .title>
+          $maybe name <- userName muser
+            #{name} 
+          $maybe lastname <- userLastname muser
+            #{lastname}
 
-    <h1>
-      Access granted!
-      <p> Nothing to see here yet, page is under construction
+        <a href="#{userEmail muser}" .btn .btn-link>#{userEmail muser} 
+        <p>(page is under construction)
 
 
