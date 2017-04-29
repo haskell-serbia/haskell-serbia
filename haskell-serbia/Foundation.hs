@@ -60,7 +60,10 @@ mkYesodData "App" [parseRoutes|
 !/tutorials/all TutorialListR GET
 !/tutorials/new TutorialsR GET POST
 !/tutorial/#TutorialId TutorialRR GET
-tutorial/edit/#TutorialId TutorialEditR GET POST
+!/tutorial/edit/#TutorialId TutorialEditR GET POST
+!/manager  ManagerR GET
+!/manager/edit/#UserId  ManagerEditR POST
+
 |]
 
 type Form x = Html -> MForm (HandlerT App IO) (FormResult x, Widget)
@@ -120,6 +123,11 @@ instance Yesod App where
                     , menuItemRoute =  TutorialsR
                     , menuItemAccessCallback = True
                     }
+                 , NavbarRight $ MenuItem
+                    { menuItemLabel = MsgMenuManagerTitle
+                    , menuItemRoute =  ManagerR
+                    , menuItemAccessCallback = isJust muser
+                    }
 
                 ]
 
@@ -173,6 +181,21 @@ instance Yesod App where
                 | isAuthor user -> return Authorized
                 | otherwise    -> unauthorizedI MsgNotAnAdmin
 
+    isAuthorized ManagerR  _ = do
+        mauth <- maybeAuth
+        case mauth of
+            Nothing -> return AuthenticationRequired
+            Just (Entity _ user)
+                | isAdmin user -> return Authorized
+                | otherwise    -> unauthorizedI MsgNotAnAdmin
+
+    isAuthorized (ManagerEditR _)  _ = do
+        mauth <- maybeAuth
+        case mauth of
+            Nothing -> return AuthenticationRequired
+            Just (Entity _ user)
+                | isAdmin user -> return Authorized
+                | otherwise    -> unauthorizedI MsgNotAnAdmin
 
 
     -- check if user can have access to page

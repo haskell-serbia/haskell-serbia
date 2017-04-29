@@ -28,6 +28,8 @@ library
                      Handler.TutorialList
                      Handler.TutorialR
                      Handler.TutorialEdit
+                     Handler.Manager
+                     Handler.ManagerEdit
                      Widget.Header
                      Helpers.UserHelper
                      Helpers.FormHelper

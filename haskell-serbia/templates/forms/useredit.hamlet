@@ -1,0 +1,4 @@
+<div .row col-md-6 .col-md-offset-2>
+            <form method=post action=@{ManagerEditR} enctype=application/x-www-form-urlencoded>
+                  ^{widget}
+                  <button .btn .btn-default .btn-xs type=submit>Create account

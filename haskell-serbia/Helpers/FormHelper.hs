@@ -2,6 +2,7 @@ module Helpers.FormHelper where
 
 import           Helpers.UserHelper    as UH
 import           Import
+import           Models.Role
 import           Yesod.Form.Bootstrap3
 import           Yesod.Text.Markdown
 
@@ -49,3 +50,17 @@ tutorialFormEdit tutorial now = renderDivs $ Tutorial
   -- <*> (entityKey <$> areq authorField authorSettings Nothing)
   -- where
   --   authorField = checkMMap UH.findAuthor (userEmail . entityVal) textField
+
+
+userAForm :: User -> AForm Handler User
+userAForm u =  User
+    <$> areq textField "Email" (Just $ userEmail  u)
+    <*> aopt textField "Password" (Just $ userPassword  u)
+    <*> aopt textField "Verification key" (Just $ userVerkey u)
+    <*> areq boolField "Verified" (Just $ userVerified u)
+    <*> aopt textField "Name" (Just $ userName u)
+    <*> aopt textField "Lastname" (Just $ userLastname u)
+    <*> areq (selectFieldList roles) "Role" (Just $ userRole u)
+  where
+    roles :: [(Text, Role)]
+    roles = [("Admin", Admin), ("Author", Author), ("Haskeller", Haskeller)]

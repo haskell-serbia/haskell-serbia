@@ -8,3 +8,4 @@ MenuProfileTitle: Profil
 MenuLoginTitle: Login 
 MenuLogoutTitle: Logout
 MenuCreateTutorialTitle: Kreiraj Tutorijal 
+MenuManagerTitle: Korisnicke dozvole 
