@@ -10,4 +10,5 @@
                   $forall Entity id u <- allUsers
                     <h4>
                         <li>
-                            <a href=@{ManagerEditR id}>#{userEmail u}
+                            <p>#{userEmail u}
+                               ^{FH.userAForm  u}

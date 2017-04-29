@@ -53,7 +53,7 @@ tutorialFormEdit tutorial now = renderDivs $ Tutorial
 
 
 userAForm :: User -> AForm Handler User
-userAForm u =  User
+userAForm  u =  User
     <$> areq textField "Email" (Just $ userEmail  u)
     <*> aopt textField "Password" (Just $ userPassword  u)
     <*> aopt textField "Verification key" (Just $ userVerkey u)
