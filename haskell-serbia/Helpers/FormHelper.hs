@@ -1,9 +1,7 @@
 module Helpers.FormHelper where
 
-import           Helpers.UserHelper    as UH
 import           Import
 import           Models.Role
-import           Yesod.Form.Bootstrap3
 import           Yesod.Text.Markdown
 
 titleSettings :: FieldSettings master
@@ -51,16 +49,25 @@ tutorialFormEdit tutorial now = renderDivs $ Tutorial
   -- where
   --   authorField = checkMMap UH.findAuthor (userEmail . entityVal) textField
 
+defaultFormSettings :: SomeMessage master -> FieldSettings master
+defaultFormSettings t = FieldSettings {
+    fsLabel = t,
+    fsTooltip = Nothing,
+    fsId = Nothing,
+    fsName = Nothing,
+    fsAttrs = [("class","form-control")]
+}
+
 
 userAForm :: User -> Form User
 userAForm  u = renderDivs $ User
-    <$> areq textField  "Email" (Just $ userEmail  u)
-    <*> aopt passwordField "Password" (Just $ userPassword  u)
-    <*> aopt textField "Verification key" (Just $ userVerkey u)
-    <*> areq boolField "Verified" (Just $ userVerified u)
-    <*> aopt textField "Name" (Just $ userName u)
-    <*> aopt textField "Lastname" (Just $ userLastname u)
-    <*> areq (selectFieldList roles) "Role" (Just $ userRole u)
+    <$> areq textField (defaultFormSettings "Email") (Just $ userEmail  u)
+    <*> aopt passwordField (defaultFormSettings "Password") (Just $ userPassword  u)
+    <*> aopt textField (defaultFormSettings "Verification key") (Just $ userVerkey u)
+    <*> areq boolField (defaultFormSettings "Verified") (Just $ userVerified u)
+    <*> aopt textField (defaultFormSettings "Name") (Just $ userName u)
+    <*> aopt textField (defaultFormSettings "Lastname") (Just $ userLastname u)
+    <*> areq (selectFieldList roles) (defaultFormSettings "Role") (Just $ userRole u)
   where
     roles :: [(Text, Role)]
     roles = [("Admin", Admin), ("Author", Author), ("Haskeller", Haskeller)]
