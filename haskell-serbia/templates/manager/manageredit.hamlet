@@ -1,0 +1,7 @@
+<div .container>
+    <div .row>
+        <div .col-md-12>
+          <h2> EDIT: #{userEmail user} 
+          <form method=post enctype=#{enctype} action=@{ManagerEditR userId}>
+                ^{widget}
+                <button .btn .btn-success>Edit!

@@ -2,13 +2,11 @@
     <div .row>
         <div .col-md-12>
 
-          <h1>User list          
-          <br />
-          <br />
-
-              <ul>
+          <h4>Manage users          
+          <table .table .table-responsive .table-bordered>
                   $forall Entity id u <- allUsers
-                    <h4>
-                        <li>
+                    <tr>
+                        <td>
                             <p>#{userEmail u}
-                               ^{FH.userAForm  u}
+                        <td>
+                            <a href=@{ManagerEditR id} .btn .btn-sm .btn-primary .pull-right>EDIT

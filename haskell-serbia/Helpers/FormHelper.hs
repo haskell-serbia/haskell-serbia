@@ -52,10 +52,10 @@ tutorialFormEdit tutorial now = renderDivs $ Tutorial
   --   authorField = checkMMap UH.findAuthor (userEmail . entityVal) textField
 
 
-userAForm :: User -> AForm Handler User
-userAForm  u =  User
-    <$> areq textField "Email" (Just $ userEmail  u)
-    <*> aopt textField "Password" (Just $ userPassword  u)
+userAForm :: User -> Form User
+userAForm  u = renderDivs $ User
+    <$> areq textField  "Email" (Just $ userEmail  u)
+    <*> aopt passwordField "Password" (Just $ userPassword  u)
     <*> aopt textField "Verification key" (Just $ userVerkey u)
     <*> areq boolField "Verified" (Just $ userVerified u)
     <*> aopt textField "Name" (Just $ userName u)
