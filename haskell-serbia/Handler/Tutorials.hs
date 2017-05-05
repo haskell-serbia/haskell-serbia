@@ -7,7 +7,7 @@ getTutorialsR :: Handler Html
 getTutorialsR = do
   now      <- liftIO getCurrentTime
   (widget, enctype) <- generateFormPost $ FH.tutorialForm now
-  defaultLayout $ do $(widgetFile "tutorials/new")
+  defaultLayout  $(widgetFile "tutorials/new")
 
 postTutorialsR :: Handler Html
 postTutorialsR = do
@@ -18,4 +18,4 @@ postTutorialsR = do
     FormSuccess tutorial -> do
       tid <- runDB $ insert tutorial
       redirect $ TutorialRR tid
-    _ -> defaultLayout $ do $(widgetFile "tutorials/new")
+    _ -> defaultLayout  $(widgetFile "tutorials/new")

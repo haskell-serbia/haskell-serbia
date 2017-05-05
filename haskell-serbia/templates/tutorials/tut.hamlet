@@ -12,3 +12,5 @@
                 #{lastname}  
             
           <div> #{tutorialContent tut}
+          <div>
+            ^{disqusWidget}
