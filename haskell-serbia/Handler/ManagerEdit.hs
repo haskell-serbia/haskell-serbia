@@ -8,7 +8,7 @@ getManagerEditR :: UserId -> Handler Html
 getManagerEditR userId = do
   user <- runDB . get404 $ userId
   (widget, enctype) <- generateFormPost (FH.userAForm user)
-  defaultLayout $ do $(widgetFile "manager/manageredit")
+  defaultLayout  $(widgetFile "manager/manageredit")
 
 
 
@@ -40,7 +40,7 @@ postManagerEditR userId = do
           , UserRole     =. userRole u
           ]
       setMessage "User edited!"
-      redirect $ ManagerR
+      redirect ManagerR
     _ -> do
       setMessage "User not edited"
       redirect $ ManagerEditR userId
