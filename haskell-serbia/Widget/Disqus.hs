@@ -1,25 +1,26 @@
 module Widget.Disqus where
 
 import Import
+import Text.Julius (rawJS)
 
 -- disqus widget to render comments 
-disqusWidget :: WidgetT App IO ()
-disqusWidget  = do
-   let page_identifier = 1 :: Int
-   let page_url = "http://localhost:3000/tutorial/" :: Text
+disqusWidget :: Key Tutorial -> WidgetT App IO ()
+disqusWidget articleIdentifier = do
+   let textId = Number $ entityKey articleIdentifier
+   let page_url = String "http://haskell-serbia.com/tutorial/"
    toWidget([hamlet|
-            <div #disqus-thread> 
+                <div #disqus_thread> 
         |])
    toWidget([julius|
-            var disqus_config = function () {
-                this.page.url = "http://localhost:3000/tutorial/"; 
-                this.page.identifier = 1;
-            };
+                (function() { 
+                    var disqus_config = function () {
+                        this.page.url = #{page_url}; 
+                        this.page.identifier = #{textId};
+                    };
+                    var d = document, s = d.createElement('script');
+                    s.src = 'https://haskell-serbia.disqus.com/embed.js';
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
 
-            (function() { // DON'T EDIT BELOW THIS LINE
-                var d = document, s = d.createElement('script');
-                s.src = 'https://haskell-serbia.disqus.com/embed.js';
-                s.setAttribute('data-timestamp', +new Date());
-                (d.head || d.body).appendChild(s);
-            })();
         |])

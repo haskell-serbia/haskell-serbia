@@ -13,4 +13,4 @@
             
           <div> #{tutorialContent tut}
           <div>
-            ^{disqusWidget}
+            ^{disqusWidget tutorialIdentifier}

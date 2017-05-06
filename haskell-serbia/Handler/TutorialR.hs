@@ -8,5 +8,6 @@ getTutorialRR tutorialId = do
   muid <- fmap entityKey <$> maybeAuth
   tut <- runDB $ get404 tutorialId
   author <- runDB $ get404 $ tutorialCreatedBy tut
+  let tutorialIdentifier = tutorialId
   let page_identifier = tutorialId
   defaultLayout $(widgetFile "tutorials/tut")

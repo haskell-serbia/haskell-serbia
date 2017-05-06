@@ -24,9 +24,6 @@ import Yesod.Auth.Email
 import qualified Yesod.Auth.Message       as Msgs
 import Models.Role
 
-page_url :: Text 
-page_url = "http://localhost:3000/tutorial/"
-
 data App = App
   { appSettings :: AppSettings
   , appStatic :: Static -- ^ Settings for static file serving.
