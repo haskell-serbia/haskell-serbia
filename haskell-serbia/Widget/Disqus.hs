@@ -1,13 +1,12 @@
 module Widget.Disqus where
 
 import Import
-import Text.Julius (rawJS)
 
--- disqus widget to render comments 
 disqusWidget :: Key Tutorial -> WidgetT App IO ()
 disqusWidget articleIdentifier = do
-   let textId = Number $ entityKey articleIdentifier
+   let textId =  String $ toPathPiece articleIdentifier
    let page_url = String "http://haskell-serbia.com/tutorial/"
+   let jsLink  = String "https://haskell-serbia.disqus.com/embed.js"
    toWidget([hamlet|
                 <div #disqus_thread> 
         |])
@@ -18,7 +17,7 @@ disqusWidget articleIdentifier = do
                         this.page.identifier = #{textId};
                     };
                     var d = document, s = d.createElement('script');
-                    s.src = 'https://haskell-serbia.disqus.com/embed.js';
+                    s.src = '#{jsLink}';
                     s.setAttribute('data-timestamp', +new Date());
                     (d.head || d.body).appendChild(s);
                 })();
