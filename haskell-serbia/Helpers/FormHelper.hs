@@ -71,9 +71,9 @@ specialFormSettings label tooltip idname name classname = FieldSettings {
 userAForm :: User -> Form User
 userAForm  u = renderDivs $ User
     <$> areq textField (defaultFormSettings "Email") (Just $ userEmail  u)
-    <*> aopt passwordField (defaultFormSettings "Password") (Just $ userPassword  u)
-    <*> aopt textField (defaultFormSettings "Verification key") (Just $ userVerkey u)
-    <*> areq boolField (defaultFormSettings "Verified") (Just $ userVerified u)
+    <*> aopt hiddenField (defaultFormSettings "") (Just $ userPassword  u)
+    <*> aopt textField (defaultFormSettings "Verification key" ) (Just $ userVerkey u)
+    <*> areq boolField (specialFormSettings "Verified" "" "" "" "radio form-inline control-label") (Just $ userVerified u)
     <*> aopt textField (defaultFormSettings "Name") (Just $ userName u)
     <*> aopt textField (defaultFormSettings "Lastname") (Just $ userLastname u)
     <*> areq (selectFieldList roles) (defaultFormSettings "Role") (Just $ userRole u)
