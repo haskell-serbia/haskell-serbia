@@ -7115,3 +7115,7 @@ a.list-group-item-danger.active:focus {
 .popover {
     color: #2c3e50
 }
+pre{
+	background: #1e1e1f!important;
+	color: #00BCD4!important;
+}
