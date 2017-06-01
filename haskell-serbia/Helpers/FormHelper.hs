@@ -58,6 +58,15 @@ defaultFormSettings t = FieldSettings {
     fsAttrs = [("class","form-control")]
 }
 
+specialFormSettings :: SomeMessage master -> SomeMessage master  -> Text -> Text -> Text -> FieldSettings master
+specialFormSettings label tooltip idname name classname = FieldSettings {
+    fsLabel = label,
+    fsTooltip = Just tooltip,
+    fsId = Just idname,
+    fsName = Just name,
+    fsAttrs = [("class",classname)]
+}
+
 
 userAForm :: User -> Form User
 userAForm  u = renderDivs $ User
