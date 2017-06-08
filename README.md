@@ -7,6 +7,6 @@ We aim to provide  tutorials that will help beginners in starting out with haske
 #### Installation
 
 To install locally you can do `stack build` and then `stack exec -- yesod devel`
-Website runs on postgres database so you will need that too. There is a sql dump file in the root of the repo. Admin user email is test@test.com and password is test
+Website runs on postgres database so you will need that too. There is a sql dump file in the root of the repo. Admin user email is `test@test.com` and password is `test`
 #### Contributors are welcome!
 We aro looking forward to any comunity contributions 
