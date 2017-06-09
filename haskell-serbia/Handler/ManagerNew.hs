@@ -12,4 +12,13 @@ getManagerNewR = do
 
 
 postManagerNewR :: Handler Html
-postManagerNewR =  error " not implemented"
+postManagerNewR =  do
+    ((res, _), _) <- runFormPost FH.newUserForm
+    case res of
+      FormSuccess u -> do
+          _ <- runDB $ insert $ User (userEmail u) (userPassword u) Nothing True (userName u)  (userLastname u) (userRole u)
+          setMessage "User created!"
+          redirect ManagerR
+      _ -> do
+        setMessage "User not created"
+        redirect $ ManagerNewR
