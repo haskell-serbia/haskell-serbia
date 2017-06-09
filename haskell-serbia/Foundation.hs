@@ -62,6 +62,7 @@ mkYesodData "App" [parseRoutes|
 !/tutorial/edit/#TutorialId TutorialEditR GET POST
 !/manager  ManagerR GET
 !/manager/edit/#UserId  ManagerEditR GET POST
+!/manager/new  ManagerNewR GET POST
 
 |]
 
