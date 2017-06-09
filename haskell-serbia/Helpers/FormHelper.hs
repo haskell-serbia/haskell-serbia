@@ -80,3 +80,17 @@ userAForm  u = renderDivs $ User
   where
     roles :: [(Text, Role)]
     roles = [("Admin", Admin), ("Author", Author), ("Haskeller", Haskeller)]
+
+newUserForm ::  Form User
+newUserForm = renderDivs $ User
+  <$> areq textField (defaultFormSettings "Email") Nothing
+  <*> aopt passwordField  (defaultFormSettings "Password") Nothing
+  <*> aopt textField (defaultFormSettings "Verification key") Nothing
+  <*> areq boolField (defaultFormSettings "Verified") Nothing
+  <*> aopt textField (defaultFormSettings "Name") Nothing
+  <*> aopt textField (defaultFormSettings "Last Name") Nothing
+  <*> areq (selectFieldList roles) (defaultFormSettings "Role") Nothing
+  where
+    roles :: [(Text, Role)]
+    roles = [("Admin", Admin), ("Author", Author), ("Haskeller", Haskeller)]
+
