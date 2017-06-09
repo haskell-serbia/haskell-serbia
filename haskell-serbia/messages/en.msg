@@ -37,3 +37,4 @@ MenuLoginTitle: Login
 MenuLogoutTitle: Logout
 MenuCreateTutorialTitle: Create Tutorial 
 MenuManagerTitle: User roles
+MenuCreateNewUserTitle: Create User 

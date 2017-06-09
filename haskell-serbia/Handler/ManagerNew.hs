@@ -11,7 +11,7 @@ getManagerNewR = do
 
 postManagerNewR :: Handler Html
 postManagerNewR = do
-    defaultLayout  $(widgetFile "manager/managernew")
+  defaultLayout  $(widgetFile "manager/managernew")
 
 
 
