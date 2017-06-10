@@ -1,4 +1,4 @@
-# [haskell-serbia](http://haskell-serbia.com)
+# [haskell-serbia](http://haskell-serbia.com) [![Build Status](https://travis-ci.org/haskell-serbia/haskell-serbia.svg?branch=master)](https://travis-ci.org/haskell-serbia/haskell-serbia)
 
 
 ### Serbian Haskell user group website
