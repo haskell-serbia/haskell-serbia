@@ -9,3 +9,4 @@ MenuLoginTitle: Login
 MenuLogoutTitle: Logout
 MenuCreateTutorialTitle: Kreiraj Tutorijal 
 MenuManagerTitle: Korisnicke dozvole 
+MenuCreateNewUserTitle: Novi Korisnik 

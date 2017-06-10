@@ -61,6 +61,7 @@ mkYesodData "App" [parseRoutes|
 !/tutorial/#TutorialId TutorialRR GET
 !/tutorial/edit/#TutorialId TutorialEditR GET POST
 !/manager  ManagerR GET
+!/manager/new  ManagerNewR GET POST
 !/manager/edit/#UserId  ManagerEditR GET POST
 
 |]
@@ -117,10 +118,10 @@ instance Yesod App where
                     , menuItemRoute = AuthR LogoutR
                     , menuItemAccessCallback = isJust muser
                     }
-                 , NavbarRight $ MenuItem
-                    { menuItemLabel = MsgMenuCreateTutorialTitle
-                    , menuItemRoute =  TutorialsR
-                    , menuItemAccessCallback = True
+                 , NavbarLeft $ MenuItem
+                    { menuItemLabel = MsgMenuCreateNewUserTitle
+                    , menuItemRoute =  ManagerNewR
+                    , menuItemAccessCallback = isJust muser
                     }
                  , NavbarRight $ MenuItem
                     { menuItemLabel = MsgMenuManagerTitle
@@ -154,6 +155,8 @@ instance Yesod App where
 
     isAuthorized TutorialListR  _ = return Authorized
     isAuthorized (TutorialRR _)  _ = return Authorized
+    isAuthorized ManagerNewR _  = return Authorized
+
     isAuthorized FaviconR _ = return Authorized
     isAuthorized RobotsR _ = return Authorized
     isAuthorized (StaticR _) _ = return Authorized
