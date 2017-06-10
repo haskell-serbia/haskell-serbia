@@ -23,6 +23,7 @@ before_install:
 
 install:
 # Build dependencies
+- stack setup 
 - stack build 
 
 script:
