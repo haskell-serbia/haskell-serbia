@@ -19,7 +19,7 @@ User
     name Text Maybe
     lastname Text Maybe
     role Role
-    deriving Typeable
+    deriving Typeable Show
 Tutorial
    title Text
    content Markdown

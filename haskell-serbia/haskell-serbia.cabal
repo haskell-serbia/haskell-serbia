@@ -30,6 +30,7 @@ library
                      Handler.TutorialEdit
                      Handler.Manager
                      Handler.ManagerEdit
+                     Handler.ManagerNew
                      Widget.Header
                      Widget.Disqus
                      Helpers.UserHelper
