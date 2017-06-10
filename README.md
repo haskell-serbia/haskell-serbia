@@ -13,4 +13,4 @@ $ psql haskell_serbia < haskell_serbia.sql
 ```
 After import is finished you can login as admin user. Login email is `test@test.com` and password is `test`
 #### Contributors are welcome!
-We are looking forward to any community contributions 
+We are looking forward to any community contributions. You can choose existing issue and create new branch from develop or create new issue if you spot anything wrong or would like new feature. 
