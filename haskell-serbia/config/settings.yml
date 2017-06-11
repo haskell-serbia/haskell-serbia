@@ -33,5 +33,5 @@ database:
   database: "_env:PGDATABASE:haskell_serbia"
   poolsize: "_env:PGPOOLSIZE:10"
 
-copyright: Haskell Srbija 2017 
-#analytics: UA-YOURCODE
+  copyright: Haskell Srbija 2017
+  #analytics: UA-YOURCODE

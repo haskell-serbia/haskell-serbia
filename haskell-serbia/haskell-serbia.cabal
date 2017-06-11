@@ -111,6 +111,7 @@ library
                  , mime-mail                     >= 0.4.13
                  , blaze-html                    >= 0.8.1.3
                  , mime-mail-ses
+                 , time
 
 executable         haskell-serbia
     if flag(library-only)

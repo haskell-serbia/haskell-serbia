@@ -35,4 +35,4 @@ postTutorialEditR tutorialId = do
       redirect $ TutorialRR tutorialId
     _ -> do
       setMessage "Tutorial not edited"
-      redirect $ TutorialListR
+      redirect $ TutorialListR 1
