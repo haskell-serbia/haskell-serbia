@@ -15,11 +15,13 @@
                             <a href=@{TutorialRR id}>#{tutorialTitle post}
 
 
-          <button .btn-warning>#{currentPage}
-
-          $maybe next <- next
-            <a href=@{TutorialListR next}>#{next}
 
           $maybe previous <- previous
-            <a href=@{TutorialListR previous}>#{previous}
+            <a href=@{TutorialListR previous}><<
+
+          $maybe next <- next
+            <a href=@{TutorialListR next}>>>
+
+          <p>Number of tutorials : #{entriesCount}
+
 
