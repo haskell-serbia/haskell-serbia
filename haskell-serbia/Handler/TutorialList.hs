@@ -5,21 +5,20 @@ import Database.Esqueleto as E
 import Text.Read (read, readMaybe)
 import Import
 
-
 selectCount q = do
   res <- select $ from $ (\x -> q x >> return countRows)
   return $ fromMaybe 0 $ (\(Value a) -> a) <$> headMay res
 
 getTutorialListR :: Page -> Handler Html
 getTutorialListR currentPage = do
-  allPosts <- runDB $ selectList [] []
   now      <- liftIO getCurrentTime
-
   entriesCount <- runDB $ selectCount $ \tutorial -> do
                   E.where_  (tutorial ^. TutorialCreatedAt E.<=. E.val now)
 
   let next = calculateNextPage entriesCount 1 currentPage
   let previous = calculatePreviousPage entriesCount 1 currentPage
+  allPosts <- runDB $ selectList [] [Desc TutorialId, LimitTo 5, OffsetBy (currentPage - 1)]
+
   defaultLayout $ do
     $(widgetFile "tutorials/all")
 
