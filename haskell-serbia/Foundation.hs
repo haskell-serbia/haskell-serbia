@@ -99,7 +99,7 @@ instance Yesod App where
                     }
                 , NavbarLeft $ MenuItem
                     { menuItemLabel =  MsgMenuTutorialsTitle
-                    , menuItemRoute =  TutorialListR 1 
+                    , menuItemRoute =  TutorialListR 1
                     , menuItemAccessCallback = True
                     }
                 , NavbarLeft $ MenuItem
@@ -386,7 +386,7 @@ myRegisterHandler = do
                     ^{fvInput emailView}
                 |]
 
-            return (userRes, widget) 
+            return (userRes, widget)
 
 
 myEmailLoginHandler :: (Route Auth -> Route App) -> WidgetT App IO ()
@@ -530,9 +530,3 @@ instance YesodAuthEmail App where
                 }
 
     getEmail = runDB . fmap (fmap userEmail) . get
-
-
-
-
-
-
