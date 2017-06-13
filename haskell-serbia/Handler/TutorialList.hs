@@ -19,6 +19,7 @@ getTutorialListR currentPage = do
                   E.where_  (tutorial ^. TutorialCreatedAt E.<=. E.val now)
 
   let next = calculateNextPage entriesCount postsByPage currentPage
+
   let previous = calculatePreviousPage entriesCount postsByPage currentPage
   let off = if (currentPage - postsByPage) < 0 then 0 else (currentPage - postsByPage)
   allPosts <- runDB $ selectList [] [Desc TutorialId, LimitTo postsByPage, OffsetBy off]
@@ -28,11 +29,11 @@ getTutorialListR currentPage = do
 
 calculatePreviousPage :: Int -> Int -> Page -> Maybe Int
 calculatePreviousPage entries pageSize currentPage =
-  if n > 0 then Just n else Nothing
-  where n = if (entries - (pageSize * currentPage) - pageSize) > 0 then (entries - (pageSize * currentPage) - pageSize) else 0
+  if n <= entries && n > 0 then Just n else Nothing
+  where n = (pageSize * currentPage) - pageSize
 
 calculateNextPage :: Int -> Int -> Int -> Maybe Int
 calculateNextPage entries pageSize currentPage =
-  if n <= entries  then Just n else Nothing
-  where n =  entries - (pageSize * currentPage) + pageSize
+  if n <= entries && n > 0  then Just n else Nothing
+  where n =  (pageSize * currentPage) + pageSize
 
