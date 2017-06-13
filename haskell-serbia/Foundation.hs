@@ -56,7 +56,7 @@ mkYesodData "App" [parseRoutes|
 /lang LangR POST
 /profile ProfileR GET
 
-!/tutorials/all TutorialListR GET
+!/tutorials/page/#Page TutorialListR GET
 !/tutorials/new TutorialsR GET POST
 !/tutorial/#TutorialId TutorialRR GET
 !/tutorial/edit/#TutorialId TutorialEditR GET POST
@@ -66,7 +66,7 @@ mkYesodData "App" [parseRoutes|
 |]
 
 type Form x = Html -> MForm (HandlerT App IO) (FormResult x, Widget)
-
+type Page = Int
 instance Yesod App where
     approot = ApprootRequest $ \app req ->
         case appRoot $ appSettings app of
@@ -99,7 +99,7 @@ instance Yesod App where
                     }
                 , NavbarLeft $ MenuItem
                     { menuItemLabel =  MsgMenuTutorialsTitle
-                    , menuItemRoute =  TutorialListR
+                    , menuItemRoute =  TutorialListR 1
                     , menuItemAccessCallback = True
                     }
                 , NavbarLeft $ MenuItem
@@ -152,7 +152,7 @@ instance Yesod App where
     isAuthorized HomeR _ = return Authorized
     isAuthorized LangR _ = return Authorized
 
-    isAuthorized TutorialListR  _ = return Authorized
+    isAuthorized (TutorialListR _)  _ = return Authorized
     isAuthorized (TutorialRR _)  _ = return Authorized
     isAuthorized FaviconR _ = return Authorized
     isAuthorized RobotsR _ = return Authorized
@@ -280,8 +280,8 @@ isAuthor user = userRole user == Author
 -- Define breadcrumbs.
 instance YesodBreadcrumbs App where
   breadcrumb HomeR = return ("Home", Nothing)
-  breadcrumb TutorialListR = return ("All Tutorials", Just HomeR)
-  breadcrumb (TutorialRR _) = return ("Tutorial", Just TutorialListR)
+  breadcrumb (TutorialListR _) = return ("All Tutorials", Just HomeR)
+  breadcrumb (TutorialRR _) = return ("Tutorial", Just (TutorialListR 1))
 
   breadcrumb (AuthR _) = return ("Login", Just HomeR)
   breadcrumb ProfileR = return ("Profile", Just HomeR)
@@ -386,7 +386,7 @@ myRegisterHandler = do
                     ^{fvInput emailView}
                 |]
 
-            return (userRes, widget) 
+            return (userRes, widget)
 
 
 myEmailLoginHandler :: (Route Auth -> Route App) -> WidgetT App IO ()
@@ -530,9 +530,3 @@ instance YesodAuthEmail App where
                 }
 
     getEmail = runDB . fmap (fmap userEmail) . get
-
-
-
-
-
-
