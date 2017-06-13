@@ -23,7 +23,7 @@ before_install:
 
 install:
 # Build dependencies
-- cd /home/travis/haskell-serbia/haskell-serbia
+- cd ~/haskell-serbia/haskell-serbia
 - stack setup
 - stack --no-terminal --install-ghc test --only-dependencies --fast
 
