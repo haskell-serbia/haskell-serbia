@@ -144,9 +144,7 @@ executable         haskell-serbia
 test-suite test
     type:              exitcode-stdio-1.0
     main-is:           Spec.hs
-    other-modules:     Handler.CommentSpec
-                       Handler.CommonSpec
-                       Handler.HomeSpec
+    other-modules:     Handler.HomeSpec
                        Handler.ProfileSpec
                        TestImport
     hs-source-dirs:    test
@@ -177,7 +175,7 @@ test-suite test
                  , yesod-core
                  , yesod
                  , persistent
-                 , persistent-sqlite
+                 , persistent-postgresql         >= 2.6  
                  , resourcet
                  , monad-logger
                  , shakespeare

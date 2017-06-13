@@ -1,6 +1,6 @@
 module Handler.ProfileSpec (spec) where
 
-import TestImport
+import           TestImport
 
 spec :: Spec
 spec = withApp $ do
@@ -23,4 +23,4 @@ spec = withApp $ do
 
             get ProfileR
             let (Entity _ user) = userEntity
-            htmlAnyContain ".username" . unpack $ userIdent user
+            htmlAnyContain ".username" . unpack $ userEmail user
