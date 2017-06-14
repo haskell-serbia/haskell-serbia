@@ -1,0 +1,1 @@
+(function(){var disqus_config=function(){this.page.url='"http://haskell-serbia.com/tutorial/"';this.page.identifier='"1"'},d=document,s=d.createElement('script');s.src="https://haskell-serbia.disqus.com/embed.js";s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s)})()
