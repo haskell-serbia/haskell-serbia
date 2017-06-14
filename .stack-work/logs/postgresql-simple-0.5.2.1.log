@@ -1,0 +1,88 @@
+Configuring postgresql-simple-0.5.2.1...
+Building postgresql-simple-0.5.2.1...
+Preprocessing library postgresql-simple-0.5.2.1...
+[ 1 of 34] Compiling Database.PostgreSQL.Simple.TypeInfo.Types ( src/Database/PostgreSQL/Simple/TypeInfo/Types.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/TypeInfo/Types.o )
+[ 2 of 34] Compiling Database.PostgreSQL.Simple.TypeInfo.Static ( src/Database/PostgreSQL/Simple/TypeInfo/Static.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/TypeInfo/Static.o )
+[ 3 of 34] Compiling Database.PostgreSQL.Simple.Ok ( src/Database/PostgreSQL/Simple/Ok.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/Ok.o )
+[ 4 of 34] Compiling Database.PostgreSQL.Simple.Compat ( src/Database/PostgreSQL/Simple/Compat.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/Compat.o )
+[ 5 of 34] Compiling Database.PostgreSQL.Simple.Time.Internal.Parser ( src/Database/PostgreSQL/Simple/Time/Internal/Parser.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/Time/Internal/Parser.o )
+[ 6 of 34] Compiling Database.PostgreSQL.Simple.Time.Internal.Printer ( src/Database/PostgreSQL/Simple/Time/Internal/Printer.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/Time/Internal/Printer.o )
+[ 7 of 34] Compiling Database.PostgreSQL.Simple.Time.Implementation ( src/Database/PostgreSQL/Simple/Time/Implementation.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/Time/Implementation.o )
+[ 8 of 34] Compiling Database.PostgreSQL.Simple.Time ( src/Database/PostgreSQL/Simple/Time.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/Time.o )
+[ 9 of 34] Compiling Database.PostgreSQL.Simple.Time.Internal ( src/Database/PostgreSQL/Simple/Time/Internal.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/Time/Internal.o )
+[10 of 34] Compiling Database.PostgreSQL.Simple.Types ( src/Database/PostgreSQL/Simple/Types.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/Types.o )
+[11 of 34] Compiling Database.PostgreSQL.Simple.FromField[boot] ( src/Database/PostgreSQL/Simple/FromField.hs-boot, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/FromField.o-boot )
+[12 of 34] Compiling Database.PostgreSQL.Simple.FromRow[boot] ( src/Database/PostgreSQL/Simple/FromRow.hs-boot, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/FromRow.o-boot )
+[13 of 34] Compiling Database.PostgreSQL.Simple.SqlQQ ( src/Database/PostgreSQL/Simple/SqlQQ.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/SqlQQ.o )
+[14 of 34] Compiling Database.PostgreSQL.Simple.ToField[boot] ( src/Database/PostgreSQL/Simple/ToField.hs-boot, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/ToField.o-boot )
+[15 of 34] Compiling Database.PostgreSQL.Simple.ToRow[boot] ( src/Database/PostgreSQL/Simple/ToRow.hs-boot, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/ToRow.o-boot )
+[16 of 34] Compiling Database.PostgreSQL.Simple.ToField ( src/Database/PostgreSQL/Simple/ToField.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/ToField.o )
+[17 of 34] Compiling Database.PostgreSQL.Simple.Internal ( src/Database/PostgreSQL/Simple/Internal.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/Internal.o )
+
+src/Database/PostgreSQL/Simple/Internal.hs:36:1: warning: [-Wunused-imports]
+    The import of ‘Data.Monoid’ is redundant
+      except perhaps to import instances from ‘Data.Monoid’
+    To import instances alone, use: import Data.Monoid()
+
+src/Database/PostgreSQL/Simple/Internal.hs:353:17: warning: [-Wincomplete-patterns]
+    Pattern match(es) are non-exhaustive
+    In a case alternative:
+        Patterns not matched:
+            CopyBoth
+            SingleTuple
+
+src/Database/PostgreSQL/Simple/Internal.hs:373:5: warning: [-Wincomplete-patterns]
+    Pattern match(es) are non-exhaustive
+    In a case alternative:
+        Patterns not matched:
+            CopyBoth
+            SingleTuple
+[18 of 34] Compiling Database.PostgreSQL.Simple.Errors ( src/Database/PostgreSQL/Simple/Errors.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/Errors.o )
+
+src/Database/PostgreSQL/Simple/Errors.hs:28:1: warning: [-Wunused-imports]
+    The import of ‘Control.Applicative’ is redundant
+      except perhaps to import instances from ‘Control.Applicative’
+    To import instances alone, use: import Control.Applicative()
+[19 of 34] Compiling Database.PostgreSQL.Simple.LargeObjects ( src/Database/PostgreSQL/Simple/LargeObjects.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/LargeObjects.o )
+[20 of 34] Compiling Database.PostgreSQL.Simple.Notification ( src/Database/PostgreSQL/Simple/Notification.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/Notification.o )
+[21 of 34] Compiling Database.PostgreSQL.Simple.ToRow ( src/Database/PostgreSQL/Simple/ToRow.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/ToRow.o )
+[22 of 34] Compiling Database.PostgreSQL.Simple.Transaction ( src/Database/PostgreSQL/Simple/Transaction.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/Transaction.o )
+[23 of 34] Compiling Database.PostgreSQL.Simple.TypeInfo.Macro ( src/Database/PostgreSQL/Simple/TypeInfo/Macro.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/TypeInfo/Macro.o )
+[24 of 34] Compiling Database.PostgreSQL.Simple.Arrays ( src/Database/PostgreSQL/Simple/Arrays.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/Arrays.o )
+
+src/Database/PostgreSQL/Simple/Arrays.hs:19:1: warning: [-Wunused-imports]
+    The import of ‘Data.Monoid’ is redundant
+      except perhaps to import instances from ‘Data.Monoid’
+    To import instances alone, use: import Data.Monoid()
+[25 of 34] Compiling Database.PostgreSQL.Simple[boot] ( src/Database/PostgreSQL/Simple.hs-boot, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple.o-boot )
+[26 of 34] Compiling Database.PostgreSQL.Simple.TypeInfo ( src/Database/PostgreSQL/Simple/TypeInfo.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/TypeInfo.o )
+[27 of 34] Compiling Database.PostgreSQL.Simple.FromField ( src/Database/PostgreSQL/Simple/FromField.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/FromField.o )
+[28 of 34] Compiling Database.PostgreSQL.Simple.HStore.Implementation ( src/Database/PostgreSQL/Simple/HStore/Implementation.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/HStore/Implementation.o )
+[29 of 34] Compiling Database.PostgreSQL.Simple.HStore ( src/Database/PostgreSQL/Simple/HStore.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/HStore.o )
+[30 of 34] Compiling Database.PostgreSQL.Simple.HStore.Internal ( src/Database/PostgreSQL/Simple/HStore/Internal.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/HStore/Internal.o )
+[31 of 34] Compiling Database.PostgreSQL.Simple.Range ( src/Database/PostgreSQL/Simple/Range.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/Range.o )
+[32 of 34] Compiling Database.PostgreSQL.Simple.FromRow ( src/Database/PostgreSQL/Simple/FromRow.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/FromRow.o )
+[33 of 34] Compiling Database.PostgreSQL.Simple ( src/Database/PostgreSQL/Simple.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple.o )
+
+src/Database/PostgreSQL/Simple.hs:670:3: warning: [-Wincomplete-patterns]
+    Pattern match(es) are non-exhaustive
+    In a case alternative:
+        Patterns not matched:
+            PQ.CopyBoth
+            PQ.SingleTuple
+[34 of 34] Compiling Database.PostgreSQL.Simple.Copy ( src/Database/PostgreSQL/Simple/Copy.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/PostgreSQL/Simple/Copy.o )
+
+src/Database/PostgreSQL/Simple/Copy.hs:41:1: warning: [-Wunused-imports]
+    The import of ‘Control.Applicative’ is redundant
+      except perhaps to import instances from ‘Control.Applicative’
+    To import instances alone, use: import Control.Applicative()
+
+src/Database/PostgreSQL/Simple/Copy.hs:81:5: warning: [-Wincomplete-patterns]
+    Pattern match(es) are non-exhaustive
+    In a case alternative:
+        Patterns not matched:
+            CopyBoth
+            SingleTuple
+Installing library in
+/Users/v0d1ch/code/haskell-serbia/.stack-work/install/x86_64-osx/lts-8.4/8.0.2/lib/x86_64-osx-ghc-8.0.2/postgresql-simple-0.5.2.1-K93Yo0T3GAp91vobn7Uvp0
+Registering postgresql-simple-0.5.2.1...

@@ -1,0 +1,192 @@
+
+==================== FINAL INTERFACE ====================
+2017-06-14 15:27:57.84216 UTC
+
+interface haskell-serbia-0.0.0-IKwSvaSbrbm5d1kPLcilqo:Models.Role 8002
+  interface hash: 8b3fdcad28b703b1f1146b471bf52f4d
+  ABI hash: 33d3c063ff8cbe881929abdac584f068
+  export-list hash: 775ff4350811f074bf93c7bf37da1a05
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: 6bc19baef55b42ff484c4fc6c6af5c8b
+  sig of: Nothing
+  used TH splices: True
+  where
+exports:
+  Models.Role.Role{Models.Role.Admin Models.Role.Author Models.Role.Haskeller}
+module dependencies:
+package dependencies: aeson-0.11.3.0@aeson-0.11.3.0-K3njGK7U0xu7kjvjoVRSCw
+                      aeson-compat-0.3.6@aeson-compat-0.3.6-CZGdTMe0uikJhU3dtlwilz
+                      array-0.5.1.1@array-0.5.1.1
+                      attoparsec-0.13.1.0@attoparsec-0.13.1.0-HCAgpBrKCLJ5li8FbfXxE1
+                      auto-update-0.1.4@auto-update-0.1.4-EmUvNdmhEju51bHrtaEMpz
+                      base-4.9.1.0
+                      base-compat-0.9.1@base-compat-0.9.1-B9geVZFtCvE8ERS7UcvkRz
+                      base64-bytestring-1.0.0.1@base64-bytestring-1.0.0.1-4O9TExPPz6eI82Yj7L4SIj
+                      binary-0.8.3.0@binary-0.8.3.0
+                      blaze-html-0.8.1.3@blaze-html-0.8.1.3-4x5sR7CihaZBuBa398ibiy
+                      blaze-markup-0.7.1.1@blaze-markup-0.7.1.1-7tIWNv8iALFJhJ4kVxNmNT
+                      bytestring-0.10.8.1@bytestring-0.10.8.1
+                      conduit-1.2.9@conduit-1.2.9-KyEH1gT2SFlFXLffDx2XOT
+                      conduit-extra-1.1.15@conduit-extra-1.1.15-2VMH3VugTl95Hhk0jMjPg6
+                      containers-0.5.7.1@containers-0.5.7.1
+                      deepseq-1.4.2.0@deepseq-1.4.2.0 directory-1.3.0.0@directory-1.3.0.0
+                      dlist-0.8.0.2@dlist-0.8.0.2-6Wnps4GD7EFnRucVzXIFD
+                      easy-file-0.2.1@easy-file-0.2.1-rguMBNaECxLikt4CCDx0D
+                      exceptions-0.8.3@exceptions-0.8.3-ADEDRATtUrMK1JW4zMQ9U
+                      fast-logger-2.4.10@fast-logger-2.4.10-AASpkRsupvWAQEpNM5DQI
+                      filepath-1.4.1.1@filepath-1.4.1.1
+                      ghc-boot-th-8.0.2@ghc-boot-th-8.0.2 ghc-prim-0.5.0.0
+                      hashable-1.2.5.0@hashable-1.2.5.0-F4MWeNuv2sjJRqBd2T5ul4
+                      http-api-data-0.3.5@http-api-data-0.3.5-2qGPrBKC4pgLHxgQdgNgEV
+                      integer-gmp-1.0.0.1
+                      integer-logarithms-1.0.1@integer-logarithms-1.0.1-IEHCuEd5sG4JjSjlx7m5JF
+                      lifted-base-0.2.3.10@lifted-base-0.2.3.10-BoEavBFIcriDza63doCjS2
+                      mmorph-1.0.9@mmorph-1.0.9-5bASEvmIkr5CpdAYXwPsn0
+                      monad-control-1.0.1.0@monad-control-1.0.1.0-LQwQ0Hi5p0oAccTfTzbfD5
+                      monad-logger-0.3.20.2@monad-logger-0.3.20.2-B79xNS1OLE07RmfN9nQT1y
+                      monad-loops-0.4.3@monad-loops-0.4.3-ERCN4ZKCeeS5SRhwqXsLBP
+                      mtl-2.2.1@mtl-2.2.1-BLKBelFsPB3BoFeSWSOYj6
+                      old-locale-1.0.0.7@old-locale-1.0.0.7-KGBP1BSKxH5GCm0LnZP04j
+                      old-time-1.1.0.3@old-time-1.1.0.3-KWRsMSdY26c2L27Y9n9cyq
+                      path-pieces-0.2.1@path-pieces-0.2.1-7jYjtDsNHN0JfYriIYgB3j
+                      persistent-2.6@persistent-2.6-2zmnMrAZ4pjCmSBeBWKx1B
+                      persistent-template-2.5.1.6@persistent-template-2.5.1.6-DRfgiB9QodKF9P8bq5XbwK
+                      primitive-0.6.1.0@primitive-0.6.1.0-6AbSTw9JXz141LE5p6LGH
+                      random-1.1@random-1.1-9tceXaeYIMZ4JrKq20Egog
+                      resource-pool-0.2.3.2@resource-pool-0.2.3.2-DBgmZYXlKazI2NEJ1zhRAp
+                      resourcet-1.1.9@resourcet-1.1.9-Ej57FoSD8NQLck5u9CwWz8
+                      scientific-0.3.4.10@scientific-0.3.4.10-HRQd1hS6vMV6hvjSlMi8B0
+                      silently-1.2.5@silently-1.2.5-HsbqnAAyIOA8viZ4Sccs0a
+                      stm-2.4.4.1@stm-2.4.4.1-JQn4hNPyYjP5m9AcbI88Ve
+                      stm-chans-3.0.0.4@stm-chans-3.0.0.4-JX6Y7GVvdkg3BduVhEnPWu
+                      tagged-0.8.5@tagged-0.8.5-1mTloBSoUxv8dqUr8XBGBt
+                      template-haskell-2.11.1.0
+                      text-1.2.2.1@text-1.2.2.1-Ji7hMs2U4BkBwavd4taEVR
+                      time-1.6.0.1@time-1.6.0.1
+                      time-locale-compat-0.1.1.3@time-locale-compat-0.1.1.3-KZ1jqNx8uhlHjmuPPj6V1Y
+                      transformers-0.5.2.0@transformers-0.5.2.0
+                      transformers-base-0.4.4@transformers-base-0.4.4-GKSs0LKukAL8ymq2naFmrH
+                      unix-2.7.2.1@unix-2.7.2.1
+                      unix-time-0.3.7@unix-time-0.3.7-EhnEKT4D7hJajV74Sk5BE
+                      unordered-containers-0.2.7.2@unordered-containers-0.2.7.2-8AmrySQXjRGF6VciYs51fM
+                      uuid-types-1.0.3@uuid-types-1.0.3-7DISMfTGMIwFRGIC3QM3tK
+                      vector-0.11.0.0@vector-0.11.0.0-LMwQhhnXj8U3T5Bm1JFxG
+orphans: aeson-0.11.3.0@aeson-0.11.3.0-K3njGK7U0xu7kjvjoVRSCw:Data.Aeson.Types.Generic
+         aeson-0.11.3.0@aeson-0.11.3.0-K3njGK7U0xu7kjvjoVRSCw:Data.Aeson.Types.Instances
+         attoparsec-0.13.1.0@attoparsec-0.13.1.0-HCAgpBrKCLJ5li8FbfXxE1:Data.Attoparsec.ByteString.Char8
+         attoparsec-0.13.1.0@attoparsec-0.13.1.0-HCAgpBrKCLJ5li8FbfXxE1:Data.Attoparsec.Text.Internal
+         base-4.9.1.0:GHC.Base base-4.9.1.0:GHC.Float
+         binary-0.8.3.0@binary-0.8.3.0:Data.Binary.Generic
+         bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Builder
+         hashable-1.2.5.0@hashable-1.2.5.0-F4MWeNuv2sjJRqBd2T5ul4:Data.Hashable.Generic
+         persistent-2.6@persistent-2.6-2zmnMrAZ4pjCmSBeBWKx1B:Database.Persist.Sql.Orphan.PersistQuery
+         persistent-2.6@persistent-2.6-2zmnMrAZ4pjCmSBeBWKx1B:Database.Persist.Sql.Orphan.PersistStore
+         persistent-2.6@persistent-2.6-2zmnMrAZ4pjCmSBeBWKx1B:Database.Persist.Sql.Orphan.PersistUnique
+         persistent-template-2.5.1.6@persistent-template-2.5.1.6-DRfgiB9QodKF9P8bq5XbwK:Database.Persist.TH
+         stm-2.4.4.1@stm-2.4.4.1-JQn4hNPyYjP5m9AcbI88Ve:Control.Monad.STM
+         text-1.2.2.1@text-1.2.2.1-Ji7hMs2U4BkBwavd4taEVR:Data.Text
+         text-1.2.2.1@text-1.2.2.1-Ji7hMs2U4BkBwavd4taEVR:Data.Text.Lazy
+         text-1.2.2.1@text-1.2.2.1-Ji7hMs2U4BkBwavd4taEVR:Data.Text.Show
+         time-1.6.0.1@time-1.6.0.1:Data.Time.Calendar.Gregorian
+         time-1.6.0.1@time-1.6.0.1:Data.Time.Format.Parse
+         time-1.6.0.1@time-1.6.0.1:Data.Time.LocalTime.LocalTime
+         transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.Error
+         unix-time-0.3.7@unix-time-0.3.7-EhnEKT4D7hJajV74Sk5BE:Data.UnixTime.Diff
+         vector-0.11.0.0@vector-0.11.0.0-LMwQhhnXj8U3T5Bm1JFxG:Data.Vector.Fusion.Bundle
+         vector-0.11.0.0@vector-0.11.0.0-LMwQhhnXj8U3T5Bm1JFxG:Data.Vector.Unboxed
+family instance modules: attoparsec-0.13.1.0@attoparsec-0.13.1.0-HCAgpBrKCLJ5li8FbfXxE1:Data.Attoparsec.Internal.Types
+                         base-4.9.1.0:Control.Applicative base-4.9.1.0:Data.Complex
+                         base-4.9.1.0:Data.Either base-4.9.1.0:Data.Functor.Compose
+                         base-4.9.1.0:Data.Functor.Const base-4.9.1.0:Data.Functor.Identity
+                         base-4.9.1.0:Data.Functor.Product base-4.9.1.0:Data.Functor.Sum
+                         base-4.9.1.0:Data.List.NonEmpty base-4.9.1.0:Data.Monoid
+                         base-4.9.1.0:Data.Semigroup base-4.9.1.0:Data.Type.Equality
+                         base-4.9.1.0:Data.Version base-4.9.1.0:Data.Void
+                         base-4.9.1.0:GHC.Exts base-4.9.1.0:GHC.Generics
+                         base-4.9.1.0:GHC.IO.Exception base-4.9.1.0:GHC.TypeLits
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntMap.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntSet.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Sequence
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Set.Base
+                         dlist-0.8.0.2@dlist-0.8.0.2-6Wnps4GD7EFnRucVzXIFD:Data.DList
+                         ghc-boot-th-8.0.2@ghc-boot-th-8.0.2:GHC.LanguageExtensions.Type
+                         monad-control-1.0.1.0@monad-control-1.0.1.0-LQwQ0Hi5p0oAccTfTzbfD5:Control.Monad.Trans.Control
+                         monad-logger-0.3.20.2@monad-logger-0.3.20.2-B79xNS1OLE07RmfN9nQT1y:Control.Monad.Logger
+                         persistent-2.6@persistent-2.6-2zmnMrAZ4pjCmSBeBWKx1B:Database.Persist.Class.PersistConfig
+                         persistent-2.6@persistent-2.6-2zmnMrAZ4pjCmSBeBWKx1B:Database.Persist.Sql.Orphan.PersistStore
+                         persistent-2.6@persistent-2.6-2zmnMrAZ4pjCmSBeBWKx1B:Database.Persist.Sql.Types.Internal
+                         primitive-0.6.1.0@primitive-0.6.1.0-6AbSTw9JXz141LE5p6LGH:Control.Monad.Primitive
+                         resourcet-1.1.9@resourcet-1.1.9-Ej57FoSD8NQLck5u9CwWz8:Control.Monad.Trans.Resource.Internal
+                         tagged-0.8.5@tagged-0.8.5-1mTloBSoUxv8dqUr8XBGBt:Data.Tagged
+                         template-haskell-2.11.1.0:Language.Haskell.TH.Syntax
+                         text-1.2.2.1@text-1.2.2.1-Ji7hMs2U4BkBwavd4taEVR:Data.Text
+                         text-1.2.2.1@text-1.2.2.1-Ji7hMs2U4BkBwavd4taEVR:Data.Text.Lazy
+                         unordered-containers-0.2.7.2@unordered-containers-0.2.7.2-8AmrySQXjRGF6VciYs51fM:Data.HashMap.Base
+                         unordered-containers-0.2.7.2@unordered-containers-0.2.7.2-8AmrySQXjRGF6VciYs51fM:Data.HashSet
+                         uuid-types-1.0.3@uuid-types-1.0.3-7DISMfTGMIwFRGIC3QM3tK:Data.UUID.Types.Internal
+                         uuid-types-1.0.3@uuid-types-1.0.3-7DISMfTGMIwFRGIC3QM3tK:Data.UUID.Types.Internal.Builder
+                         vector-0.11.0.0@vector-0.11.0.0-LMwQhhnXj8U3T5Bm1JFxG:Data.Vector
+                         vector-0.11.0.0@vector-0.11.0.0-LMwQhhnXj8U3T5Bm1JFxG:Data.Vector.Primitive
+                         vector-0.11.0.0@vector-0.11.0.0-LMwQhhnXj8U3T5Bm1JFxG:Data.Vector.Storable
+                         vector-0.11.0.0@vector-0.11.0.0-LMwQhhnXj8U3T5Bm1JFxG:Data.Vector.Unboxed
+                         vector-0.11.0.0@vector-0.11.0.0-LMwQhhnXj8U3T5Bm1JFxG:Data.Vector.Unboxed.Base
+import  -/  base-4.9.1.0:Data.Either 20b09ef8d0a5b74fdec011c40c1587f5
+import  -/  base-4.9.1.0:GHC.Base c4231c43c07e46080a26bf94094c7aa1
+import  -/  base-4.9.1.0:GHC.Read b6821365d2d5fa2155c9e910160e7f57
+import  -/  base-4.9.1.0:GHC.Show a027f5ac24879eaba752f44aa90fe511
+import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
+import  -/  base-4.9.1.0:Text.Read 75c59863e882ebaec4532e9465e2ee9b
+import  -/  ghc-prim-0.5.0.0:GHC.Classes 0bdf3d057a415ec1b84a7b1994efbe47
+import  -/  persistent-2.6@persistent-2.6-2zmnMrAZ4pjCmSBeBWKx1B:Database.Persist.Class.PersistField ce1505dc78f8c0b86643336c6c8e7dd7
+import  -/  persistent-2.6@persistent-2.6-2zmnMrAZ4pjCmSBeBWKx1B:Database.Persist.Sql.Class 765d0cca0dc7bb21b1d75c91b3572a37
+import  -/  persistent-2.6@persistent-2.6-2zmnMrAZ4pjCmSBeBWKx1B:Database.Persist.Types.Base a718ec54e528a7d08e7c25502a06f7dd
+import  -/  persistent-template-2.5.1.6@persistent-template-2.5.1.6-DRfgiB9QodKF9P8bq5XbwK:Database.Persist.TH 8a5ab586539920a61a0c2cb0f93e54aa
+import  -/  text-1.2.2.1@text-1.2.2.1-Ji7hMs2U4BkBwavd4taEVR:Data.Text 02cbbc20bdd508fabc38de38896bbae0
+import  -/  text-1.2.2.1@text-1.2.2.1-Ji7hMs2U4BkBwavd4taEVR:Data.Text.Show 638b4149d86790151d6d4eeca215be94
+addDependentFile "/Users/v0d1ch/.stack/programs/x86_64-osx/ghc-8.0.2/lib/ghc-8.0.2/include/ghcversion.h"
+addDependentFile ".stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/autogen/cabal_macros.h"
+6f7e309f1d731c5511bc3fb0f91fb359
+  $fEqRole :: GHC.Classes.Eq Models.Role.Role
+  DFunId
+6f7e309f1d731c5511bc3fb0f91fb359
+  $fPersistFieldRole ::
+    Database.Persist.Class.PersistField.PersistField Models.Role.Role
+  DFunId
+6f7e309f1d731c5511bc3fb0f91fb359
+  $fPersistFieldSqlRole ::
+    Database.Persist.Sql.Class.PersistFieldSql Models.Role.Role
+  DFunId
+6f7e309f1d731c5511bc3fb0f91fb359
+  $fReadRole :: GHC.Read.Read Models.Role.Role
+  DFunId
+6f7e309f1d731c5511bc3fb0f91fb359
+  $fShowRole :: GHC.Show.Show Models.Role.Role
+  DFunId
+c04c62f44fe140375d7379a28ec9441a
+  $tc'Admin :: GHC.Types.TyCon
+4211d7607973390be01b01f5c6c0cb91
+  $tc'Author :: GHC.Types.TyCon
+8fe8fdfba0d9ff50d94aeabf797031db
+  $tc'Haskeller :: GHC.Types.TyCon
+860607673c13914f3ae8358261d935a6
+  $tcRole :: GHC.Types.TyCon
+aa11aa65d189373deae32a480a7d84b2
+  $trModule :: GHC.Types.Module
+6f7e309f1d731c5511bc3fb0f91fb359
+  data Role = Admin | Author | Haskeller
+instance GHC.Classes.Eq [Models.Role.Role] = Models.Role.$fEqRole
+instance Database.Persist.Class.PersistField.PersistField [Models.Role.Role]
+  = Models.Role.$fPersistFieldRole
+instance Database.Persist.Sql.Class.PersistFieldSql [Models.Role.Role]
+  = Models.Role.$fPersistFieldSqlRole
+instance GHC.Read.Read [Models.Role.Role] = Models.Role.$fReadRole
+instance GHC.Show.Show [Models.Role.Role] = Models.Role.$fShowRole
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: none
+require own pkg trusted: False
+

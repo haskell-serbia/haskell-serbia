@@ -1,0 +1,147 @@
+Configuring persistent-2.6...
+Building persistent-2.6...
+Preprocessing library persistent-2.6...
+
+Database/Persist/Class/PersistField.hs:7:14: warning:
+    -XOverlappingInstances is deprecated: instead use per-instance pragmas OVERLAPPING/OVERLAPPABLE/OVERLAPS
+
+Database/Persist/Sql/Class.hs:11:14: warning:
+    -XOverlappingInstances is deprecated: instead use per-instance pragmas OVERLAPPING/OVERLAPPABLE/OVERLAPS
+[ 1 of 24] Compiling Database.Persist.Types.Base ( Database/Persist/Types/Base.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Types/Base.o )
+
+Database/Persist/Types/Base.hs:10:1: warning: [-Wdeprecations]
+    Module ‘Control.Monad.Trans.Error’ is deprecated:
+      Use Control.Monad.Trans.Except instead
+
+Database/Persist/Types/Base.hs:22:1: warning: [-Wunused-imports]
+    The qualified import of ‘Data.Text.Read’ is redundant
+      except perhaps to import instances from ‘Data.Text.Read’
+    To import instances alone, use: import Data.Text.Read()
+
+Database/Persist/Types/Base.hs:93:10: warning: [-Wmissing-methods]
+    • No explicit implementation for
+        ‘fromPathPiece’ and ‘toPathPiece’
+    • In the instance declaration for ‘PathPiece Checkmark’
+
+Database/Persist/Types/Base.hs:272:10: warning: [-Wdeprecations]
+    In the use of type constructor or class ‘Error’
+    (imported from Control.Monad.Trans.Error):
+    Deprecated: "Use Control.Monad.Trans.Except instead"
+
+Database/Persist/Types/Base.hs:272:10: warning: [-Wdeprecations]
+    In the use of type constructor or class ‘Error’
+    (imported from Control.Monad.Trans.Error):
+    Deprecated: "Use Control.Monad.Trans.Except instead"
+[ 2 of 24] Compiling Database.Persist.Class.PersistField ( Database/Persist/Class/PersistField.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Class/PersistField.o )
+
+Database/Persist/Class/PersistField.hs:22:1: warning: [-Wunused-imports]
+    The import of ‘Control.Applicative’ is redundant
+      except perhaps to import instances from ‘Control.Applicative’
+    To import instances alone, use: import Control.Applicative()
+
+Database/Persist/Class/PersistField.hs:252:26: warning: [-Wname-shadowing]
+    This binding for ‘x’ shadows the existing binding
+      bound at Database/Persist/Class/PersistField.hs:246:22
+
+Database/Persist/Class/PersistField.hs:254:21: warning: [-Wdeprecations]
+    In the use of ‘parseTime’
+    (imported from Data.Time, but defined in time-1.6.0.1:Data.Time.Format.Parse):
+    Deprecated: "use "parseTimeM True" instead"
+[ 3 of 24] Compiling Database.Persist.Class.PersistEntity ( Database/Persist/Class/PersistEntity.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Class/PersistEntity.o )
+[ 4 of 24] Compiling Database.Persist.Types ( Database/Persist/Types.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Types.o )
+[ 5 of 24] Compiling Database.Persist.Class.PersistStore ( Database/Persist/Class/PersistStore.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Class/PersistStore.o )
+[ 6 of 24] Compiling Database.Persist.Class.PersistQuery ( Database/Persist/Class/PersistQuery.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Class/PersistQuery.o )
+[ 7 of 24] Compiling Database.Persist.Class.PersistUnique ( Database/Persist/Class/PersistUnique.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Class/PersistUnique.o )
+
+Database/Persist/Class/PersistUnique.hs:124:1: warning: [-Wunused-top-binds]
+    Defined but not used: ‘insertOrGet’
+[ 8 of 24] Compiling Database.Persist.Quasi ( Database/Persist/Quasi.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Quasi.o )
+[ 9 of 24] Compiling Database.Persist.Class.PersistConfig ( Database/Persist/Class/PersistConfig.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Class/PersistConfig.o )
+[10 of 24] Compiling Database.Persist.Class.DeleteCascade ( Database/Persist/Class/DeleteCascade.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Class/DeleteCascade.o )
+[11 of 24] Compiling Database.Persist.Class ( Database/Persist/Class.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Class.o )
+
+Database/Persist/Class.hs:11:7: warning: [-Wdodgy-exports]
+    The export item ‘BaseBackend(..)’ suggests that
+    ‘BaseBackend’ has (in-scope) constructors or class methods,
+    but it has none
+[12 of 24] Compiling Database.Persist.Sql.Types.Internal ( Database/Persist/Sql/Types/Internal.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Sql/Types/Internal.o )
+[13 of 24] Compiling Database.Persist.Sql.Types ( Database/Persist/Sql/Types.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Sql/Types.o )
+
+Database/Persist/Sql/Types.hs:22:1: warning: [-Wunused-imports]
+    The import of ‘Data.Acquire’ is redundant
+      except perhaps to import instances from ‘Data.Acquire’
+    To import instances alone, use: import Data.Acquire()
+
+Database/Persist/Sql/Types.hs:24:1: warning: [-Wunused-imports]
+    The import of ‘Control.Monad.IO.Class’ is redundant
+      except perhaps to import instances from ‘Control.Monad.IO.Class’
+    To import instances alone, use: import Control.Monad.IO.Class()
+
+Database/Persist/Sql/Types.hs:30:1: warning: [-Wunused-imports]
+    The import of ‘Data.IORef’ is redundant
+      except perhaps to import instances from ‘Data.IORef’
+    To import instances alone, use: import Data.IORef()
+
+Database/Persist/Sql/Types.hs:31:1: warning: [-Wunused-imports]
+    The import of ‘Data.Map’ is redundant
+      except perhaps to import instances from ‘Data.Map’
+    To import instances alone, use: import Data.Map()
+
+Database/Persist/Sql/Types.hs:32:1: warning: [-Wunused-imports]
+    The import of ‘Data.Int’ is redundant
+      except perhaps to import instances from ‘Data.Int’
+    To import instances alone, use: import Data.Int()
+
+Database/Persist/Sql/Types.hs:33:1: warning: [-Wunused-imports]
+    The import of ‘Data.Conduit’ is redundant
+      except perhaps to import instances from ‘Data.Conduit’
+    To import instances alone, use: import Data.Conduit()
+
+Database/Persist/Sql/Types.hs:35:1: warning: [-Wunused-imports]
+    The import of ‘Language.Haskell.TH.Syntax’ is redundant
+      except perhaps to import instances from ‘Language.Haskell.TH.Syntax’
+    To import instances alone, use: import Language.Haskell.TH.Syntax()
+
+Database/Persist/Sql/Types.hs:36:1: warning: [-Wunused-imports]
+    The import of ‘Control.Monad.Logger’ is redundant
+      except perhaps to import instances from ‘Control.Monad.Logger’
+    To import instances alone, use: import Control.Monad.Logger()
+
+Database/Persist/Sql/Types.hs:37:1: warning: [-Wunused-imports]
+    The import of ‘System.Log.FastLogger’ is redundant
+      except perhaps to import instances from ‘System.Log.FastLogger’
+    To import instances alone, use: import System.Log.FastLogger()
+[14 of 24] Compiling Database.Persist.Sql.Internal ( Database/Persist/Sql/Internal.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Sql/Internal.o )
+[15 of 24] Compiling Database.Persist ( Database/Persist.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist.o )
+[16 of 24] Compiling Database.Persist.Sql.Class ( Database/Persist/Sql/Class.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Sql/Class.o )
+
+Database/Persist/Sql/Class.hs:75:23: warning: [-Wunused-matches]
+    Defined but not used: ‘ent’
+
+Database/Persist/Sql/Class.hs:229:11: warning: [-Wdeprecations]
+    In the use of ‘bitSize’ (imported from Data.Bits):
+    Deprecated: "Use 'bitSizeMaybe' or 'finiteBitSize' instead"
+[17 of 24] Compiling Database.Persist.Sql.Raw ( Database/Persist/Sql/Raw.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Sql/Raw.o )
+
+Database/Persist/Sql/Raw.hs:14:1: warning: [-Wunused-imports]
+    The import of ‘Data.Functor’ is redundant
+      except perhaps to import instances from ‘Data.Functor’
+    To import instances alone, use: import Data.Functor()
+[18 of 24] Compiling Database.Persist.Sql.Migration ( Database/Persist/Sql/Migration.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Sql/Migration.o )
+[19 of 24] Compiling Database.Persist.Sql.Run ( Database/Persist/Sql/Run.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Sql/Run.o )
+[20 of 24] Compiling Database.Persist.Sql.Util ( Database/Persist/Sql/Util.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Sql/Util.o )
+[21 of 24] Compiling Database.Persist.Sql.Orphan.PersistStore ( Database/Persist/Sql/Orphan/PersistStore.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Sql/Orphan/PersistStore.o )
+[22 of 24] Compiling Database.Persist.Sql.Orphan.PersistQuery ( Database/Persist/Sql/Orphan/PersistQuery.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Sql/Orphan/PersistQuery.o )
+[23 of 24] Compiling Database.Persist.Sql.Orphan.PersistUnique ( Database/Persist/Sql/Orphan/PersistUnique.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Sql/Orphan/PersistUnique.o )
+
+Database/Persist/Sql/Orphan/PersistUnique.hs:19:1: warning: [-Wunused-imports]
+    The import of ‘Control.Monad’ is redundant
+      except perhaps to import instances from ‘Control.Monad’
+    To import instances alone, use: import Control.Monad()
+
+Database/Persist/Sql/Orphan/PersistUnique.hs:36:29: warning: [-Wunused-matches]
+    Defined but not used: ‘xs’
+[24 of 24] Compiling Database.Persist.Sql ( Database/Persist/Sql.hs, .stack-work/dist/x86_64-osx/Cabal-1.24.2.0/build/Database/Persist/Sql.o )
+Installing library in
+/Users/v0d1ch/code/haskell-serbia/.stack-work/install/x86_64-osx/lts-8.4/8.0.2/lib/x86_64-osx-ghc-8.0.2/persistent-2.6-2zmnMrAZ4pjCmSBeBWKx1B
+Registering persistent-2.6...
