@@ -1,0 +1,10 @@
+<div .container>
+    <div .row>
+        <div .col-md-12>
+          <h1>New user
+          <br />
+          <br />
+          <form method=post enctype=#{enctype} action=@{ManagerNewR}>
+                ^{widget}
+                <button .btn .btn-success>Create!
+
