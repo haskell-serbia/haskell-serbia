@@ -24,6 +24,10 @@ import Yesod.Auth.Email
 import qualified Yesod.Auth.Message       as Msgs
 import Models.Role
 
+-- Client ID: Iv1.eb2fc510a758e147
+
+-- Client secret: 0dfb571eb8b4f1dbcd22c5548e19f857d6ac95dc
+
 data App = App
   { appSettings :: AppSettings
   , appStatic :: Static -- ^ Settings for static file serving.
