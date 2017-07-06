@@ -11,4 +11,10 @@ static:
 	touch Settings/StaticFiles.hs
 
 ghci:
-	stack ghci
+	stack ghci haskell-serbia:lib
+
+devel:
+	stack exec -- yesod devel
+
+ghci-object:
+	stack ghci --ghci-options -fobject-code haskell-serbia:lib

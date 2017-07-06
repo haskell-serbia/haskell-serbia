@@ -2,4 +2,5 @@
 .stack-work/intero/
 .stack-work/dist/*
 .stack-work/logs/*
+.stack-work/odir/*
 .DS_Store
