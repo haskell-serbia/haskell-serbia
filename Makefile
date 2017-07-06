@@ -1,6 +1,9 @@
 build:
 	stack build --fast
 
+copy-bins:
+	stack build --copy-bins --local-bin-path bin
+
 echo-warn:
 	echo "Make certain you have fired up postgres  !"
 
