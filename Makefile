@@ -16,7 +16,7 @@ static:
 ghci:
 	stack ghci haskell-serbia:lib
 
-devel:
+dev:
 	stack exec -- yesod devel
 
 ghci-object:

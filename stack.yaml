@@ -3,12 +3,12 @@ packages:
 - '.'
 - location:
     git: https://github.com/v0d1ch/yesod-auth-oauth2.git
-    commit: 63ebd7d60e117ba5bc3ebbea59fc45b5782326d
+    commit: b9287d578f6f827073d0edb3c5288ff86f9984ad
+    git: https://github.com/v0d1ch/yesod-text-markdown
+    commit: 508ebf81f43b007ee79f412c6d9c74a040120e1f
 
 extra-deps: [
-     yesod-text-markdown-0.1.8
-   , load-env-0.1.1
-   , aeson-0.11.3.0
+   load-env-0.1.1
 ]
 
 flags: {}
