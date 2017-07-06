@@ -10,6 +10,7 @@ import Yesod.Core.Types     (Logger)
 import Yesod.Form.Jquery
 import qualified Yesod.Core.Unsafe as Unsafe
 import qualified Data.CaseInsensitive as CI
+import qualified Data.Text as T
 import qualified Data.Text.Encoding as TE
 import           Control.Applicative      ((<$>), (<*>))
 import qualified Data.Monoid                        as DM
@@ -21,15 +22,27 @@ import           Network.Mail.Mime
 import           Text.Hamlet              (shamlet)
 import           Text.Shakespeare.Text    (stext)
 import Yesod.Auth.Email
+import System.Environment (getEnv)
+import Yesod.Auth.OAuth2.Github
+
 import qualified Yesod.Auth.Message       as Msgs
 import Models.Role
 
--- Client ID: Iv1.eb2fc510a758e147
+data OAuthKeys = OAuthKeys
+    { oauthKeysClientId :: Text
+    , oauthKeysClientSecret :: Text
+    }
 
--- Client secret: 0dfb571eb8b4f1dbcd22c5548e19f857d6ac95dc
+loadOAuthKeysEnv :: IO OAuthKeys
+loadOAuthKeysEnv  = OAuthKeys
+    <$> (getEnvT $  "Iv1.eb2fc510a758e147")
+    <*> (getEnvT $  "0dfb571eb8b4f1dbcd22c5548e19f857d6ac95dc")
+    where
+       getEnvT = fmap T.pack . getEnv
 
 data App = App
   { appSettings :: AppSettings
+  , appGithubKeys :: OAuthKeys
   , appStatic :: Static -- ^ Settings for static file serving.
   , appConnPool :: ConnectionPool -- ^ Database connection pool.
   , appHttpManager :: Manager
@@ -312,7 +325,13 @@ instance YesodAuth App where
     logoutDest _ = HomeR
     redirectToReferer _ = True
 
-    authPlugins _ = [authEmail]
+
+    authPlugins m =
+        [ oauth2Github
+            (oauthKeysClientId $ appGithubKeys m)
+            (oauthKeysClientSecret $ appGithubKeys m)
+        ]
+
 
 
 

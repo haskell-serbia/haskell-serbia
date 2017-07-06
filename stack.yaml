@@ -4,12 +4,16 @@ packages:
 - location:
     git: https://github.com/v0d1ch/yesod-auth-oauth2.git
     commit: b9287d578f6f827073d0edb3c5288ff86f9984ad
+  extra-dep: true
+
+- location:
     git: https://github.com/v0d1ch/yesod-text-markdown
     commit: 508ebf81f43b007ee79f412c6d9c74a040120e1f
+  extra-dep: true
 
-extra-deps: [
-   load-env-0.1.1
-]
+extra-deps:
+  - load-env-0.1.1
+
 
 flags: {}
 extra-package-dbs: []

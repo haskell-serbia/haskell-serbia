@@ -71,6 +71,7 @@ library
                  , yesod-core                    >= 1.4.30     && < 1.5
                  , yesod-auth                    >= 1.4.17     && < 1.5
                  , yesod-auth-hashdb             >= 1.6.0
+                 , yesod-auth-oauth2
                  , yesod-static                  >= 1.4.0.3    && < 1.6
                  , yesod-form                    >= 1.4.0      && < 1.5
                  , classy-prelude                >= 0.10.2
@@ -93,7 +94,7 @@ library
                  , directory                     >= 1.1        && < 1.4
                  , warp                          >= 3.0        && < 3.3
                  , data-default
-                 , aeson                         >= 0.6        && < 1.1
+                 , aeson                         >= 0.11        && < 1.2
                  , conduit                       >= 1.0        && < 2.0
                  , monad-logger                  >= 0.3        && < 0.4
                  , fast-logger                   >= 2.2        && < 2.5
