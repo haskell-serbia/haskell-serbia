@@ -114,6 +114,7 @@ library
                  , blaze-html                    >= 0.8.1.3
                  , mime-mail-ses
                  , time
+                 , foreign-store
 
 executable         haskell-serbia
     if flag(library-only)

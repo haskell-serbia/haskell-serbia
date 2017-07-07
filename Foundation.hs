@@ -33,12 +33,6 @@ data OAuthKeys = OAuthKeys
     , oauthKeysClientSecret :: Text
     }
 
-loadOAuthKeysEnv :: IO OAuthKeys
-loadOAuthKeysEnv  = OAuthKeys
-    <$> (getEnvT $  "Iv1.eb2fc510a758e147")
-    <*> (getEnvT $  "0dfb571eb8b4f1dbcd22c5548e19f857d6ac95dc")
-    where
-       getEnvT = fmap T.pack . getEnv
 
 data App = App
   { appSettings :: AppSettings
@@ -325,12 +319,21 @@ instance YesodAuth App where
     logoutDest _ = HomeR
     redirectToReferer _ = True
 
+    authPlugins app =
+        mapMaybe mkPlugin . appOA2Providers $ appSettings app
+      where
+        mkPlugin (OA2Provider{..}) =
+            case (oa2provider, oa2clientId, oa2clientSecret) of
+                (_, _, "not-configured") -> Nothing
+                (_, "not-configured", _) -> Nothing
+                ("github", cid, sec)     -> Just $ oauth2Github (pack cid) (pack sec)
+                _                        -> Nothing
 
-    authPlugins m =
-        [ oauth2Github
-            (oauthKeysClientId $ appGithubKeys m)
-            (oauthKeysClientSecret $ appGithubKeys m)
-        ]
+    -- authPlugins m =
+    --     [ oauth2Github
+    --         (oauthKeysClientId $ appGithubKeys m)
+    --         (oauthKeysClientSecret $ appGithubKeys m)
+    --     ]
 
 
 
