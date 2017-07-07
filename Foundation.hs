@@ -47,15 +47,11 @@ mkYesodData
   [parseRoutes|
 /static StaticR Static appStatic
 /auth   AuthR   Auth   getAuth
-
 /favicon.ico FaviconR GET
 /robots.txt RobotsR GET
-
 / HomeR GET
-
 /lang LangR POST
 /profile ProfileR GET
-
 !/tutorials/page/#Page TutorialListR GET
 !/tutorials/new TutorialsR GET POST
 !/tutorial/#TutorialId TutorialRR GET
@@ -64,7 +60,6 @@ mkYesodData
 !/manager/new  ManagerNewR GET POST
 !/manager/edit/#UserId  ManagerEditR GET POST
 /github GithubR GET POST
-
 |]
 
 type Form x = Html -> MForm (HandlerT App IO) (FormResult x, Widget)

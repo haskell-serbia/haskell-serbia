@@ -24,3 +24,5 @@ dev:
 
 ghci-object:
 	stack ghci --ghci-options -fobject-code haskell-serbia:lib
+docker-run:
+	docker run -p 3000:3000 -itv /Users/v0d1ch/code/haskell-serbia:/var/www/ postgres:latest /bin/bash
