@@ -74,6 +74,7 @@ mkYesodData "App" [parseRoutes|
 !/manager  ManagerR GET
 !/manager/new  ManagerNewR GET POST
 !/manager/edit/#UserId  ManagerEditR GET POST
+/github GithubR GET POST
 
 |]
 
@@ -329,22 +330,32 @@ instance YesodAuth App where
                 ("github", cid, sec)     -> Just $ oauth2Github (pack cid) (pack sec)
                 _                        -> Nothing
 
-    -- authPlugins m =
-    --     [ oauth2Github
-    --         (oauthKeysClientId $ appGithubKeys m)
-    --         (oauthKeysClientSecret $ appGithubKeys m)
-    --     ]
-
-
-
-
-    -- Need to find the UserId for the given email address.
     getAuthId creds = runDB $ do
-        x <- insertBy $ User (credsIdent creds) Nothing Nothing False Nothing Nothing Haskeller
-        return $ Just $
-            case x of
-                Left (Entity userid _) -> userid -- newly added user
-                Right userid -> userid -- existing user
+        $(logDebug) $ "Extra account information: " <> (pack . show $ extra)
+
+        x <- getBy $ UniqueUser ident
+        case x of
+            Just (Entity uid _) -> return $ Just uid
+            Nothing -> do
+                let name      = lookupExtra "login"
+                    avatarUrl = lookupExtra "avatar_url"
+					role      = Haskeller
+                fmap Just $ insert $ User ident name avatarUrl False role
+      where
+        ident = credsIdent creds
+        extra = credsExtra creds
+        lookupExtra key = fromMaybe (error "No " <> key <> " in extra credentials")  (lookup key extra)
+
+
+
+
+    -- -- Need to find the UserId for the given email address.
+    -- getAuthId creds = runDB $ do
+    --     x <- insertBy $ User (credsIdent creds) Nothing Nothing False Nothing Nothing Haskeller
+    --     return $ Just $
+    --         case x of
+    --             Left (Entity userid _) -> userid -- newly added user
+    --             Right userid -> userid -- existing user
 
     authHttpManager = error "Email doesn't need an HTTP manager"
 
