@@ -4,3 +4,6 @@
 .stack-work/logs/*
 .stack-work/odir/*
 .DS_Store
+settings.json
+yesod-devel/*
+static/tmp/*
