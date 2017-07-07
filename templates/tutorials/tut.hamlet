@@ -5,12 +5,9 @@
             <a href=@{TutorialEditR  tutorialId} .btn .btn-default .pull-right>Edit
           <h2>#{tutorialTitle tut}
           <div .col-md-12>
-            <p .pull-right>Created by: 
-              $maybe name <- userName author
-                #{name}  
-              $maybe lastname <- userLastname author
-                #{lastname}  
-            
+            <p .pull-right>Created by:
+              #{name}
+
           <div> #{tutorialContent tut}
           <div>
             ^{disqusWidget tutorialIdentifier}

@@ -1,0 +1,3 @@
+<form action=@{GithubR} method=post enctype=#{enctype}>
+  ^{formWidget}
+  <button .btn .btn-default type=submit>Add user

@@ -11,6 +11,7 @@ import Models.Role
 
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
 User
+	ident Text
     name Text
     avatarUrl Text
     UniqueUser ident

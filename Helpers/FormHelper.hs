@@ -3,6 +3,11 @@ module Helpers.FormHelper where
 import           Import
 import           Models.Role
 import           Yesod.Text.Markdown
+import Database.Persist.Sql (Single(..), rawSql)
+import Text.Printf (printf)
+import Data.Time.Format
+
+
 
 titleSettings :: FieldSettings master
 titleSettings = FieldSettings {
@@ -70,12 +75,9 @@ specialFormSettings label tooltip idname name classname = FieldSettings {
 
 userAForm :: User -> Form User
 userAForm  u = renderDivs $ User
-    <$> areq textField (defaultFormSettings "Email") (Just $ userEmail  u)
-    <*> aopt hiddenField (defaultFormSettings "") (Just $ userPassword  u)
-    <*> aopt textField (defaultFormSettings "Verification key" ) (Just $ userVerkey u)
-    <*> areq boolField (defaultFormSettings "Verified") (Just $ userVerified u)
-    <*> aopt textField (defaultFormSettings "Name") (Just $ userName u)
-    <*> aopt textField (defaultFormSettings "Lastname") (Just $ userLastname u)
+    <$> areq textField (defaultFormSettings "id") (Just $ userIdent u)
+    <*> areq textField (defaultFormSettings "Name") (Just $ userName u)
+    <*> areq textField (defaultFormSettings "avatar url") (Just $ userAvatarUrl u)
     <*> areq (selectFieldList roles) (defaultFormSettings "Role") (Just $ userRole u)
   where
     roles :: [(Text, Role)]
@@ -83,15 +85,19 @@ userAForm  u = renderDivs $ User
 
 newUserForm ::  Form User
 newUserForm = renderDivs $ User
-  <$> areq textField (defaultFormSettings "Email") Nothing
-  <*> aopt passwordField  (defaultFormSettings "Password") Nothing
-  <*> aopt hiddenField (defaultFormSettings "") Nothing
-  <*> areq boolField (defaultFormSettings "Verified") Nothing
-  <*> aopt textField (defaultFormSettings "Name") Nothing
-  <*> aopt textField (defaultFormSettings "Last Name") Nothing
-
+  <$> areq textField (defaultFormSettings "Id") Nothing
+  <*> areq textField (defaultFormSettings "Name") Nothing
+  <*> areq textField (defaultFormSettings "avatar url") Nothing
   <*> areq (selectFieldList roles) (defaultFormSettings "Role") Nothing
   where
     roles :: [(Text, Role)]
     roles = [("Admin", Admin), ("Author", Author), ("Haskeller", Haskeller)]
 
+-- isUniq :: Text -> EntityField v a -> Maybe a -> a -> Handler (Either Text a)
+isUniq errorMessage field mexclude value = do
+    count' <- runDB . count $ [field ==. value] ++ exclude
+    return $ if count' > 0
+             then Left errorMessage
+             else Right value
+  where
+    exclude = maybe [] (\x -> [field !=. x]) mexclude

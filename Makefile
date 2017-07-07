@@ -1,6 +1,9 @@
 build:
 	stack build --fast
 
+build-watch:
+	stack build --fast --file-watch
+
 copy-bins:
 	stack build --copy-bins --local-bin-path bin
 

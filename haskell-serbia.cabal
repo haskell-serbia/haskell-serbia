@@ -31,6 +31,7 @@ library
                      Handler.Manager
                      Handler.ManagerEdit
                      Handler.ManagerNew
+                     Handler.Github
                      Widget.Header
                      Widget.Disqus
                      Helpers.UserHelper
