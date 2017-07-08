@@ -13,9 +13,9 @@ postManagerNewR =  do
     ((res, _), _) <- runFormPost FH.newUserForm
     case res of
         FormSuccess u -> do
-                    _ <- runDB $ insert $ User (userIdent u) (userName u) (userAvatarUrl u) (userRole u)
-                        setMessage "User created!"
-                        redirect ManagerR
+			_ <- runDB $ insert $ User (userIdent u) (userName u) (userAvatarUrl u) (userRole u)
+			setMessage "User created!"
+			redirect ManagerR
 
         _ -> do
             setMessage "User not created"

@@ -1,8 +1,4 @@
-.stack-work/install/x86_64-osx/*
-.stack-work/intero/
-.stack-work/dist/*
-.stack-work/logs/*
-.stack-work/odir/*
+.stack-work/
 .DS_Store
 settings.json
 yesod-devel/*
