@@ -6,7 +6,12 @@ We aim to provide  tutorials that will help beginners in starting out with haske
 
 #### Installation
 
-To install locally you can do `stack build` and then `stack exec -- yesod devel`
+To install locally you can do 
+```
+$ stack build
+$ stack install yesod-bin
+$ stack exec -- yesod devel
+```
 Website runs on postgres database, there is a sql dump file in the root of the repo which you can import.
 ```
 $ psql haskell_serbia < haskell_serbia.sql 
