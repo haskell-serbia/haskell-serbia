@@ -103,9 +103,21 @@ instance Yesod App where
             }
           , NavbarLeft $
             MenuItem
+            { menuItemLabel = MsgMenuCreateTutorialTitle
+            , menuItemRoute = TutorialsR
+            , menuItemAccessCallback = True
+            }
+          , NavbarLeft $
+            MenuItem
             { menuItemLabel = MsgMenuProfileTitle
             , menuItemRoute = ProfileR
             , menuItemAccessCallback = isJust muser
+            }
+           , NavbarRight $
+            MenuItem
+            { menuItemLabel = MsgMenuLoginTitle
+            , menuItemRoute = AuthR LoginR
+            , menuItemAccessCallback = isNothing muser
             }
           , NavbarRight $
             MenuItem
@@ -241,11 +253,14 @@ instance YesodPersist App where
 instance YesodPersistRunner App where
   getDBRunner = defaultGetDBRunner appConnPool
 
+
 instance YesodAuth App where
   type AuthId App = UserId
   loginDest _ = HomeR
   logoutDest _ = HomeR
   redirectToReferer _ = True
+
+
   authPlugins app = mapMaybe mkPlugin . appOA2Providers $ appSettings app
     where
       mkPlugin (OA2Provider {..}) =
@@ -263,7 +278,8 @@ instance YesodAuth App where
          Nothing -> do
            let name = lookupExtra "login"
                avatarUrl = lookupExtra "avatar_url"
-           fmap Just $ insert $ User ident name avatarUrl Haskeller
+               role = if name =="v0d1ch" then Admin else Haskeller
+           fmap Just $ insert $ User ident name avatarUrl role
     where
       ident = credsIdent creds
       extra = credsExtra creds
@@ -300,3 +316,5 @@ instance YesodJquery App
 pageHeaderWidget :: Handler Widget
 pageHeaderWidget = do
   return $(widgetFile "header/header")
+
+

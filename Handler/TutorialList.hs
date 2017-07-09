@@ -7,7 +7,7 @@ postsByPage :: Int
 postsByPage = 5
 
 selectCount q = do
-  res <- select $ from $ (\x -> q x >> return countRows)
+  res <- select $ from (\x -> q x >> return countRows)
   return $ fromMaybe 0 $ (\(Value a) -> a) <$> headMay res
 
 getTutorialListR :: Page -> Handler Html
@@ -16,16 +16,16 @@ getTutorialListR currentPage = do
   entriesCount <-
     runDB $
     selectCount $
-    \tutorial -> do E.where_ (tutorial ^. TutorialCreatedAt E.<=. E.val now)
+    \tutorial ->  E.where_ (tutorial ^. TutorialCreatedAt E.<=. E.val now)
   let next = calculateNextPage entriesCount postsByPage currentPage
   let previous = calculatePreviousPage entriesCount postsByPage currentPage
   let off =
-        if (currentPage - postsByPage) < 0
+        if currentPage - postsByPage < 0
           then 0
-          else (currentPage - postsByPage)
+          else currentPage - postsByPage
   allPosts <-
     runDB $ selectList [] [Desc TutorialId, LimitTo postsByPage, OffsetBy off]
-  defaultLayout $ do $(widgetFile "tutorials/all")
+  defaultLayout  $(widgetFile "tutorials/all")
 
 calculatePreviousPage :: Int -> Int -> Page -> Maybe Int
 calculatePreviousPage entries pageSize currentPage =

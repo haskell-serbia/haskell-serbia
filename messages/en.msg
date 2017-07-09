@@ -31,10 +31,10 @@ SwitchLanguage: Switch language to:
 Switch: Switch
 
 MenuHomeTitle: Home
-MenuTutorialsTitle: Tutorials 
-MenuProfileTitle: Profile 
-MenuLoginTitle: Login 
+MenuTutorialsTitle: Tutorials
+MenuProfileTitle: Profile
+MenuLoginTitle: Login via Github
 MenuLogoutTitle: Logout
-MenuCreateTutorialTitle: Create Tutorial 
+MenuCreateTutorialTitle: Create Tutorial
 MenuManagerTitle: User roles
-MenuCreateNewUserTitle: Create User 
+MenuCreateNewUserTitle: Create User
