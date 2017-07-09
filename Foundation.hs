@@ -109,12 +109,6 @@ instance Yesod App where
             }
           , NavbarRight $
             MenuItem
-            { menuItemLabel = MsgMenuLoginTitle
-            , menuItemRoute = AuthR LoginR
-            , menuItemAccessCallback = isNothing muser
-            }
-          , NavbarRight $
-            MenuItem
             { menuItemLabel = MsgMenuLogoutTitle
             , menuItemRoute = AuthR LogoutR
             , menuItemAccessCallback = isJust muser
@@ -277,7 +271,7 @@ instance YesodAuth App where
         fromMaybe
           (error "No " <> key <> " in extra credentials")
           (lookup key extra)
-  authHttpManager = error "don't need an HTTP manager"
+  authHttpManager = getHttpManager
 
 -- | Access function to determine if a user is logged in.
 isAuthenticated :: Handler AuthResult

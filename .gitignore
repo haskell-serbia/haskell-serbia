@@ -1,6 +1,6 @@
 .stack-work/
 .DS_Store
 settings.json
-yesod-devel/*
+yesod-devel
 static/tmp/*
 .vscode
