@@ -6,7 +6,7 @@ import Text.Hamlet          (hamletFile)
 import Text.Jasmine         (minifym)
 
 import Yesod.Default.Util   (addStaticContentExternal)
-import Yesod.Core.Types     (Logger)
+import Yesod.Core.Types (Logger (Logger))
 import Yesod.Form.Jquery
 import qualified Yesod.Core.Unsafe as Unsafe
 import qualified Data.CaseInsensitive as CI

@@ -24,7 +24,7 @@ Tutorial
    title Text
    content Markdown
    createdBy UserId
-   createdAt UTCTime default=now()
+   createdAt UTCTime
    deriving Show
 
 |]

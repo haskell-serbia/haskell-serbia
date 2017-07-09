@@ -41,7 +41,7 @@ library
         cpp-options:   -DDEVELOPMENT
         ghc-options:   -Wall -fwarn-tabs -O0
     else
-        ghc-options:   -Wall -fwarn-tabs -O2 
+        ghc-options:   -Wall -fwarn-tabs -O2
 
     extensions: TemplateHaskell
                 QuasiQuotes
@@ -81,7 +81,7 @@ library
                  , bytestring                    >= 0.9        && < 0.11
                  , text                          >= 0.11       && < 2.0
                  , persistent                    >= 2.0        && < 2.7
-                 , persistent-postgresql         >= 2.6  
+                 , persistent-sqlite             >= 2.0
                  , persistent-template           >= 2.0        && < 2.7
                  , template-haskell
                  , shakespeare                   >= 2.0        && < 2.1
@@ -122,7 +122,7 @@ executable         haskell-serbia
     hs-source-dirs:    app
     build-depends:     base, haskell-serbia
 
-    ghc-options:       -threaded -rtsopts -with-rtsopts=-N 
+    ghc-options:       -threaded -rtsopts -with-rtsopts=-N
 
     extensions: TemplateHaskell
                 QuasiQuotes
@@ -176,7 +176,7 @@ test-suite test
                  , yesod-core
                  , yesod
                  , persistent
-                 , persistent-postgresql         >= 2.6  
+                 , persistent-sqlite         >= 2.0
                  , resourcet
                  , monad-logger
                  , shakespeare
