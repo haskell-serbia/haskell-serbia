@@ -11,13 +11,11 @@ import Models.Role
 
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
 User
-    email Text
-    password Text Maybe -- Password may not be set yet
-    verkey Text Maybe -- Used for resetting passwords
-    verified Bool
-    UniqueUser email
-    name Text Maybe
-    lastname Text Maybe
+	ident Text
+    name Text
+    avatarUrl Text
+    UniqueUser ident
+    UniqueUserName name
     role Role
     deriving Typeable Show
 Tutorial

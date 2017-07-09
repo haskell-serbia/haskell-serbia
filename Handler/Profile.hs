@@ -6,5 +6,5 @@ getProfileR :: Handler Html
 getProfileR = do
     (_, muser) <- requireAuthPair
     defaultLayout $ do
-        setTitle . toHtml $ userEmail muser <> "'s User page"
+        setTitle . toHtml $ userName muser <> "'s User page"
         $(widgetFile "profile")

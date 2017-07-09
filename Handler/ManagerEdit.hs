@@ -19,11 +19,9 @@ postManagerEditR userId = do
   case res of
     FormSuccess u -> do
         runDB $ update userId
-          [ UserEmail    =. userEmail u
-          , UserVerkey   =. userVerkey u
-          , UserVerified =. userVerified u
-          , UserName     =. userName u
-          , UserLastname =. userLastname u
+          [ UserIdent    =. userIdent u
+          , UserName   =. userName u
+          , UserAvatarUrl =. userAvatarUrl u
           , UserRole     =. userRole u
           ]
         setMessage "User edited!"

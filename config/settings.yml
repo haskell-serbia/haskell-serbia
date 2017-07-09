@@ -31,3 +31,8 @@ database:
 
 copyright: Haskell Srbija 2017
 #analytics: UA-YOURCODE
+
+oauth2:
+  - provider: "github"
+    id:       "_env:GITHUB_CLIENT_ID:********"
+    secret:   "_env:GITHUB_CLIENT_SECRET:****************"

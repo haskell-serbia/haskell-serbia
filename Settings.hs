@@ -57,7 +57,21 @@ data AppSettings = AppSettings
 
     , appAuthDummyLogin         :: Bool
     -- ^ Indicate if auth dummy login should be enabled.
+    , appOA2Providers           :: [OA2Provider]
     }
+
+data OA2Provider = OA2Provider
+    { oa2provider     :: String
+    , oa2clientId     :: String
+    , oa2clientSecret :: String
+    }
+
+instance FromJSON OA2Provider where
+    parseJSON = withObject "OA2Provider" $ \o -> OA2Provider
+        <$> o .: "provider"
+        <*> o .: "id"
+        <*> o .: "secret"
+
 
 instance FromJSON AppSettings where
     parseJSON = withObject "AppSettings" $ \o -> do
@@ -85,7 +99,10 @@ instance FromJSON AppSettings where
 
         appAuthDummyLogin         <- o .:? "auth-dummy-login"      .!= defaultDev
 
+        appOA2Providers           <- o .:? "oauth2"           .!= []
+
         return AppSettings {..}
+
 
 -- | Settings for 'widgetFile', such as which template languages to support and
 -- default Hamlet settings.

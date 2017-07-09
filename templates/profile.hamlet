@@ -3,12 +3,8 @@
         <button .btn .btn-sm .pull-right>EDIT
         <p>Access granted!
         <h5 .title>
-          $maybe name <- userName muser
-            #{name} 
-          $maybe lastname <- userLastname muser
-            #{lastname}
 
-        <a href="#{userEmail muser}" .btn .btn-link>#{userEmail muser} 
+            #{userName muser}
         <p>User role is: #{show $ userRole muser}
         <p>(page is under construction)
 
