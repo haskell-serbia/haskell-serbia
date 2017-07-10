@@ -1,9 +1,8 @@
 <div .ui.container>
      <div .form-group>
         <button .btn .btn-sm .pull-right>EDIT
-        <p>Access granted!
+        <a href="https://github.com/#{userName muser}" .link><img src=#{userAvatarUrl muser} style="width:80px" />
         <h5 .title>
-
             #{userName muser}
         <p>User role is: #{show $ userRole muser}
         <p>(page is under construction)
