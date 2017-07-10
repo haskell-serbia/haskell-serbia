@@ -26,5 +26,10 @@
 
                             <div class="fb-page col-md-12" data-href="https://www.facebook.com/haskellserbia/" data-tabs="timeline" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true" data-width="800">
 
-                 <div .col-md-12>
-                 <hr>
+            <div .col-md-12 >
+                <h3>Registrovani korisnici
+                <ul .list-inline>
+                    $forall Entity id user <- users 
+                        <h4>
+                            <li>
+                                <a href="https://github.com/#{userName user}"><img src=#{userAvatarUrl user} style="width:60px" />

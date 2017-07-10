@@ -9,10 +9,10 @@ twitterUsername = "haskellserbia"
 
 getHomeR :: Handler Html
 getHomeR = do
-  defaultLayout $ do
-      aDomId <- newIdent
-      setTitle "Haskell Srbija"
-      $(widgetFile "homepage")
+    aDomId <- newIdent
+    users <- runDB $ selectList [] [Asc UserId]
+    -- setTitle "Haskell Srbija"
+    defaultLayout $(widgetFile "homepage")
 
 postLangR :: Handler ()
 postLangR = do
