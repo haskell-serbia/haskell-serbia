@@ -316,5 +316,3 @@ instance YesodJquery App
 pageHeaderWidget :: Handler Widget
 pageHeaderWidget = do
   return $(widgetFile "header/header")
-
-

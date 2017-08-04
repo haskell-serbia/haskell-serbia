@@ -3,10 +3,6 @@ module Helpers.FormHelper where
 import           Import
 import           Models.Role
 import           Yesod.Text.Markdown
-import Database.Persist.Sql (Single(..), rawSql)
-import Text.Printf (printf)
-import Data.Time.Format
-
 
 
 titleSettings :: FieldSettings master
@@ -93,7 +89,14 @@ newUserForm = renderDivs $ User
     roles :: [(Text, Role)]
     roles = [("Admin", Admin), ("Author", Author), ("Haskeller", Haskeller)]
 
--- isUniq :: Text -> EntityField v a -> Maybe a -> a -> Handler (Either Text a)
+
+isUniq :: (PersistEntityBackend v
+                 ~
+                 BaseBackend (YesodPersistBackend site),
+                 PersistEntity v, PersistQueryRead (YesodPersistBackend site),
+                 YesodPersist site, PersistField b) =>
+                a
+                -> EntityField v b -> Maybe b -> b -> HandlerT site IO (Either a b)
 isUniq errorMessage field mexclude value = do
     count' <- runDB . count $ [field ==. value] ++ exclude
     return $ if count' > 0

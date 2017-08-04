@@ -1,11 +1,20 @@
 module Handler.TutorialList where
 
 import Database.Esqueleto as E
+import Database.Esqueleto.Internal.Language
 import Import
 
 postsByPage :: Int
 postsByPage = 5
 
+selectCount
+  :: (BaseBackend backend ~ SqlBackend,
+      Database.Esqueleto.Internal.Language.From
+        SqlQuery SqlExpr SqlBackend t,
+      MonadIO m, Num a, IsPersistBackend backend,
+      PersistQueryRead backend, PersistUniqueRead backend,
+      PersistField a) =>
+     (t -> SqlQuery a1) -> ReaderT backend m a
 selectCount q = do
   res <- select $ from (\x -> q x >> return countRows)
   return $ fromMaybe 0 $ (\(Value a) -> a) <$> headMay res
