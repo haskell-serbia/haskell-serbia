@@ -15,3 +15,6 @@ $ stack exec -- yesod devel
 
 #### Contributors are welcome!
 We are looking forward to any community contributions. You can choose existing issue and create new branch from develop or create new issue if you spot anything wrong or would like new feature. 
+
+#### Slack
+Join us on https://haskell-serbia.slack.com
