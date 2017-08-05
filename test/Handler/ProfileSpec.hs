@@ -10,17 +10,17 @@ spec = withApp $ do
             get ProfileR
             statusIs 403
 
-        it "asserts access to my-account for authenticated users" $ do
-            userEntity <- createUser "foo"
-            authenticateAs userEntity
+        -- it "asserts access to my-account for authenticated users" $ do
+        --     userEntity <- createUser "v0d1ch"
+        --     authenticateAs userEntity
 
-            get ProfileR
-            statusIs 200
+        --     get ProfileR
+        --     statusIs 200
 
-        it "asserts user's information is shown" $ do
-            userEntity <- createUser "bar"
-            authenticateAs userEntity
+        -- it "asserts user's information is shown" $ do
+        --     userEntity <- createUser "bar"
+        --     authenticateAs userEntity
 
-            get ProfileR
-            let (Entity _ user) = userEntity
-            htmlAnyContain ".username" . unpack $ userEmail user
+        --     get ProfileR
+        --     let (Entity _ user) = userEntity
+        --     htmlAnyContain ".link" . unpack $ userAvatarUrl user

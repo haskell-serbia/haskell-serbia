@@ -10,10 +10,9 @@ import ClassyPrelude         as X hiding (delete, deleteBy, Handler)
 import ClassyPrelude         as X hiding (delete, deleteBy)
 #endif
 import Database.Persist      as X hiding (get)
-import Database.Persist.Sql  (SqlPersistM, SqlBackend, runSqlPersistMPool, rawExecute, rawSql, unSingle, connEscapeName)
+import Database.Persist.Sql  (SqlPersistM, SqlBackend, runSqlPersistMPool, rawSql, unSingle)
 
-import Database.Persist.Postgresql          (createPostgresqlPool, pgConnStr,
-                                             pgPoolSize, runSqlPool)
+
 
 import Foundation            as X
 import Model                 as X
@@ -23,9 +22,7 @@ import Yesod.Auth            as X
 import Yesod.Test            as X
 
 -- Wiping the database
-import Control.Monad.Logger                 (runLoggingT)
-import Settings (appDatabaseConf)
-import Yesod.Core (messageLoggerSource)
+import Yesod.Core ()
 import Models.Role
 
 runDB :: SqlPersistM a -> YesodExample App a
@@ -80,18 +77,15 @@ authenticateAs :: Entity User -> YesodExample App ()
 authenticateAs (Entity _ u) = do
     request $ do
         setMethod "POST"
-        addPostParam "test@test.com" $ userEmail u
-        setUrl $ AuthR $ PluginR "dummy" []
+        addPostParam "test" $ userName u
+        setUrl $ AuthR $ PluginR "git" []
 
 -- | Create a user.
 createUser :: Text -> YesodExample App (Entity User)
-createUser email = do
+createUser name = do
     runDB $ insertEntity User
-        { userEmail = email
-        , userPassword = Nothing
-        , userVerified = True
-        , userVerkey = Just "verificationkey"
-        , userName = Just "name"
-        , userLastname = Just "lastname"
+        { userIdent = name
+        , userName = name
+        , userAvatarUrl = ""
         , userRole =  Haskeller
         }

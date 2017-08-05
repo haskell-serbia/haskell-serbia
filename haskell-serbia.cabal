@@ -178,6 +178,7 @@ test-suite test
                  , yesod-test >= 1.5.2 && < 1.6
                  , yesod-core
                  , yesod
+                 , esqueleto
                  , persistent
                  , persistent-sqlite         >= 2.0
                  , resourcet
