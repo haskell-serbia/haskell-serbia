@@ -269,6 +269,9 @@ instance YesodAuth App where
           (_, "not-configured", _) -> Nothing
           ("github", cid, sec) -> Just $ oauth2Github (pack cid) (pack sec)
           _ -> Nothing
+
+
+
   getAuthId creds =
     runDB $
     do $(logDebug) $ "Extra account information: " <> (pack . show $ extra)

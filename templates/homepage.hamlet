@@ -29,6 +29,6 @@
             <div .col-md-12 >
                 <h3>Registrovani korisnici
                 <ul .list-inline>
-                    $forall Entity id user <- users 
+                    $forall Entity _ user <- users
                         <li>
                             <a href="https://github.com/#{userName user}"><img src=#{userAvatarUrl user} style="width:60px" />

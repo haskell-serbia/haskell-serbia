@@ -58,6 +58,7 @@ makeFoundation :: AppSettings -> IO App
 makeFoundation appSettings = do
     appHttpManager <- newManager
     appLogger <- newStdoutLoggerSet defaultBufSize >>= makeYesodLogger
+    let appGithubKeys = OAuthKeys { oauthKeysClientId = "",  oauthKeysClientSecret = "" }
     appStatic <-
         (if appMutableStatic appSettings then staticDevel else static)
         (appStaticDir appSettings)
