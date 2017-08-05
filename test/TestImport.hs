@@ -25,6 +25,12 @@ import Yesod.Test            as X
 import Yesod.Core ()
 import Models.Role
 
+import Data.Maybe ( maybeToList
+                  , listToMaybe )
+import Database.Esqueleto
+import Database.Esqueleto.Internal.Language (From)
+
+
 runDB :: SqlPersistM a -> YesodExample App a
 runDB query = do
     pool <- fmap appConnPool getTestYesod
@@ -40,6 +46,22 @@ withApp = before $ do
     -- wipeDB foundation
     logWare <- liftIO $ makeLogWare foundation
     return (foundation, logWare)
+
+
+selectCount
+  :: (BaseBackend backend ~ SqlBackend,
+      Database.Esqueleto.Internal.Language.From
+        SqlQuery SqlExpr SqlBackend t,
+      MonadIO m, Num a, IsPersistBackend backend,
+      PersistQueryRead backend, PersistUniqueRead backend,
+      PersistField a) =>
+     (t -> SqlQuery a1) -> ReaderT backend m a
+selectCount q = do
+  res <- select $ from (\x -> q x >> return countRows)
+  return $ fromMaybe 0 $ (\(Value a) -> a) <$> headMay res
+
+
+
 
 -- This function will truncate all of the tables in your database.
 -- 'withApp' calls it before each test, creating a clean environment for each
