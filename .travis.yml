@@ -11,14 +11,24 @@ addons:
     packages:
       - libgmp-dev
 
-before_install:
-  # Download and unpack the stack executable
-  - mkdir -p ~/.local/bin
-  - export PATH=$HOME/.local/bin:$PATH
-  - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
+# before_install:
+#   # Download and unpack the stack executable
+#   - mkdir -p ~/.local/bin
+#   - export PATH=$HOME/.local/bin:$PATH
+#   - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
+
 
 install:
-- stack test
+  # stack
+  - mkdir -p ~/.local/bin
+  - travis_retry curl -L https://github.com/commercialhaskell/stack/releases/download/v1.4.0/stack-1.4.0-linux-x86_64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
+  - export PATH=~/.local/bin:$PATH
+  - stack --no-terminal --version
+
 
 script:
-# - stack --no-terminal test --haddock --no-haddock-deps
+  - stack setup --no-terminal
+  - stack update --no-terminal
+  - stack build -j2 --fast --no-terminal
+  - travis_wait 45 sleep 1800 &
+  - stack test --fast --no-terminal
