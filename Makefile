@@ -1,5 +1,5 @@
 build:
-	stack build --fast
+	stack build --fast -j4
 
 build-watch:
 	stack build --fast --file-watch
@@ -8,10 +8,10 @@ copy-bins:
 	stack build --copy-bins --local-bin-path bin
 
 echo-warn:
-	echo "Make certain you have fired up postgres  !"
+	echo "Testing in progress"
 
 test: echo-warn
-	stack test
+	stack test -j4
 
 static:
 	touch Settings/StaticFiles.hs
