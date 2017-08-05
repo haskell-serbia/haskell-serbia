@@ -14,5 +14,5 @@ copyright: Haskell Srbija 2017
 
 oauth2:
   - provider: "github"
-    id:       "_env:GITHUB_CLIENT_ID: Iv1.eb2fc510a758e147"
-    secret:   "_env:GITHUB_CLIENT_SECRET:0dfb571eb8b4f1dbcd22c5548e19f857d6ac95dc"
+    id:       "_env:GITHUB_CLIENT_ID: ************"
+    secret:   "_env:GITHUB_CLIENT_SECRET:***********************"
