@@ -1,10 +1,10 @@
 sudo: false
 
-language: generic 
+language: generic
 
-cache:
-  directories:
-    - ~/.stack
+# cache:
+#   directories:
+#     - ~/.stack
 
 addons:
   apt:
