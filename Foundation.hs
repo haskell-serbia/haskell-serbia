@@ -13,6 +13,7 @@ import qualified Data.CaseInsensitive as CI
 import qualified Data.Text.Encoding as TE
 import Data.Maybe (isJust)
 import Yesod.Auth.OAuth2.Github
+import Yesod.Auth.Dummy
 
 import Models.Role
 
@@ -23,6 +24,7 @@ data OAuthKeys = OAuthKeys
 
 data App = App
   { appSettings :: AppSettings
+  , appAllowDummyAuth :: Bool
   , appGithubKeys :: OAuthKeys
   , appStatic :: Static -- ^ Settings for static file serving.
   , appConnPool :: ConnectionPool -- ^ Database connection pool.
@@ -227,6 +229,9 @@ instance Yesod App where
   makeLogger = return . appLogger
   defaultMessageWidget title body = $(widgetFile "default-message-widget")
 
+addAuthBackDoor :: App -> [AuthPlugin App] -> [AuthPlugin App]
+addAuthBackDoor app = if appAllowDummyAuth (app) then (authDummy :) else id
+
 -- PERMISSIONS
 isAdmin :: User -> Bool
 isAdmin user = userRole user == Admin
@@ -260,16 +265,20 @@ instance YesodAuth App where
   logoutDest _ = HomeR
   redirectToReferer _ = True
 
+  authPlugins app = addAuthBackDoor app
+        [oauth2Github (oauthKeysClientId $ appGithubKeys app) (oauthKeysClientSecret $ appGithubKeys app)
+        , authDummy
+        ]
 
-  authPlugins app = mapMaybe mkPlugin . appOA2Providers $ appSettings app
-    where
-      mkPlugin (OA2Provider {..}) =
-        case (oa2provider, oa2clientId, oa2clientSecret) of
-          (_, _, "not-configured") -> Nothing
-          (_, "not-configured", _) -> Nothing
-          ("github", cid, sec) -> Just $ oauth2Github (pack cid) (pack sec)
-          _ -> Nothing
 
+  -- authPlugins app = mapMaybe mkPlugin . appOA2Providers $ appSettings app
+  --   where
+  --     mkPlugin (OA2Provider {..}) =
+  --       case (oa2provider, oa2clientId, oa2clientSecret) of
+  --         (_, _, "not-configured") -> Nothing
+  --         (_, "not-configured", _) -> Nothing
+  --         ("github", cid, sec) -> Just $ oauth2Github (pack cid) (pack sec)
+  --         _ -> Nothing
 
 
   getAuthId creds =

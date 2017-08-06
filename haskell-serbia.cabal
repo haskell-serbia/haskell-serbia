@@ -191,3 +191,4 @@ test-suite test
                  , aeson
                  , cryptonite
                  , hspec >= 2.0.0
+                 , fast-logger               >= 2.2        && < 2.5
