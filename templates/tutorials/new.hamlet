@@ -4,4 +4,6 @@
           <h2> Create new tutorial!
           <form method=post enctype=#{enctype} action=@{TutorialsR}>
                 ^{widget}
+
+                 <input name="tags" id="tags" value="#{tags}" />
                 <button .btn .btn-success>Create!

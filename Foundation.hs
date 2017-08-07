@@ -291,7 +291,10 @@ instance YesodAuth App where
          Nothing -> do
            let name = lookupExtra "login"
                avatarUrl = lookupExtra "avatar_url"
-               role = if name =="v0d1ch" then Admin else Haskeller
+               role = case  name of
+                       "v0d1ch" -> Admin
+                       "dummy"  -> Admin
+                       _ -> Haskeller
            fmap Just $ insert $ User ident name avatarUrl role
     where
       ident = credsIdent creds
