@@ -100,7 +100,7 @@ instance FromJSON AppSettings where
         appAuthDummyLogin         <- o .:? "auth-dummy-login"      .!= defaultDev
 
         appOA2Providers           <- o .:? "oauth2"           .!= []
-
+        appAllowDummyAuth <- o .:? "allow-dummy-auth" .!= defaultDev
         return AppSettings {..}
 
 

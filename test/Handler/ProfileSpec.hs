@@ -1,26 +1,31 @@
 module Handler.ProfileSpec (spec) where
 
-import           TestImport
+import           TestImport as T
+-- import qualified Database.Esqueleto as E
+-- import Database.Esqueleto.Internal.Language
+
+-- tutorialCount :: Monad m =>  Persist Int
+-- tutorialCount = runDB $ T.selectCount $ \tutorial ->  E.where_ (tutorial ^. TutorialId E.>. E.val (E.toSqlKey 0))
 
 spec :: Spec
 spec = withApp $ do
 
     describe "Profile page" $ do
         it "asserts no access to my-account for anonymous users" $ do
-            get ProfileR
+            T.get ProfileR
             statusIs 403
 
-        -- it "asserts access to my-account for authenticated users" $ do
-        --     userEntity <- createUser "v0d1ch"
-        --     authenticateAs userEntity
+        it "asserts access to my-account for authenticated users" $ do
+            userEntity <- createUser "foo"
+            authenticateAs userEntity
 
-        --     get ProfileR
-        --     statusIs 200
+            T.get ProfileR
+            statusIs 200
 
-        -- it "asserts user's information is shown" $ do
-        --     userEntity <- createUser "bar"
-        --     authenticateAs userEntity
+        it "asserts user's information is shown" $ do
+            userEntity <- createUser "bar"
+            authenticateAs userEntity
 
-        --     get ProfileR
-        --     let (Entity _ user) = userEntity
-        --     htmlAnyContain ".link" . unpack $ userAvatarUrl user
+            get ProfileR
+            let (Entity _ user) = userEntity
+            htmlAnyContain "h5" "bar"
