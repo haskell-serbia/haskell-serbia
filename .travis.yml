@@ -15,4 +15,5 @@ before_install:
 install: true
 
 script:
-  - stack build --test --haddock --no-haddock-deps
+  - stack clean
+  - stack build --test
