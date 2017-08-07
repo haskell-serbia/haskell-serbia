@@ -22,7 +22,7 @@ import Yesod.Test            as X
 import Database.Persist.Sqlite              (sqlDatabase, wrapConnection, createSqlPool)
 import qualified Database.Sqlite as Sqlite
 import Control.Monad.Logger                 (runLoggingT)
-import Settings (appDatabaseConf, appRoot)
+import Settings (appDatabaseConf)
 import Yesod.Core (messageLoggerSource)
 import Models.Role
 import Data.Maybe (fromMaybe)
@@ -48,14 +48,6 @@ withApp = before $ do
 -- spec to run in.
 wipeDB :: App -> IO ()
 wipeDB app = do
-    -- In order to wipe the database, we need to temporarily disable foreign key checks.
-    -- Unfortunately, disabling FK checks in a transaction is a noop in SQLite.
-    -- Normal Persistent functions will wrap your SQL in a transaction,
-    -- so we create a raw SQLite connection to disable foreign keys.
-    -- Foreign key checks are per-connection, so this won't effect queries outside this function.
-
-    -- Aside: SQLite by default *does not enable foreign key checks*
-    -- (disabling foreign keys is only necessary for those who specifically enable them).
     let settings = appSettings app
     sqliteConn <- rawConnection (sqlDatabase $ appDatabaseConf settings)
     disableForeignKeys sqliteConn
@@ -81,25 +73,12 @@ getTables = do
     return (fmap unSingle tables)
 
 
--- | Authenticate as a user. This relies on the `auth-dummy-login: true` flag
--- being set in test-settings.yaml, which enables dummy authentication in
--- Foundation.hs
--- authenticateAs :: Entity User -> YesodExample App ()
--- authenticateAs (Entity _ u) = do
---     request $ do
---         setMethod "POST"
---         addPostParam "login" $ userName u
---         setUrl $ AuthR $ PluginR "github" []
-
-
 authenticateAs :: Entity User -> YesodExample App ()
 authenticateAs (Entity _ u) = do
-    root <- appRoot . appSettings <$> getTestYesod
-
     request $ do
         setMethod "POST"
         addPostParam "ident" $ userIdent u
-        fromMaybe get (setUrl $ root ++ "/auth/page/dummy")
+        setUrl $ AuthR $ PluginR "dummy" []
 
 -- | Create a user.
 createUser :: Text -> YesodExample App (Entity User)

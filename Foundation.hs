@@ -24,6 +24,7 @@ data OAuthKeys = OAuthKeys
 
 data App = App
   { appSettings :: AppSettings
+  , appDevelopment :: Bool
   , appAllowDummyAuth :: Bool
   , appGithubKeys :: OAuthKeys
   , appStatic :: Static -- ^ Settings for static file serving.
@@ -297,7 +298,7 @@ instance YesodAuth App where
       extra = credsExtra creds
       lookupExtra key =
         fromMaybe
-          (error "No " <> key <> " in extra credentials")
+          "No  extra credentials"
           (lookup key extra)
   authHttpManager = getHttpManager
 

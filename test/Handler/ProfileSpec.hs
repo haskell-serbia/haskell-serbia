@@ -1,8 +1,8 @@
 module Handler.ProfileSpec (spec) where
 
 import           TestImport as T
-import qualified Database.Esqueleto as E
-import Database.Esqueleto.Internal.Language
+-- import qualified Database.Esqueleto as E
+-- import Database.Esqueleto.Internal.Language
 
 -- tutorialCount :: Monad m =>  Persist Int
 -- tutorialCount = runDB $ T.selectCount $ \tutorial ->  E.where_ (tutorial ^. TutorialId E.>. E.val (E.toSqlKey 0))
@@ -22,10 +22,10 @@ spec = withApp $ do
             T.get ProfileR
             statusIs 200
 
-        -- it "asserts user's information is shown" $ do
-        --     userEntity <- createUser "bar"
-        --     authenticateAs userEntity
+        it "asserts user's information is shown" $ do
+            userEntity <- createUser "bar"
+            authenticateAs userEntity
 
-        --     get ProfileR
-        --     let (Entity _ user) = userEntity
-        --     htmlAnyContain "h5" "bar"
+            get ProfileR
+            let (Entity _ user) = userEntity
+            htmlAnyContain "h5" "bar"
