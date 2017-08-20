@@ -94,6 +94,7 @@ library
                  , http-conduit                  >= 2.1        && < 2.3
                  , directory                     >= 1.1        && < 1.4
                  , warp                          >= 3.0        && < 3.3
+                 , warp-tls                      >= 3.2.3      && <= 3.2.4
                  , data-default
                  , aeson                         >= 0.11        && < 1.2
                  , conduit                       >= 1.0        && < 2.0
