@@ -5,3 +5,4 @@ yesod-devel
 static/tmp/*
 .vscode
 settings/settings.yml
+static/* linguist-vendored

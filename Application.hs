@@ -24,6 +24,7 @@ import Network.Wai.Handler.Warp             (Settings, defaultSettings,
                                              defaultShouldDisplayException,
                                              runSettings, setHost,
                                              setOnException, setPort, getPort)
+import Network.Wai.Handler.WarpTLS
 import Network.Wai.Middleware.RequestLogger (Destination (Logger),
                                              IPAddrSource (..),
                                              OutputFormat (..), destination,
@@ -135,10 +136,16 @@ getAppSettings = loadYamlSettings [configSettingsYml] [] useEnv
 develMain :: IO ()
 develMain = develMainHelper getApplicationDev
 
+-- SSL support
+tlsS :: TLSSettings
+tlsS = tlsSettings "/etc/letsencrypt/live/haskell-serbia.com/fullchain.pem" "/etc/letsencrypt/live/haskell-serbia.com/privkey.pem"
+
 -- | The @main@ function for an executable running this site.
 appMain :: IO ()
 appMain = do
     -- Get the settings from all relevant sources
+    -- /etc/letsencrypt/live/haskell-serbia.com/fullchain.pem
+    -- /etc/letsencrypt/live/haskell-serbia.com/privkey.pem
     settings <- loadYamlSettingsArgs
         -- fall back to compile-time values, set to [] to require values at runtime
         [configSettingsYmlValue]
@@ -153,7 +160,8 @@ appMain = do
     app <- makeApplication foundation
 
     -- Run the application with Warp
-    runSettings (warpSettings foundation) app
+    -- runSettings (warpSettings foundation) app
+    runTLS tlsS  (warpSettings foundation)  app
 
 
 --------------------------------------------------------------
