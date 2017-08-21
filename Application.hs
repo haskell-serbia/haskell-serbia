@@ -60,8 +60,8 @@ makeFoundation appSettings = do
     appHttpManager <- newManager
     appLogger <- newStdoutLoggerSet defaultBufSize >>= makeYesodLogger
     let appGithubKeys = OAuthKeys { oauthKeysClientId = "",  oauthKeysClientSecret = "" }
-    let appDevelopment = False
-    let appAllowDummyAuth = appDevelopment
+    -- let appDevelopment = False
+    -- let appAllowDummyAuth = appDevelopment
     appStatic <-
         (if appMutableStatic appSettings then staticDevel else static)
         (appStaticDir appSettings)
@@ -160,8 +160,8 @@ appMain = do
     app <- makeApplication foundation
 
     -- Run the application with Warp
-    -- runSettings (warpSettings foundation) app
-    runTLS tlsS  (warpSettings foundation)  app
+    runSettings (warpSettings foundation) app
+    -- runTLS tlsS  (warpSettings foundation)  app
 
 
 --------------------------------------------------------------
