@@ -24,8 +24,6 @@ data OAuthKeys = OAuthKeys
 
 data App = App
   { appSettings :: AppSettings
-  , appDevelopment :: Bool
-  -- , appAllowDummyAuth :: Bool
   , appGithubKeys :: OAuthKeys
   , appStatic :: Static -- ^ Settings for static file serving.
   , appConnPool :: ConnectionPool -- ^ Database connection pool.
@@ -265,12 +263,6 @@ instance YesodAuth App where
   loginDest _ = HomeR
   logoutDest _ = HomeR
   redirectToReferer _ = True
-
-  -- authPlugins app = addAuthBackDoor app
-  --       [oauth2Github (oauthKeysClientId $ appGithubKeys app) (oauthKeysClientSecret $ appGithubKeys app)
-  --       , authDummy
-  --       ]
-
 
   authPlugins app = mapMaybe mkPlugin . appOA2Providers $ appSettings app
     where
