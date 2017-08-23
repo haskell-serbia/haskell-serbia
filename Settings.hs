@@ -55,8 +55,6 @@ data AppSettings = AppSettings
     , appAnalytics              :: Maybe Text
     -- ^ Google Analytics code
 
-    , appAuthDummyLogin         :: Bool
-    -- ^ Indicate if auth dummy login should be enabled.
     , appOA2Providers           :: [OA2Provider]
     }
 
@@ -97,10 +95,7 @@ instance FromJSON AppSettings where
         appCopyright              <- o .:  "copyright"
         appAnalytics              <- o .:? "analytics"
 
-        appAuthDummyLogin         <- o .:? "auth-dummy-login"      .!= defaultDev
-
         appOA2Providers           <- o .:? "oauth2"           .!= []
-        appAllowDummyAuth <- o .:? "allow-dummy-auth" .!= defaultDev
         return AppSettings {..}
 
 
