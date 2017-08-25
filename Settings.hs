@@ -1,9 +1,4 @@
 {-# Language CPP #-}
--- | Settings are centralized, as much as possible, into this file. This
--- includes database connection settings, static file locations, etc.
--- In addition, you can configure a number of different aspects of Yesod
--- by overriding methods in the Yesod typeclass. That instance is
--- declared in the Foundation.hs file.
 module Settings where
 
 import ClassyPrelude.Yesod
@@ -19,9 +14,6 @@ import Yesod.Default.Config2       (applyEnvValue, configSettingsYml)
 import Yesod.Default.Util          (WidgetFileSettings, widgetFileNoReload,
                                     widgetFileReload)
 
--- | Runtime settings to configure this application. These settings can be
--- loaded from various sources: defaults, environment variables, config files,
--- theoretically even a database.
 data AppSettings = AppSettings
     { appStaticDir              :: String
     -- ^ Directory from which to serve static files.
@@ -53,7 +45,9 @@ data AppSettings = AppSettings
     , appCopyright              :: Text
     -- ^ Copyright text to appear in the footer of the page
     , appAnalytics              :: Maybe Text
-    -- ^ Google Analytics code
+   -- ^ Google Analytics code
+
+    , appAuthDummyLogin         :: Bool
 
     , appOA2Providers           :: [OA2Provider]
     }
@@ -96,24 +90,16 @@ instance FromJSON AppSettings where
         appAnalytics              <- o .:? "analytics"
 
         appOA2Providers           <- o .:? "oauth2"           .!= []
+        appAuthDummyLogin         <- o .:? "auth-dummy-login" .!= defaultDev
+
         return AppSettings {..}
 
 
--- | Settings for 'widgetFile', such as which template languages to support and
--- default Hamlet settings.
---
--- For more information on modifying behavior, see:
---
--- https://github.com/yesodweb/yesod/wiki/Overriding-widgetFile
 widgetFileSettings :: WidgetFileSettings
 widgetFileSettings = def
 
--- | How static files should be combined.
 combineSettings :: CombineSettings
 combineSettings = def
-
--- The rest of this file contains settings which rarely need changing by a
--- user.
 
 widgetFile :: String -> Q Exp
 widgetFile = (if appReloadTemplates compileTimeAppSettings

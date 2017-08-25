@@ -11,8 +11,9 @@ database:
 
 copyright: Haskell Srbija 2017
 #analytics: UA-YOURCODE
+auth-dummy-login: False
 
 oauth2:
   - provider: "github"
-    id:       "_env:GITHUB_CLIENT_ID: ************"
-    secret:   "_env:GITHUB_CLIENT_SECRET:***********************"
+    id:       "_env:GITHUB_CLIENT_ID: 01acc0a0eb739564295a"
+    secret:   "_env:GITHUB_CLIENT_SECRET:e3f7a4a20c5aef6b871e8b471087db03ba5d6b45"

@@ -2,8 +2,14 @@
     <div .row>
         <div .col-md-12>
           <h2> Create new tutorial!
-          <form method=post enctype=#{enctype} action=@{TutorialsR}>
-                ^{widget}
+          <div .form-group>
+              <form method=post enctype=#{enctype} action=@{TutorialsR}>
+                <input type="text" name="tutorialTitle" .form-control placeholder="Tutorial title" />
+                <br />
+                <textarea  name="tutorialContent" .form-control placeholder="Tutorial content"/>
+                <br />
+                <!-- ^{widget} -->
 
-                 <input name="tags" id="tags" value="#{tags}" />
-                <button .btn .btn-success>Create!
+                 <input name="tutorialTags" id="tags" value="#{tags}" />
+                 <br />
+                 <button .btn .btn-success>Create!
