@@ -44,7 +44,7 @@ postTutorialsR = do
 
             let tag = Tag
                         { tagTaglist = ttags
-                        , tagTutorial = tid
+                        , tagTutorialIdent = tid
                         }
             _ <- runDB $ insert $ tag
             redirect $ TutorialListR 1
