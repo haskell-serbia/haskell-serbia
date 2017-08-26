@@ -11,6 +11,7 @@
 
           <div> #{tutorialContent $ entityVal tut}
           <div>
-              <input name="tutorialTags" id="tags" value="#{tagTaglist $ entityVal tags}" />
+              <p>Tags:
+                  <b> #{tagTaglist $ entityVal tags}
           <div>
             ^{disqusWidget tutorialIdentifier}
