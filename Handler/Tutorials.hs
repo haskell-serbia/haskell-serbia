@@ -1,4 +1,6 @@
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE OverloadedStrings #-}
+
 module Handler.Tutorials where
 
 import Import as I
@@ -10,7 +12,7 @@ getTutorialsR :: Handler Html
 getTutorialsR = do
   now <- liftIO getCurrentTime
   let tags = "" :: String -- (intercalate "," ["a", "b", "c"]) :: String
-  (widget, enctype) <- generateFormPost $ FH.tutorialForm now
+  (_, enctype) <- generateFormPost $ FH.tutorialForm now
   defaultLayout $(widgetFile "tutorials/new")
 
 postTutorialsR :: Handler Html
@@ -20,11 +22,11 @@ postTutorialsR = do
   ptags  <- lookupPostParam "tutorialTags"
   now <- liftIO getCurrentTime
   uid <- requireAuthId
-  (widget, enctype) <- generateFormPost $ FH.tutorialForm now
+  (_, enctype) <- generateFormPost $ FH.tutorialForm now
   let ttitle = fromMaybe "" ptitle
       tcontent = fromStrict $ fromMaybe "" pcontent
       ttags = fromMaybe "" ptags
-      tags = "" :: String
+      tags =  "" :: Text
   case (ttitle,tcontent,ttags) of
        ("",_,_) -> do
            setMessage "Title cannot be empty!"
@@ -41,7 +43,6 @@ postTutorialsR = do
                     , tutorialCreatedAt = now
                     }
             tid <- runDB $ insert $ t
-
             let tag = Tag
                         { tagTaglist = ttags
                         , tagTutorialIdent = tid

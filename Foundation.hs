@@ -270,7 +270,6 @@ instance YesodAuth App where
           (_, _, "not-configured") -> Nothing
           (_, "not-configured", _) -> Nothing
           ("github", cid, sec) -> Just $ oauth2Github (pack cid) (pack sec)
-  (widget, enctype) <- generateFormPost $ FH.tutorialForm now
           _ -> Nothing
 
   getAuthId creds =
