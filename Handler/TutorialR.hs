@@ -4,6 +4,7 @@ import Import
 import Widget.Disqus
 import qualified Database.Esqueleto as E
 
+
 getTutorialRR :: TutorialId -> Handler Html
 getTutorialRR tutorialId = do
   muid <- fmap entityKey <$> maybeAuth
@@ -14,10 +15,18 @@ getTutorialRR tutorialId = do
   let tutorialIdentifier = tutorialId
   defaultLayout $(widgetFile "tutorials/tut")
 
-
+selectTutorialAndTags ::
+     ( BaseBackend backend ~ SqlBackend
+     , PersistUniqueRead backend
+     , PersistQueryRead backend
+     , IsPersistBackend backend
+     , MonadIO m
+     )
+  => Key Tutorial
+  -> ReaderT backend m [(Entity Tutorial, Maybe (Entity Tag))]
 selectTutorialAndTags tid =
   E.select $
-  E.from $ \(E.InnerJoin tut tag) -> do
-    E.on (tut E.^. TutorialId E.==. tag E.^. TagTutorialIdent)
+  E.from $ \(tut `E.LeftOuterJoin` tag) -> do
+    E.on (E.just (tut E.^. TutorialId) E.==. tag E.?. TagTutorialIdent)
     E.where_ (tut E.^. TutorialId E.==. E.val tid)
     return (tut, tag)

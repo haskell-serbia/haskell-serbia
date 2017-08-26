@@ -12,6 +12,7 @@
           <div> #{tutorialContent $ entityVal tut}
           <div>
               <p>Tags:
-                  <b> #{tagTaglist $ entityVal tags}
+                  $maybe t <- tags
+                      <b> #{tagTaglist $ entityVal t}
           <div>
             ^{disqusWidget tutorialIdentifier}
