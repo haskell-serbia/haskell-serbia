@@ -6,12 +6,12 @@ module Handler.Tutorials where
 import Import as I
 import Helpers.FormHelper as FH
 import Text.Markdown
-
+import Helpers.UserHelper as U
 
 getTutorialsR :: Handler Html
 getTutorialsR = do
   now <- liftIO getCurrentTime
-  let tags = "" :: String -- (intercalate "," ["a", "b", "c"]) :: String
+  let tags = "" :: String
   (_, enctype) <- generateFormPost $ FH.tutorialForm now
   defaultLayout $(widgetFile "tutorials/new")
 
@@ -25,7 +25,7 @@ postTutorialsR = do
   (_, enctype) <- generateFormPost $ FH.tutorialForm now
   let ttitle = fromMaybe "" ptitle
       tcontent = fromStrict $ fromMaybe "" pcontent
-      ttags = wordsWhen (==',') (fromMaybe "" ptags)
+      ttags = U.wordsWhen (==',') (fromMaybe "" ptags)
       tags =  "" :: Text
   case (ttitle,tcontent,ttags) of
        ("",_,_) -> do
@@ -43,16 +43,6 @@ postTutorialsR = do
                     , tutorialCreatedAt = now
                     }
             tid <- runDB $ insert $ t
-            let tagl = map (\x -> generateTag tid x) ttags
+            let tagl = map (\x -> U.generateTag tid x) ttags
             _ <- mapM (\x -> runDB $ insert x) tagl
             redirect $ TutorialListR 1
-
-generateTag :: Key Tutorial -> Text -> Tag
-generateTag tid t = Tag {tagTaglist = t, tagTutorialIdent = tid}
-
-wordsWhen :: (Char -> Bool) -> Text -> [Text]
-wordsWhen p s =
-  case dropWhile p s of
-    "" -> []
-    s' -> w : wordsWhen p s''
-      where (w, s'') = break p s'

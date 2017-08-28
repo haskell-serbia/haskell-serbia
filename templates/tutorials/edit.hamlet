@@ -1,7 +1,9 @@
 <div .container>
     <div .row>
         <div .col-md-12>
-          <h2> EDIT: #{tutorialTitle tutorial} 
+          <h2> EDIT: #{tutorialTitle tutorial}
           <form method=post enctype=#{enctype} action=@{TutorialEditR tutorialId}>
                 ^{widget}
+                <input name="tutorialTags" id="tags" value="#{tags}" />
+                <div>
                 <button .btn .btn-success>Edit!
