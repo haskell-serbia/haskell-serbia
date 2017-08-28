@@ -2,11 +2,14 @@ module Handler.TutorialEdit where
 
 import Import
 import Helpers.FormHelper as FH
+import Helpers.UserHelper as U
 
 getTutorialEditR :: TutorialId -> Handler Html
 getTutorialEditR tutorialId = do
   now      <- liftIO getCurrentTime
   tutorial <- runDB . get404 $ tutorialId
+  taglist <- runDB $ U.selectTags tutorialId
+  let tags =  intercalate ","  (map (tagTaglist . entityVal) taglist)
   (widget, enctype) <- generateFormPost (FH.tutorialFormEdit tutorial now)
   defaultLayout $ do $(widgetFile "tutorials/edit")
 
@@ -17,6 +20,8 @@ postTutorialEditR tutorialId = do
   ((res, _), _) <- runFormPost (FH.tutorialFormEdit tutorial now)
   case res of
     FormSuccess tut -> do
+      ptags  <- lookupPostParam "tutorialTags"
+      let ttags = U.wordsWhen (==',') (fromMaybe "" ptags)
       let edited =
             Tutorial
               {
@@ -32,6 +37,9 @@ postTutorialEditR tutorialId = do
           , TutorialCreatedBy =. tutorialCreatedBy edited
           , TutorialCreatedAt =. tutorialCreatedAt edited
           ]
+      let tagl = map (\x -> U.generateTag tutorialId x) ttags
+      _ <- runDB $ deleteWhere [TagTutorialIdent ==. tutorialId]
+      _ <- mapM (\x -> runDB $ insert x) tagl
       redirect $ TutorialRR tutorialId
     _ -> do
       setMessage "Tutorial not edited"
