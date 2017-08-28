@@ -24,6 +24,8 @@ Tutorial
    createdBy UserId
    createdAt UTCTime
    deriving Show
-
+Tag
+  tutorialIdent TutorialId
+  taglist Text
+  deriving Show
 |]
-

@@ -13,9 +13,10 @@ import qualified Data.CaseInsensitive as CI
 import qualified Data.Text.Encoding as TE
 import Data.Maybe (isJust)
 import Yesod.Auth.OAuth2.Github
--- import Yesod.Auth.Dummy
-
 import Models.Role
+
+import Yesod.Auth.Dummy
+import Yesod.Auth.OpenId    (authOpenId, IdentifierType (Claimed))
 
 data OAuthKeys = OAuthKeys
   { oauthKeysClientId :: Text
@@ -53,8 +54,8 @@ mkYesodData
 / HomeR GET
 /lang LangR POST
 /profile ProfileR GET
-!/tutorials/page/#Page TutorialListR GET
 !/tutorials/new TutorialsR GET POST
+!/tutorials/page/#Page TutorialListR GET
 !/tutorial/#TutorialId TutorialRR GET
 !/tutorial/edit/#TutorialId TutorialEditR GET POST
 !/manager  ManagerR GET
@@ -172,7 +173,6 @@ instance Yesod App where
   isAuthorized (StaticR _) _ = return Authorized
   isAuthorized ProfileR _ = isAuthenticated
   isAuthorized GithubR _ = return Authorized
-  -- isAuthorized TutorialsR  False = return Authorized
   isAuthorized (TutorialEditR _) False = return Authorized
   isAuthorized (TutorialEditR _) True = do
     mauth <- maybeAuth
@@ -183,6 +183,7 @@ instance Yesod App where
         | isAuthor user -> return Authorized
         | otherwise -> unauthorizedI MsgNotAnAdmin
   isAuthorized TutorialsR _ = do
+    liftIO $ putStrLn "here"
     mauth <- maybeAuth
     case mauth of
       Nothing -> return AuthenticationRequired
@@ -204,11 +205,8 @@ instance Yesod App where
       Just (Entity _ user)
         | isAdmin user -> return Authorized
         | otherwise -> unauthorizedI MsgNotAnAdmin
-  -- check if user can have access to page
-  -- isAuthorized route isWrite = do
-  --   mauth <- maybeAuth
-  --   let user =   fmap entityVal mauth
-  --   user `isAuthorizedTo` permissionsRequiredFor route isWrite
+
+
   addStaticContent ext mime content = do
     master <- getYesod
     let staticDir = appStaticDir $ appSettings master
@@ -228,8 +226,6 @@ instance Yesod App where
   makeLogger = return . appLogger
   defaultMessageWidget title body = $(widgetFile "default-message-widget")
 
--- addAuthBackDoor :: App -> [AuthPlugin App] -> [AuthPlugin App]
--- addAuthBackDoor app = if appAllowDummyAuth (app) then (authDummy :) else id
 
 -- PERMISSIONS
 isAdmin :: User -> Bool
@@ -264,7 +260,10 @@ instance YesodAuth App where
   logoutDest _ = HomeR
   redirectToReferer _ = True
 
-  authPlugins app = mapMaybe mkPlugin . appOA2Providers $ appSettings app
+  authPlugins app =
+    if appAuthDummyLogin $ appSettings app
+      then [authDummy]
+      else mapMaybe mkPlugin . appOA2Providers $ appSettings app
     where
       mkPlugin (OA2Provider {..}) =
         case (oa2provider, oa2clientId, oa2clientSecret) of
@@ -273,25 +272,25 @@ instance YesodAuth App where
           ("github", cid, sec) -> Just $ oauth2Github (pack cid) (pack sec)
           _ -> Nothing
 
-
   getAuthId creds =
-    runDB $
-    do $(logDebug) $ "Extra account information: " <> (pack . show $ extra)
-       x <- getBy $ UniqueUser ident
-       case x of
-         Just (Entity uid _) -> return $ Just uid
-         Nothing -> do
-           let name = lookupExtra "login"
-               avatarUrl = lookupExtra "avatar_url"
-               role = if name =="v0d1ch" then Admin else Haskeller
-           fmap Just $ insert $ User ident name avatarUrl role
+    runDB $ do
+      $(logDebug) $ "Extra account information: " <> (pack . show $ extra)
+      x <- getBy $ UniqueUser ident
+      case x of
+        Just (Entity uid _) -> return $ Just uid
+        Nothing -> do
+          let name = lookupExtra "login"
+              avatarUrl = lookupExtra "avatar_url"
+              role =
+                case name of
+                  "v0d1ch" -> Admin
+                  _ -> Haskeller
+          fmap Just $ insert $ User ident name avatarUrl role
     where
       ident = credsIdent creds
       extra = credsExtra creds
-      lookupExtra key =
-        fromMaybe
-          "No  extra credentials"
-          (lookup key extra)
+      lookupExtra key = fromMaybe "No  extra credentials" (lookup key extra)
+
   authHttpManager = getHttpManager
 
 -- | Access function to determine if a user is logged in.
@@ -302,6 +301,7 @@ isAuthenticated = do
     case muid of
       Nothing -> Unauthorized "You must login to access this page"
       Just _ -> Authorized
+
 
 instance YesodAuthPersist App
 

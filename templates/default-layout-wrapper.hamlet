@@ -15,6 +15,7 @@ $newline never
     <meta name="viewport" content="width=device-width,initial-scale=1">
     ^{pageHead pc}
     ^{pageHead pageHeader}
+    <link rel=stylesheet type=text/css href=@{StaticR css_jquery_tagsinput_css}>
     <link rel=stylesheet type=text/css href=@{StaticR css_royalslider_css}>
     <link rel=stylesheet type=text/css href=@{StaticR css_cleanblog_css}>
 
@@ -31,6 +32,7 @@ $newline never
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.0.3/js.cookie.min.js">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
+    <script type=text/javascript src=@{StaticR js_jquery_tagsinput_js}>
     <script type=text/javascript src=@{StaticR js_royalSlider_js}>
 
     <script>
@@ -63,8 +65,8 @@ $newline never
      \     controlsInside: true,
      \     imageScaleMode: 'fill',
      \     arrowsNavAutoHide: false,
-     \     autoScaleSlider: true, 
-     \     autoScaleSliderWidth: 960,     
+     \     autoScaleSlider: true,
+     \     autoScaleSliderWidth: 960,
      \     autoScaleSliderHeight: 350,
      \     controlNavigation: 'bullets',
      \     thumbsFitInViewport: false,
@@ -90,5 +92,3 @@ $newline never
   <body>
     ^{pageBody pageHeader}
     ^{pageBody pc}
-
-    
