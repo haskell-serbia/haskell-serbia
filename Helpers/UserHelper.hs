@@ -34,6 +34,23 @@ selectTutorialAndTags tid =
     return (tut, tag)
 
 
+selectTutorialAndUser ::
+     ( BaseBackend backend ~ SqlBackend
+     , PersistUniqueRead backend
+     , PersistQueryRead backend
+     , IsPersistBackend backend
+     , MonadIO m
+     )
+  => Key Tutorial
+  -> ReaderT backend m [(Entity Tutorial, Entity User)]
+selectTutorialAndUser tid =
+  E.select $
+  E.from $ \(tut `E.LeftOuterJoin` usr) -> do
+    E.on (tut E.^. TutorialCreatedBy E.==. usr E.^. UserId)
+    E.where_ (tut E.^. TutorialId E.==. E.val tid)
+    E.limit 1
+    return (tut,usr)
+
 selectTutorial ::
      ( BaseBackend backend ~ SqlBackend
      , PersistUniqueRead backend
