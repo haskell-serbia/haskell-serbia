@@ -1,22 +1,20 @@
 module Foundation where
 
-import Import.NoFoundation
+import qualified Data.CaseInsensitive as CI
+import Data.Maybe (isJust)
+import qualified Data.Text.Encoding as TE
 import Database.Persist.Sql (ConnectionPool, runSqlPool)
+import Import.NoFoundation
+import Models.Role
 import Text.Hamlet (hamletFile)
 import Text.Jasmine (minifym)
-
-import Yesod.Default.Util (addStaticContentExternal)
-import Yesod.Core.Types (Logger)
-import Yesod.Form.Jquery
-import qualified Yesod.Core.Unsafe as Unsafe
-import qualified Data.CaseInsensitive as CI
-import qualified Data.Text.Encoding as TE
-import Data.Maybe (isJust)
-import Yesod.Auth.OAuth2.Github
-import Models.Role
-
 import Yesod.Auth.Dummy
-import Yesod.Auth.OpenId    (authOpenId, IdentifierType (Claimed))
+import Yesod.Auth.OAuth2.Github
+import Yesod.Core.Types (Logger)
+import qualified Yesod.Core.Unsafe as Unsafe
+import Yesod.Default.Util (addStaticContentExternal)
+import Yesod.Form.Jquery
+
 
 data OAuthKeys = OAuthKeys
   { oauthKeysClientId :: Text
@@ -70,11 +68,10 @@ type Page = Int
 
 instance Yesod App where
   approot =
-    ApprootRequest $
-    \app req ->
-       case appRoot $ appSettings app of
-         Nothing -> getApprootText guessApproot app req
-         Just root -> root
+    ApprootRequest $ \app req ->
+      case appRoot $ appSettings app of
+        Nothing -> getApprootText guessApproot app req
+        Just root -> root
   makeSessionBackend _ =
     Just <$>
     defaultClientSessionBackend
@@ -115,7 +112,7 @@ instance Yesod App where
             , menuItemRoute = ProfileR
             , menuItemAccessCallback = isJust muser
             }
-           , NavbarRight $
+          , NavbarRight $
             MenuItem
             { menuItemLabel = MsgMenuLoginTitle
             , menuItemRoute = AuthR LoginR
@@ -140,24 +137,16 @@ instance Yesod App where
             , menuItemAccessCallback = isJust muser
             }
           ]
-    let navbarLeftMenuItems =
-          [ x
-          | NavbarLeft x <- menuItems ]
-    let navbarRightMenuItems =
-          [ x
-          | NavbarRight x <- menuItems ]
+    let navbarLeftMenuItems = [x | NavbarLeft x <- menuItems]
+    let navbarRightMenuItems = [x | NavbarRight x <- menuItems]
     let navbarLeftFilteredMenuItems =
-          [ x
-          | x <- navbarLeftMenuItems
-          , menuItemAccessCallback x ]
+          [x | x <- navbarLeftMenuItems, menuItemAccessCallback x]
     let navbarRightFilteredMenuItems =
-          [ x
-          | x <- navbarRightMenuItems
-          , menuItemAccessCallback x ]
+          [x | x <- navbarRightMenuItems, menuItemAccessCallback x]
     pc <-
-      widgetToPageContent $
-      do addStylesheet $ StaticR css_bootstrap_css
-         $(widgetFile "default-layout")
+      widgetToPageContent $ do
+        addStylesheet $ StaticR css_bootstrap_css
+        $(widgetFile "default-layout")
     withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
   -- The page to be redirected to when authentication is required.
   authRoute _ = Just $ AuthR LoginR
@@ -205,8 +194,6 @@ instance Yesod App where
       Just (Entity _ user)
         | isAdmin user -> return Authorized
         | otherwise -> unauthorizedI MsgNotAnAdmin
-
-
   addStaticContent ext mime content = do
     master <- getYesod
     let staticDir = appStaticDir $ appSettings master
@@ -222,10 +209,10 @@ instance Yesod App where
     where
       genFileName lbs = "autogen-" ++ base64md5 lbs
   shouldLog app _source level =
-    appShouldLogAll (appSettings app) || level == LevelWarn || level == LevelError
+    appShouldLogAll (appSettings app) ||
+    level == LevelWarn || level == LevelError
   makeLogger = return . appLogger
   defaultMessageWidget title body = $(widgetFile "default-message-widget")
-
 
 -- PERMISSIONS
 isAdmin :: User -> Bool
@@ -253,13 +240,11 @@ instance YesodPersist App where
 instance YesodPersistRunner App where
   getDBRunner = defaultGetDBRunner appConnPool
 
-
 instance YesodAuth App where
   type AuthId App = UserId
   loginDest _ = HomeR
   logoutDest _ = HomeR
   redirectToReferer _ = True
-
   authPlugins app =
     if appAuthDummyLogin $ appSettings app
       then [authDummy]
@@ -271,7 +256,6 @@ instance YesodAuth App where
           (_, "not-configured", _) -> Nothing
           ("github", cid, sec) -> Just $ oauth2Github (pack cid) (pack sec)
           _ -> Nothing
-
   getAuthId creds =
     runDB $ do
       $(logDebug) $ "Extra account information: " <> (pack . show $ extra)
@@ -290,7 +274,6 @@ instance YesodAuth App where
       ident = credsIdent creds
       extra = credsExtra creds
       lookupExtra key = fromMaybe "No  extra credentials" (lookup key extra)
-
   authHttpManager = getHttpManager
 
 -- | Access function to determine if a user is logged in.
@@ -301,7 +284,6 @@ isAuthenticated = do
     case muid of
       Nothing -> Unauthorized "You must login to access this page"
       Just _ -> Authorized
-
 
 instance YesodAuthPersist App
 
