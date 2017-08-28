@@ -2,17 +2,17 @@
     <div .row>
         <div .col-md-12>
           $maybe _ <- muid
-            <a href=@{TutorialEditR  tutorialId} .btn .btn-default .pull-right>Edit
-          <h2>#{tutorialTitle $ entityVal tut}
-          <div .col-md-12>
-            <p .pull-right>
-                <a href="https://github.com/#{name}" .link >
-                    <img src=#{avatar} style="width:80px" />
+                <a href=@{TutorialEditR  tutorialId} .btn .btn-default .pull-right>Edit
+                <h2> #{tutorialTitle $ entityVal tut}
+                <div .col-md-12>
+                    <p .pull-right>
+                        <a href="https://github.com/#{name}" .link >
+                            <img src=#{avatar} style="width:80px" />
 
-          <div> #{tutorialContent $ entityVal tut}
-          <div>
-              <p>Tags:
-                    $forall tag <- tags
-                          <b> #{tagTaglist $ entityVal tag}
-          <div>
-            ^{disqusWidget tutorialIdentifier}
+                <div> #{tutorialContent $ entityVal tut}
+                <div>
+                  <p>Tags:
+                     $forall tg <- tags
+                        <span .btn .btn-xs .btn-warning> #{tagTaglist $ entityVal tg}
+                <div>
+                    ^{disqusWidget tutorialIdentifier}
