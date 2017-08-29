@@ -28,6 +28,7 @@ library
                      Handler.TutorialList
                      Handler.TutorialR
                      Handler.TutorialEdit
+                     Handler.TutorialDelete
                      Handler.Manager
                      Handler.ManagerEdit
                      Handler.ManagerNew

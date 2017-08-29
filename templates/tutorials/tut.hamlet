@@ -3,6 +3,7 @@
         <div .col-md-12>
           $maybe _ <- muid
                 <a href=@{TutorialEditR  tutorialId} .btn .btn-default .pull-right>Edit
+                <a href=@{TutorialDelete  tutorialId} .btn .btn-danger .pull-right>Delete
           <h2> #{tutorialTitle $ entityVal tut}
           <div .col-md-12>
              <p .pull-right>
