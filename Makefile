@@ -28,8 +28,11 @@ ghci-object:
 docker-run:
 	docker run -it -p 3000:3000 haskell-serbia-docker /usr/local/bin/haskell-serbia-exe
 
-deploy-bin:
+copy-remote:
 	scp -i  ~/Documents/haskell-serbia/haskell-serbia.pem.txt ~/code/haskell-serbia/bin/haskell-serbia  ubuntu@ec2-34-195-52-222.compute-1.amazonaws.com:/home/ubuntu
+
+deploy-bin: build copy-bins
+	sudo ./deploy.sh
 
 ssh-aws:
 	ssh -i ~/Documents/haskell-serbia/haskell-serbia.pem.txt  ubuntu@ec2-34-195-52-222.compute-1.amazonaws.com
