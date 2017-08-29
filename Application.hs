@@ -42,6 +42,7 @@ import Handler.TutorialEdit
 import Handler.TutorialList
 import Handler.TutorialR
 import Handler.Tutorials
+import Handler.TutorialDelete
 
 mkYesodDispatch "App" resourcesApp
 

@@ -55,6 +55,7 @@ mkYesodData
 !/tutorials/new TutorialsR GET POST
 !/tutorials/page/#Page TutorialListR GET
 !/tutorial/#TutorialId TutorialRR GET
+!/tutorial/delete/#TutorialId TutorialDelete GET
 !/tutorial/edit/#TutorialId TutorialEditR GET POST
 !/manager  ManagerR GET
 !/manager/new  ManagerNewR GET POST
@@ -172,7 +173,14 @@ instance Yesod App where
         | isAuthor user -> return Authorized
         | otherwise -> unauthorizedI MsgNotAnAdmin
   isAuthorized TutorialsR _ = do
-    liftIO $ putStrLn "here"
+    mauth <- maybeAuth
+    case mauth of
+      Nothing -> return AuthenticationRequired
+      Just (Entity _ user)
+        | isAdmin user -> return Authorized
+        | isAuthor user -> return Authorized
+        | otherwise -> unauthorizedI MsgNotAnAdmin
+  isAuthorized (TutorialDelete _) _ = do
     mauth <- maybeAuth
     case mauth of
       Nothing -> return AuthenticationRequired
