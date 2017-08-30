@@ -15,5 +15,4 @@ before_install:
 install: true
 
 script:
-  - stack clean
   - stack build --test
