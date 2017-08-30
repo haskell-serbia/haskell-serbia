@@ -11,7 +11,6 @@ install:
 script:
   - stack setup --no-terminal
   - stack build -j2 --fast --no-terminal
-  - stack test --fast --no-terminal bloodhound:tests --test-arguments="--qc-max-success 500" --flag bloodhound:$ESFLAG
   - stack test --fast --no-terminal
 
 cache:
