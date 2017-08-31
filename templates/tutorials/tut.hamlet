@@ -6,9 +6,10 @@
                 <a href=@{TutorialDelete  tutorialId} .btn .btn-danger .pull-right>Delete
           <h2> #{tutorialTitle $ entityVal tut}
           <div .col-md-12>
-             <p .pull-right>
-             <a href="https://github.com/#{name}" .link >
-                    <img src=#{avatar} style="width:80px" />
+              <div .col-md-12>
+                 <p .pull-right>
+                     <a href="https://github.com/#{name}" .link >
+                        <img src=#{avatar} style="width:80px" />
 
              <div> #{tutorialContent $ entityVal tut}
              <div>
