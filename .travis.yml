@@ -20,4 +20,7 @@ cache:
   - $HOME/.ghc
   - $HOME/.stack
   - .stack-work/
+
   apt: true
+
+  dist: precise
