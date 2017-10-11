@@ -1,3 +1,4 @@
+{-# LANGUAGE RecordWildCards #-}
 module Handler.ManagerEdit where
 
 import           Helpers.FormHelper as FH
@@ -17,12 +18,12 @@ postManagerEditR userId = do
   user <- runDB . get404 $ userId
   ((res, _), _) <- runFormPost (FH.userAForm user)
   case res of
-    FormSuccess u -> do
+    FormSuccess User {..} -> do
         runDB $ update userId
-          [ UserIdent    =. userIdent u
-          , UserName   =. userName u
-          , UserAvatarUrl =. userAvatarUrl u
-          , UserRole     =. userRole u
+          [ UserIdent    =. userIdent
+          , UserName   =. userName
+          , UserAvatarUrl =. userAvatarUrl
+          , UserRole     =. userRole
           ]
         setMessage "User edited!"
         redirect ManagerR

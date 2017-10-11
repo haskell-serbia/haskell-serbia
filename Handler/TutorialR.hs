@@ -14,8 +14,8 @@ getTutorialRR tutorialId = do
           setMessage "Tutorial not found!"
           redirect $ TutorialListR 1
       Just tut -> do
-          author <- runDB $ get404 $ tutorialCreatedBy $ entityVal $ tut
-          let name = userName author
-          let avatar = userAvatarUrl author
+          User {..}<- runDB $ get404 $ tutorialCreatedBy $ entityVal $ tut
+          let name = userName
+          let avatar = userAvatarUrl
           let tutorialIdentifier = tutorialId
           defaultLayout $(widgetFile "tutorials/tut")

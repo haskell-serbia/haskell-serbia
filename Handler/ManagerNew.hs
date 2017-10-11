@@ -1,3 +1,4 @@
+{-# LANGUAGE RecordWildCards #-}
 module Handler.ManagerNew where
 
 import           Helpers.FormHelper as FH
@@ -12,8 +13,8 @@ postManagerNewR :: Handler Html
 postManagerNewR =  do
     ((res, _), _) <- runFormPost FH.newUserForm
     case res of
-      FormSuccess u -> do
-            _ <- runDB $ insert $ User (userIdent u) (userName u)  (userAvatarUrl u) (userRole u)
+      FormSuccess User{..} -> do
+            _ <- runDB $ insert $ User userIdent userName userAvatarUrl userRole
             setMessage "User created!"
             redirect ManagerR
       _ -> do
