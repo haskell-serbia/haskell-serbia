@@ -1,7 +1,7 @@
 module Helpers.UserHelper where
 
-import           Import
 import qualified Database.Esqueleto as E
+import           Import
 
 
 findAuthor ::
@@ -15,7 +15,7 @@ findAuthor name = do
   mperson <- runDB $ selectFirst [UserName ==. name] []
   case mperson of
     Just person -> return $ Right person
-    Nothing -> return $ Left ("Author not found." :: Text)
+    Nothing     -> return $ Left ("Author not found." :: Text)
 
 selectTutorialAndTags ::
      ( BaseBackend backend ~ SqlBackend

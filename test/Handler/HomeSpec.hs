@@ -1,6 +1,6 @@
 module Handler.HomeSpec (spec) where
 
-import TestImport
+import           TestImport
 
 spec :: Spec
 spec = withApp $ do

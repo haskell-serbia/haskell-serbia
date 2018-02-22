@@ -14,35 +14,32 @@ module Application
   , db
   ) where
 
-import Control.Monad.Logger (liftLoc, runLoggingT)
-import Database.Persist.Sql (runMigration)
-import Database.Persist.Sqlite
-       (createSqlitePool, runSqlPool, sqlDatabase, sqlPoolSize)
-import Import
-import Language.Haskell.TH.Syntax (qLocation)
-import Network.Wai (Middleware)
-import Network.Wai.Handler.Warp
-       (Settings, defaultSettings, defaultShouldDisplayException, getPort,
-        setHost, setOnException, setPort)
-import Network.Wai.Handler.WarpTLS
-import Network.Wai.Middleware.RequestLogger
-       (Destination(Logger), IPAddrSource(..), OutputFormat(..),
-        destination, mkRequestLogger, outputFormat)
-import System.Log.FastLogger
-       (defaultBufSize, newStdoutLoggerSet, toLogStr)
+import           Control.Monad.Logger (liftLoc, runLoggingT)
+import           Database.Persist.Sql (runMigration)
+import           Database.Persist.Sqlite (createSqlitePool, runSqlPool, sqlDatabase, sqlPoolSize)
+import           Import
+import           Language.Haskell.TH.Syntax (qLocation)
+import           Network.Wai (Middleware)
+import           Network.Wai.Handler.Warp (Settings, defaultSettings, defaultShouldDisplayException,
+                                           getPort, setHost, setOnException, setPort)
+import           Network.Wai.Handler.WarpTLS
+import           Network.Wai.Middleware.RequestLogger (Destination (Logger), IPAddrSource (..),
+                                                       OutputFormat (..), destination,
+                                                       mkRequestLogger, outputFormat)
+import           System.Log.FastLogger (defaultBufSize, newStdoutLoggerSet, toLogStr)
 
-import Handler.Common
-import Handler.Github
-import Handler.Home
-import Handler.Manager
-import Handler.ManagerEdit
-import Handler.ManagerNew
-import Handler.Profile
-import Handler.TutorialEdit
-import Handler.TutorialList
-import Handler.TutorialR
-import Handler.Tutorials
-import Handler.TutorialDelete
+import           Handler.Common
+import           Handler.Github
+import           Handler.Home
+import           Handler.Manager
+import           Handler.ManagerEdit
+import           Handler.ManagerNew
+import           Handler.Profile
+import           Handler.TutorialDelete
+import           Handler.TutorialEdit
+import           Handler.TutorialList
+import           Handler.TutorialR
+import           Handler.Tutorials
 
 mkYesodDispatch "App" resourcesApp
 

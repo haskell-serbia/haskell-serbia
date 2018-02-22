@@ -1,18 +1,16 @@
-{-# Language CPP #-}
+{-# LANGUAGE CPP #-}
 module Settings where
 
-import ClassyPrelude.Yesod
+import           ClassyPrelude.Yesod
 import qualified Control.Exception as Exception
-import Data.Aeson                  (Result (..), fromJSON, withObject, (.!=),
-                                    (.:?))
-import Data.FileEmbed              (embedFile)
-import Data.Yaml                   (decodeEither')
-import Database.Persist.Sqlite     (SqliteConf)
-import Language.Haskell.TH.Syntax  (Exp, Name, Q)
-import Network.Wai.Handler.Warp    (HostPreference)
-import Yesod.Default.Config2       (applyEnvValue, configSettingsYml)
-import Yesod.Default.Util          (WidgetFileSettings, widgetFileNoReload,
-                                    widgetFileReload)
+import           Data.Aeson (Result (..), fromJSON, withObject, (.!=), (.:?))
+import           Data.FileEmbed (embedFile)
+import           Data.Yaml (decodeEither')
+import           Database.Persist.Sqlite (SqliteConf)
+import           Language.Haskell.TH.Syntax (Exp, Name, Q)
+import           Network.Wai.Handler.Warp (HostPreference)
+import           Yesod.Default.Config2 (applyEnvValue, configSettingsYml)
+import           Yesod.Default.Util (WidgetFileSettings, widgetFileNoReload, widgetFileReload)
 
 data AppSettings = AppSettings
     { appStaticDir              :: String
@@ -120,7 +118,7 @@ configSettingsYmlValue = either Exception.throw id
 compileTimeAppSettings :: AppSettings
 compileTimeAppSettings =
     case fromJSON $ applyEnvValue False mempty configSettingsYmlValue of
-        Error e -> error e
+        Error e          -> error e
         Success settings -> settings
 
 -- The following two functions can be used to combine multiple CSS or JS files
